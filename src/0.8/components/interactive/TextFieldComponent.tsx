@@ -3,12 +3,12 @@
  */
 
 import React, { memo, useCallback } from 'react'
-import type { TextFieldComponentProps } from '../../types'
-import { useDataBinding, useFormBinding } from '../../hooks/useDataBinding'
-import { Input } from '../../../../../components/ui/input'
-import { Textarea } from '../../../../../components/ui/textarea'
-import { Label } from '../../../../../components/ui/label'
-import { cn } from '../../../../../lib/utils'
+import type { TextFieldComponentProps } from '@/types'
+import { useDataBinding, useFormBinding } from '@/hooks/useDataBinding'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
 
 /**
  * Maps textFieldType to HTML input type.

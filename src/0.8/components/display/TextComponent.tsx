@@ -3,9 +3,9 @@
  */
 
 import React, { memo } from 'react'
-import type { TextComponentProps } from '../../types'
-import { useDataBinding } from '../../hooks/useDataBinding'
-import { cn } from '../../../../../lib/utils'
+import type { TextComponentProps } from '@/types'
+import { useDataBinding } from '@/hooks/useDataBinding'
+import { cn } from '@/lib/utils'
 
 /**
  * Maps usageHint to Tailwind CSS classes.

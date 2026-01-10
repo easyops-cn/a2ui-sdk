@@ -3,14 +3,9 @@
  */
 
 import { memo } from 'react'
-import type { TabsComponentProps } from '../../types'
-import { useDataBinding } from '../../hooks/useDataBinding'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '../../../../../components/ui/tabs'
+import type { TabsComponentProps } from '@/types'
+import { useDataBinding } from '@/hooks/useDataBinding'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ComponentRenderer } from '../ComponentRenderer'
 
 /**

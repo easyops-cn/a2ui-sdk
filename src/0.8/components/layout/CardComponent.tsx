@@ -3,8 +3,8 @@
  */
 
 import { memo } from 'react'
-import type { CardComponentProps } from '../../types'
-import { Card, CardContent } from '../../../../../components/ui/card'
+import type { CardComponentProps } from '@/types'
+import { Card, CardContent } from '@/components/ui/card'
 import { ComponentRenderer } from '../ComponentRenderer'
 
 /**

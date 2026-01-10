@@ -3,10 +3,10 @@
  */
 
 import React, { memo, useCallback } from 'react'
-import type { SliderComponentProps } from '../../types'
-import { useFormBinding } from '../../hooks/useDataBinding'
-import { Slider } from '../../../../../components/ui/slider'
-import { cn } from '../../../../../lib/utils'
+import type { SliderComponentProps } from '@/types'
+import { useFormBinding } from '@/hooks/useDataBinding'
+import { Slider } from '@/components/ui/slider'
+import { cn } from '@/lib/utils'
 
 /**
  * Slider component - range slider input.

@@ -3,16 +3,16 @@
  */
 
 import React, { memo, useCallback } from 'react'
-import type { MultipleChoiceComponentProps } from '../../types'
-import { useDataBinding, useFormBinding } from '../../hooks/useDataBinding'
+import type { MultipleChoiceComponentProps } from '@/types'
+import { useDataBinding, useFormBinding } from '@/hooks/useDataBinding'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../../../../components/ui/select'
-import { cn } from '../../../../../lib/utils'
+} from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 
 /**
  * MultipleChoice component - dropdown/select input.

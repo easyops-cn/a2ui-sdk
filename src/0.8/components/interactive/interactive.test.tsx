@@ -17,7 +17,7 @@ import { SliderComponent } from './SliderComponent'
 import { DataModelProvider } from '../../contexts/DataModelContext'
 import { ActionProvider } from '../../contexts/ActionContext'
 import type { ReactNode } from 'react'
-import type { ActionPayload } from '../../types'
+import type { ActionPayload } from '@/types'
 
 // Mock ComponentRenderer
 vi.mock('../ComponentRenderer', () => ({

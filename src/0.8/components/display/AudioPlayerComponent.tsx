@@ -3,8 +3,8 @@
  */
 
 import React, { memo } from 'react'
-import type { AudioPlayerComponentProps } from '../../types'
-import { useDataBinding } from '../../hooks/useDataBinding'
+import type { AudioPlayerComponentProps } from '@/types'
+import { useDataBinding } from '@/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
 /**

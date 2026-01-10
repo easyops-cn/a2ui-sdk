@@ -3,8 +3,8 @@
  */
 
 import React, { memo } from 'react'
-import type { IconComponentProps } from '../../types'
-import { useDataBinding } from '../../hooks/useDataBinding'
+import type { IconComponentProps } from '@/types'
+import { useDataBinding } from '@/hooks/useDataBinding'
 import {
   User,
   Plus,
@@ -55,7 +55,7 @@ import {
   AlertTriangle,
   type LucideIcon,
 } from 'lucide-react'
-import { cn } from '../../../../../lib/utils'
+import { cn } from '@/lib/utils'
 
 /**
  * Maps A2UI icon names to Lucide React icons.

@@ -3,9 +3,9 @@
  */
 
 import React, { memo } from 'react'
-import type { ImageComponentProps } from '../../types'
-import { useDataBinding } from '../../hooks/useDataBinding'
-import { cn } from '../../../../../lib/utils'
+import type { ImageComponentProps } from '@/types'
+import { useDataBinding } from '@/hooks/useDataBinding'
+import { cn } from '@/lib/utils'
 
 /**
  * Maps fit property to CSS object-fit values.

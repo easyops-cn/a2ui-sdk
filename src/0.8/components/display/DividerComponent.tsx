@@ -3,8 +3,8 @@
  */
 
 import React, { memo } from 'react'
-import type { DividerComponentProps } from '../../types'
-import { Separator } from '../../../../../components/ui/separator'
+import type { DividerComponentProps } from '@/types'
+import { Separator } from '@/components/ui/separator'
 
 /**
  * Divider component for visual separation.
