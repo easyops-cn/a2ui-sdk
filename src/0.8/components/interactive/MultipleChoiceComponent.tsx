@@ -2,9 +2,9 @@
  * MultipleChoiceComponent - Dropdown/Select input with two-way binding.
  */
 
-import React, { memo, useCallback } from 'react'
-import type { MultipleChoiceComponentProps } from '@/types'
-import { useDataBinding, useFormBinding } from '@/hooks/useDataBinding'
+import { memo, useCallback } from 'react'
+import type { MultipleChoiceComponentProps, ValueSource } from '@/0.8/types'
+import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import {
   Select,
   SelectContent,
@@ -73,11 +73,7 @@ function OptionLabel({
   label,
 }: {
   surfaceId: string
-  label: MultipleChoiceComponentProps['options'] extends Array<infer T>
-    ? T extends { label?: infer U }
-      ? U
-      : never
-    : never
+  label: ValueSource | undefined
 }) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   return <>{labelText}</>

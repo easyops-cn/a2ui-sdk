@@ -3,10 +3,10 @@
  */
 
 import { memo } from 'react'
-import type { RowComponentProps, Distribution, Alignment } from '@/types'
-import { useDataModel } from '@/hooks/useDataBinding'
+import type { RowComponentProps, Distribution, Alignment } from '@/0.8/types'
+import { useDataModel } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
-import { getValueByPath } from '@/utils/pathUtils'
+import { getValueByPath } from '@/0.8/utils/pathUtils'
 import { ComponentRenderer } from '../ComponentRenderer'
 
 /**

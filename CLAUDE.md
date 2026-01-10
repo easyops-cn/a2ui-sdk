@@ -67,3 +67,12 @@ A2UI messages processed in order:
 ## Testing
 
 Tests co-located with source (`*.test.tsx`). Uses Vitest + React Testing Library + jsdom.
+
+## Active Technologies
+
+- TypeScript 5.9, React 19 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority) (001-a2ui-renderer)
+- N/A (client-side rendering library) (001-a2ui-renderer)
+
+## Recent Changes
+
+- 001-a2ui-renderer: Added TypeScript 5.9, React 19 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority)

@@ -2,9 +2,9 @@
  * ImageComponent - Displays an image with configurable sizing and fit.
  */
 
-import React, { memo } from 'react'
-import type { ImageComponentProps } from '@/types'
-import { useDataBinding } from '@/hooks/useDataBinding'
+import { memo } from 'react'
+import type { ImageComponentProps } from '@/0.8/types'
+import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
 /**

@@ -22,7 +22,13 @@ export type ValueSource =
 /**
  * Primitive values that can be stored in the data model.
  */
-export type DataModelValue = string | number | boolean | DataModel | unknown[]
+export type DataModelValue =
+  | string
+  | number
+  | boolean
+  | null
+  | DataModel
+  | unknown[]
 
 /**
  * The data model is a hierarchical key-value store.

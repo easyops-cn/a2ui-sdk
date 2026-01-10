@@ -2,9 +2,9 @@
  * VideoComponent - Displays video content.
  */
 
-import React, { memo } from 'react'
-import type { VideoComponentProps } from '@/types'
-import { useDataBinding } from '@/hooks/useDataBinding'
+import { memo } from 'react'
+import type { VideoComponentProps } from '@/0.8/types'
+import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
 /**

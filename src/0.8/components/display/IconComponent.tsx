@@ -2,9 +2,9 @@
  * IconComponent - Displays icons from the A2UI icon set.
  */
 
-import React, { memo } from 'react'
-import type { IconComponentProps } from '@/types'
-import { useDataBinding } from '@/hooks/useDataBinding'
+import { memo } from 'react'
+import type { IconComponentProps } from '@/0.8/types'
+import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import {
   User,
   Plus,

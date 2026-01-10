@@ -2,9 +2,9 @@
  * SliderComponent - Slider input with two-way binding.
  */
 
-import React, { memo, useCallback } from 'react'
-import type { SliderComponentProps } from '@/types'
-import { useFormBinding } from '@/hooks/useDataBinding'
+import { memo, useCallback } from 'react'
+import type { SliderComponentProps } from '@/0.8/types'
+import { useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
 

@@ -2,9 +2,9 @@
  * TextComponent - Displays text content with optional Markdown support.
  */
 
-import React, { memo } from 'react'
-import type { TextComponentProps } from '@/types'
-import { useDataBinding } from '@/hooks/useDataBinding'
+import { memo, type JSX } from 'react'
+import type { TextComponentProps } from '@/0.8/types'
+import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
 /**
@@ -46,7 +46,7 @@ export const TextComponent = memo(function TextComponent({
 
   const className = cn(usageHintStyles[usageHint] || usageHintStyles.body)
 
-  const Element = usageHintElements[usageHint] || 'p'
+  const Element = (usageHintElements[usageHint] as 'p') || 'p'
 
   // For now, render as plain text
   // TODO: Add Markdown support if needed

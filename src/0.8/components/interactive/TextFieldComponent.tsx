@@ -2,9 +2,9 @@
  * TextFieldComponent - Text input field with two-way binding.
  */
 
-import React, { memo, useCallback } from 'react'
-import type { TextFieldComponentProps } from '@/types'
-import { useDataBinding, useFormBinding } from '@/hooks/useDataBinding'
+import { memo, useCallback } from 'react'
+import type { TextFieldComponentProps } from '@/0.8/types'
+import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'

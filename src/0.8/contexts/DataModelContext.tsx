@@ -5,7 +5,7 @@
  * Components reference data using paths like "/user/name".
  */
 
-import React, {
+import {
   createContext,
   useContext,
   useState,

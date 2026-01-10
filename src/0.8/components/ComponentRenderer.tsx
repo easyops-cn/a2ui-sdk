@@ -2,9 +2,10 @@
  * ComponentRenderer - Routes component rendering based on type.
  */
 
-import React, { memo } from 'react'
+import { memo, useContext, type ComponentType } from 'react'
 import type { BaseComponentProps } from '../types'
 import { useComponent } from '../hooks/useComponent'
+import { ComponentsMapContext } from '../contexts/ComponentsMapContext'
 
 // Display components
 import {
@@ -39,9 +40,9 @@ import {
 /**
  * Component registry mapping component type names to React components.
  */
-const componentRegistry: Record<
+export const componentRegistry: Record<
   string,
-  React.ComponentType<BaseComponentProps & Record<string, unknown>>
+  ComponentType<BaseComponentProps & Record<string, unknown>>
 > = {
   // Display components
   Text: TextComponent,
@@ -78,6 +79,7 @@ export interface ComponentRendererProps {
 
 /**
  * Renders a component based on its type from the component registry.
+ * Supports custom component overrides via ComponentsMapContext.
  *
  * @example
  * ```tsx
@@ -90,6 +92,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
   componentId,
 }: ComponentRendererProps) {
   const component = useComponent(surfaceId, componentId)
+  const componentsMapContext = useContext(ComponentsMapContext)
 
   if (!component) {
     console.warn(
@@ -107,14 +110,26 @@ export const ComponentRenderer = memo(function ComponentRenderer({
   }
 
   const [componentType, props] = entries[0]
-  const Component = componentRegistry[componentType]
+
+  // Try to get component from context first (custom components), then fall back to registry
+  let Component:
+    | ComponentType<BaseComponentProps & Record<string, unknown>>
+    | undefined
+  if (componentsMapContext) {
+    Component = componentsMapContext.getComponent(componentType)
+  } else {
+    Component = componentRegistry[componentType]
+  }
 
   if (!Component) {
+    // In development mode, render a placeholder for unknown components
+    // In production, skip unknown components silently
     console.warn(`A2UI: Unknown component type: ${componentType}`)
     return null
   }
 
   return (
+    // eslint-disable-next-line react-hooks/static-components
     <Component
       surfaceId={surfaceId}
       componentId={componentId}
@@ -142,7 +157,7 @@ ComponentRenderer.displayName = 'A2UI.ComponentRenderer'
  */
 export function registerComponent(
   type: string,
-  component: React.ComponentType<BaseComponentProps & Record<string, unknown>>
+  component: ComponentType<BaseComponentProps & Record<string, unknown>>
 ): void {
   componentRegistry[type] = component
 }

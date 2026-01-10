@@ -8,7 +8,7 @@
  * - styles: Optional style configuration
  */
 
-import React, {
+import {
   createContext,
   useContext,
   useState,

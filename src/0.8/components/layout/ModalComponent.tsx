@@ -3,7 +3,7 @@
  */
 
 import { memo, useState } from 'react'
-import type { ModalComponentProps } from '@/types'
+import type { ModalComponentProps } from '@/0.8/types'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { ComponentRenderer } from '../ComponentRenderer'
 

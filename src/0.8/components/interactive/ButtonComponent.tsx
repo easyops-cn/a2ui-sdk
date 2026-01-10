@@ -3,8 +3,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { ButtonComponentProps } from '@/types'
-import { useDispatchAction } from '@/hooks/useDispatchAction'
+import type { ButtonComponentProps } from '@/0.8/types'
+import { useDispatchAction } from '@/0.8/hooks/useDispatchAction'
 import { Button } from '@/components/ui/button'
 import { ComponentRenderer } from '../ComponentRenderer'
 

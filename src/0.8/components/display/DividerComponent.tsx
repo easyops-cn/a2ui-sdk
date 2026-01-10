@@ -2,8 +2,8 @@
  * DividerComponent - Displays a separator line.
  */
 
-import React, { memo } from 'react'
-import type { DividerComponentProps } from '@/types'
+import { memo } from 'react'
+import type { DividerComponentProps } from '@/0.8/types'
 import { Separator } from '@/components/ui/separator'
 
 /**
