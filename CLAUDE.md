@@ -6,7 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A2UI React Renderer Library (`@elevo-cn/a2ui-react`) - A React implementation for rendering A2UI (Agent-to-User Interface) specifications. This is a library package (not an application) that downstream developers consume.
 
+## Monorepo Structure
+
+This is an npm workspaces monorepo:
+
+- Root package: `@elevo-cn/a2ui-react` - The main library
+- `website/` - Documentation site using plain-blog
+
 ## Commands
+
+### Library (root)
 
 ```bash
 npm run build        # TypeScript compile + Vite build (outputs to dist/)
@@ -17,13 +26,19 @@ npm run lint         # Run ESLint
 npm run lint:fix     # ESLint with auto-fix
 ```
 
+### Website
+
+```bash
+npm run build -w website     # Build website (outputs to website/dist/)
+npx -y serve website/dist    # Serve built website locally
+```
+
 ## Library Usage (Downstream API)
 
 The primary entry point is `A2UIRender` component:
 
 ```tsx
 import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'
-
 ;<A2UIRender messages={messages} onAction={handleAction} />
 ```
 
@@ -68,11 +83,6 @@ A2UI messages processed in order:
 
 Tests co-located with source (`*.test.tsx`). Uses Vitest + React Testing Library + jsdom.
 
-## Active Technologies
+## Technologies
 
-- TypeScript 5.9, React 19 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority) (001-a2ui-renderer)
-- N/A (client-side rendering library) (001-a2ui-renderer)
-
-## Recent Changes
-
-- 001-a2ui-renderer: Added TypeScript 5.9, React 19 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority)
+TypeScript 5.9, React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority)

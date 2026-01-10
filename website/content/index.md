@@ -1,0 +1,102 @@
+Installation:
+
+```sh
+npm install @elevo-cn/a2ui-react@
+```
+
+Basic usage:
+
+```tsx
+import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'
+
+function App() {
+  const messages: A2UIMessage[] = []
+
+  const handleAction = (action: A2UIAction) => {
+    console.log('Action received:', action)
+  }
+
+  return <A2UIRender messages={messages} onAction={handleAction} />
+}
+```
+
+With customized components:
+
+```tsx
+import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'
+
+const ComponentsMap = new Map<string, React.ComponentType<any>>([
+  // Override default Button component with a custom one
+  ['Button', CustomButtonComponent],
+
+  // Add a new custom Switch component
+  ['Switch', CustomSwitchComponent],
+])
+
+function App() {
+  return (
+    <A2UIRender
+      components={ComponentsMap}
+      messages={messages}
+      onAction={handleAction}
+    />
+  )
+}
+```
+
+Customized button component with action dispatch:
+
+```tsx
+import {
+  useDispatchAction,
+  ComponentRenderer,
+  type ButtonComponentProps,
+} from '@elevo-cn/a2ui-react/0.8'
+
+export function CustomButtonComponent({
+  surfaceId,
+  componentId,
+  child,
+  action,
+}: ButtonComponentProps) {
+  const dispatchAction = useDispatchAction()
+
+  const handleClick = () => {
+    if (action) {
+      dispatchAction(surfaceId, componentId, action)
+    }
+  }
+
+  return (
+    <button onClick={handleClick}>
+      <ComponentRenderer surfaceId={surfaceId} componentId={child} />
+    </button>
+  )
+}
+```
+
+Customized switch component with data binding:
+
+```tsx
+import { useDataBinding, useFormBinding } from '@elevo-cn/a2ui-react/0.8'
+
+export function CustomSwitchComponent({
+  surfaceId,
+  componentId,
+  label,
+  value,
+}: SwitchComponentProps) {
+  const labelText = useDataBinding<string>(surfaceId, label, '')
+  const [checked, setChecked] = useFormBinding<boolean>(surfaceId, value, false)
+
+  const handleChange = (newChecked: boolean) => {
+    setChecked(newChecked)
+  }
+
+  return (
+    <Switch checked={checked} onChange={handleChange}>
+      {labelText}
+    </Switch>
+  )
+}
+```

@@ -1,5 +1,5 @@
 html {
-  --primary-color: hsl(10, 80%, 50%);
+  --primary-color: #009488;
   --text-color: hsl(10, 20%, 20%);
   --muted-color: hsl(10, 20%, 94%);
   --background-color: hsl(10, 10%, 98%);
@@ -11,7 +11,7 @@ html {
 
 @media (prefers-color-scheme: dark) {
   html:not([data-theme='light']) {
-    --primary-color: rgb(242, 95, 92);
+    --primary-color: #80cbc4;
     --text-color: hsl(210, 50%, 96%);
     --muted-color: rgb(64, 71, 86);
     --background-color: hsl(230, 25%, 18%);
@@ -23,7 +23,7 @@ html {
 }
 
 html[data-theme='dark'] {
-  --primary-color: rgb(242, 95, 92);
+  --primary-color: #80cbc4;
   --text-color: hsl(210, 50%, 96%);
   --muted-color: rgb(64, 71, 86);
   --background-color: hsl(230, 25%, 18%);
@@ -39,38 +39,28 @@ html[data-theme='dark'] {
 
 body {
   font-family:
-    'Merriweather',
-    'Georgia',
     system-ui,
     -apple-system,
-    'Segoe UI',
+    Segoe UI,
     Roboto,
     Ubuntu,
     Cantarell,
     Noto Sans,
-    sans-serif;
+    sans-serif,
+    'Segoe UI',
+    'Roboto',
+    'Ubuntu',
+    'Cantarell',
+    'Noto Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
   line-height: 1.75;
   font-weight: 400;
   font-size: 16px;
   margin: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family:
-    'Montserrat',
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Ubuntu,
-    Cantarell,
-    Noto Sans,
-    sans-serif;
 }
 
 h1 {
@@ -113,27 +103,22 @@ a {
   justify-content: space-between;
 }
 
-.title-container {
-  margin-bottom: 32px;
-}
-
 .page-header > a {
   box-shadow: none;
   text-decoration: none;
   color: var(--primary-color);
   font-size: 24px;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
 }
 
 .page-header.home {
   padding-top: 32px;
-  padding-bottom: 48px;
 }
 
 .page-header.home h1 {
   margin: 0;
   font-size: 24px;
+  color: var(--primary-color);
 }
 
 .page-header.home h1 > a {
@@ -173,25 +158,6 @@ main {
   padding: 16px;
   margin-left: auto;
   margin-right: auto;
-}
-
-main.home h2 {
-  margin: 0;
-}
-
-main.home h2 > a {
-  box-shadow: none;
-  text-decoration: none;
-}
-
-main.home .post-date {
-  font-size: 13px;
-  margin: 0;
-}
-
-main.home p {
-  margin-top: 0.5em;
-  margin-bottom: 64px;
 }
 
 article > p,
@@ -259,6 +225,7 @@ article p.post-date {
   font-size: 14px;
   line-height: 1.75;
   overflow-x: auto;
+  outline: 1px solid var(--muted-color);
 }
 
 p.figure-caption {
@@ -327,5 +294,31 @@ a[role='button'] {
 
   .shiki {
     border-radius: 10px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) {
+    .shiki,
+    .shiki span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+      /* Optional, if you also want font styles */
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+  }
+}
+
+html[data-theme='dark'] {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }

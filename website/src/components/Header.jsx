@@ -1,6 +1,6 @@
 import { useSiteContext } from 'plain-blog/SiteContext'
 
-export default function Header(props) {
+export default function Header() {
   const { baseUrl, site } = useSiteContext()
 
   return (
