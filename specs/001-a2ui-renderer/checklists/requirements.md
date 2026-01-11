@@ -34,7 +34,7 @@
 - All items pass validation
 - Specification is ready for `/speckit.clarify` or `/speckit.plan`
 - The spec covers all usage patterns shown in README.md:
-  - Basic rendering with A2UIRender component
+  - Basic rendering with A2UIRenderer component
   - Action handling via onAction callback
   - Custom component overrides via ComponentsMap
   - Custom component creation with hooks (useDispatchAction, useDataBinding, useFormBinding)

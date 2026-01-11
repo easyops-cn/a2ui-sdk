@@ -49,7 +49,7 @@ playground/
 │   │   ├── Header.tsx           # Header with title and theme toggle
 │   │   ├── ThemeToggle.tsx      # Sun/moon theme switch component
 │   │   ├── JsonEditor.tsx       # CodeMirror-based JSON editor
-│   │   ├── Preview.tsx          # A2UIRender wrapper with error boundary
+│   │   ├── Preview.tsx          # A2UIRenderer wrapper with error boundary
 │   │   ├── ExampleSelector.tsx  # Dropdown for example selection
 │   │   └── ErrorDisplay.tsx     # Error state display component
 │   ├── data/

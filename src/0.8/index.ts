@@ -6,14 +6,14 @@
  *
  * @example
  * ```tsx
- * import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+ * import { A2UIRenderer, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
  *
  * function App() {
  *   const messages: A2UIMessage[] = [...]
  *   const handleAction = (action: A2UIAction) => {
  *     console.log('Action:', action)
  *   }
- *   return <A2UIRender messages={messages} onAction={handleAction} />
+ *   return <A2UIRenderer messages={messages} onAction={handleAction} />
  * }
  * ```
  */
@@ -29,7 +29,7 @@ export type {
 
 // ============ Components ============
 
-export { A2UIRender } from './A2UIRender'
+export { A2UIRenderer } from './A2UIRenderer'
 export { ComponentRenderer } from './components/ComponentRenderer'
 
 // ============ Hooks ============

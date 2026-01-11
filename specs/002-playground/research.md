@@ -69,10 +69,10 @@ Import from workspace dependency `@easyops-cn/a2ui-react/0.8`
 ### Integration Pattern
 
 ```typescript
-import { A2UIRender, type A2UIMessage } from '@easyops-cn/a2ui-react/0.8'
+import { A2UIRenderer, type A2UIMessage } from '@easyops-cn/a2ui-react/0.8'
 
 // Parse JSON string to A2UIMessage[]
-// Pass to A2UIRender component
+// Pass to A2UIRenderer component
 // Handle parse errors gracefully
 ```
 
@@ -111,7 +111,7 @@ Use React Error Boundary for preview panel with graceful fallback
 ### Implementation Pattern
 
 ```typescript
-// ErrorBoundary wraps A2UIRender
+// ErrorBoundary wraps A2UIRenderer
 // Catches render errors, displays ErrorDisplay component
 // JSON parse errors handled separately before render
 ```

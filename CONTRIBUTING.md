@@ -4,7 +4,7 @@ Thank you for your interest in contributing to `@easyops-cn/a2ui-react`!
 
 ## Project Overview
 
-A2UI React Renderer Library - A React implementation for rendering A2UI protocol. This is a library package that downstream developers consume.
+A2UI React Renderer - A React implementation for rendering A2UI protocol. This is a library package that downstream developers consume.
 
 ## Monorepo Structure
 

@@ -14,7 +14,11 @@ pnpm add @easyops-cn/a2ui-react
 ## Basic Usage
 
 ```tsx
-import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+import {
+  A2UIRenderer,
+  A2UIMessage,
+  A2UIAction,
+} from '@easyops-cn/a2ui-react/0.8'
 
 function App() {
   const messages: A2UIMessage[] = [
@@ -26,7 +30,7 @@ function App() {
     // Handle the action (e.g., send to server)
   }
 
-  return <A2UIRender messages={messages} onAction={handleAction} />
+  return <A2UIRenderer messages={messages} onAction={handleAction} />
 }
 ```
 
@@ -36,7 +40,7 @@ Override default components or add new ones:
 
 ```tsx
 import {
-  A2UIRender,
+  A2UIRenderer,
   useDispatchAction,
   ComponentRenderer,
 } from '@easyops-cn/a2ui-react/0.8'
@@ -63,7 +67,7 @@ const ComponentsMap = new Map([['Button', CustomButton]])
 
 function App() {
   return (
-    <A2UIRender
+    <A2UIRenderer
       components={ComponentsMap}
       messages={messages}
       onAction={handleAction}
@@ -99,7 +103,7 @@ function InputComponent({ surfaceId, value }) {
 
 ## API Reference
 
-### A2UIRender Props
+### A2UIRenderer Props
 
 | Prop         | Type                           | Required | Description                           |
 | ------------ | ------------------------------ | -------- | ------------------------------------- |
@@ -127,7 +131,7 @@ function InputComponent({ surfaceId, value }) {
 ## Message Flow
 
 ```
-Server                          Client (A2UIRender)
+Server                          Client (A2UIRenderer)
   │                                    │
   │──── beginRendering ───────────────►│ Initialize surface
   │                                    │

@@ -1,7 +1,12 @@
 {
   "name": "@easyops-cn/a2ui-react",
-  "version": "0.0.0",
-  "description": "A2UI React Renderer Library",
+  "version": "0.0.1",
+  "description": "A2UI React Renderer",
+  "homepage": "https://easyops-cn.github.io/a2ui-react/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:easyops-cn/a2ui-react.git"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

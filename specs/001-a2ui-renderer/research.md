@@ -5,18 +5,18 @@
 
 ## Overview
 
-This document captures research findings for implementing the A2UIRender component and public API exports.
+This document captures research findings for implementing the A2UIRenderer component and public API exports.
 
-## Decision 1: A2UIRender Component Architecture
+## Decision 1: A2UIRenderer Component Architecture
 
-**Decision**: Compose A2UIRender as a thin wrapper around existing infrastructure
+**Decision**: Compose A2UIRenderer as a thin wrapper around existing infrastructure
 
 **Rationale**:
 
 - The existing `A2UIProvider` already combines all necessary context providers
 - The existing `useA2UIMessageHandler` hook handles message processing
 - The existing `ComponentRenderer` handles component routing
-- A2UIRender only needs to:
+- A2UIRenderer only needs to:
   1. Accept `messages`, `onAction`, and optional `components` props
   2. Wrap children in A2UIProvider
   3. Process messages and render surfaces
@@ -41,7 +41,7 @@ This document captures research findings for implementing the A2UIRender compone
 
 - Global registry mutation: Rejected - not React-friendly, causes side effects
 - Prop drilling: Rejected - would require changes to all container components
-- Module-level configuration: Rejected - not compatible with multiple A2UIRender instances
+- Module-level configuration: Rejected - not compatible with multiple A2UIRenderer instances
 
 ## Decision 3: Unknown Component Handling
 
@@ -85,7 +85,7 @@ This document captures research findings for implementing the A2UIRender compone
 - Messages can create multiple surfaces
 - Each surface has its own `root` component ID
 - SurfaceContext already maintains `Map<string, Surface>`
-- A2UIRender should render all active surfaces
+- A2UIRenderer should render all active surfaces
 
 **Alternatives considered**:
 
@@ -123,7 +123,7 @@ function useDispatchAction(): (
 
 - `A2UIMessage` - ✅ exists in types/index.ts
 - `A2UIAction` - ❌ needs alias (currently `ActionPayload`)
-- `A2UIRender` - ❌ needs implementation
+- `A2UIRenderer` - ❌ needs implementation
 - `ComponentRenderer` - ✅ exists
 - `useDispatchAction` - ✅ exists
 - `useDataBinding` - ✅ exists
@@ -134,7 +134,11 @@ function useDispatchAction(): (
 The README.md shows:
 
 ```tsx
-import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+import {
+  A2UIRenderer,
+  A2UIMessage,
+  A2UIAction,
+} from '@easyops-cn/a2ui-react/0.8'
 ```
 
 Current types use `ActionPayload` instead of `A2UIAction`. The index.ts should export `ActionPayload as A2UIAction` for API consistency.

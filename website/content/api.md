@@ -9,7 +9,7 @@
  * @param onAction - Callback when an action is dispatched
  * @param components - Custom component overrides
  */
-function A2UIRender(props: {
+function A2UIRenderer(props: {
   messages: A2UIMessage[]
   onAction?: (action: A2UIAction) => void
   components?: Map<string, React.ComponentType<any>>

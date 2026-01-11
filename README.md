@@ -1,12 +1,12 @@
-# A2UI React Renderer Library
-
-https://easyops-cn.github.io/a2ui-react/
+# A2UI React Renderer
 
 A React renderer library for [A2UI](https://a2ui.org) protocol.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
 Currently A2UI protocol v0.8 is fully supported. Work on v0.9 is in progress.
+
+[Docs](https://easyops-cn.github.io/a2ui-react/) | [Playground](https://easyops-cn.github.io/a2ui-react/playground/)
 
 ## Installation
 
@@ -22,11 +22,11 @@ First, use the `@source` directive to tell Tailwind to scan the library code for
 @source "../node_modules/@easyops-cn/a2ui-react";
 ```
 
-Next, use the `A2UIRender` component to render A2UI messages:
+Next, use the `A2UIRenderer` component to render A2UI messages:
 
 ```tsx
 import {
-  A2UIRender,
+  A2UIRenderer,
   type A2UIMessage,
   type A2UIAction,
 } from '@easyops-cn/a2ui-react/0.8'
@@ -38,7 +38,7 @@ function App() {
     console.log('Action received:', action)
   }
 
-  return <A2UIRender messages={messages} onAction={handleAction} />
+  return <A2UIRenderer messages={messages} onAction={handleAction} />
 }
 ```
 
@@ -47,7 +47,11 @@ function App() {
 You can override default components or add new custom components via the `components` prop, which takes a `Map<string, React.ComponentType>`.
 
 ```tsx
-import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+import {
+  A2UIRenderer,
+  A2UIMessage,
+  A2UIAction,
+} from '@easyops-cn/a2ui-react/0.8'
 
 const ComponentsMap = new Map<string, React.ComponentType<any>>([
   // Override default Button component with a custom one
@@ -59,7 +63,7 @@ const ComponentsMap = new Map<string, React.ComponentType<any>>([
 
 function App() {
   return (
-    <A2UIRender
+    <A2UIRenderer
       components={ComponentsMap}
       messages={messages}
       onAction={handleAction}
