@@ -5,7 +5,7 @@
  * and are forwarded to the parent application for handling.
  */
 
-import React, {
+import {
   createContext,
   useContext,
   useMemo,

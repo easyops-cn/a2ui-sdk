@@ -1,0 +1,31 @@
+{
+  "name": "playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@easyops-cn/a2ui-react": "file:..",
+    "@codemirror/lang-json": "^6.0.2",
+    "@tailwindcss/vite": "^4.1.18",
+    "@uiw/react-codemirror": "^4.25.4",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.6",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "globals": "^17.0.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4"
+  }
+}

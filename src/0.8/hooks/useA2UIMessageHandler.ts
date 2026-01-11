@@ -59,7 +59,6 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
 
   const processMessage = useCallback(
     (messages: A2UIMessage) => {
-      // Transform the message to normalize field names
       // Handle beginRendering - marks the surface as ready to render
       // Note: surfaceUpdate may have already populated components before this
       if (messages.beginRendering) {

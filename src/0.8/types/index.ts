@@ -22,7 +22,13 @@ export type ValueSource =
 /**
  * Primitive values that can be stored in the data model.
  */
-export type DataModelValue = string | number | boolean | DataModel | unknown[]
+export type DataModelValue =
+  | string
+  | number
+  | boolean
+  | null
+  | DataModel
+  | unknown[]
 
 /**
  * The data model is a hierarchical key-value store.
@@ -439,55 +445,4 @@ export interface CompletedAction {
 export interface Progress {
   current: number
   total: number
-}
-
-/**
- * A2UIReactRenderer component props.
- * Designed to be compatible with the existing A2UIRenderer API.
- */
-export interface A2UIReactRendererProps {
-  /** Task ID - used to filter SSE events for this specific task */
-  taskId?: string
-
-  /** Static A2UI messages (for preview mode) */
-  messages?: A2UIMessage[]
-
-  /** Callback when user performs an action */
-  onAction?: ActionHandler
-
-  /** Optional CSS class name */
-  className?: string
-
-  /** Loading state */
-  loading?: boolean
-
-  /** Task title for header */
-  title?: string
-
-  /** Show AI status indicator */
-  showAIStatus?: boolean
-
-  /** Decision buttons for fixed bottom area */
-  decisionButtons?: DecisionButton[]
-
-  /** Callback for AI chat input */
-  onChatSubmit?: (message: string) => void
-
-  /** Show chat input */
-  showChatInput?: boolean
-
-  /** Progress info (e.g., "Step 2 of 4") */
-  progress?: Progress
-
-  /** Section 1: Confirmed info to display */
-  confirmedInfo?: ConfirmedInfo
-
-  /** Section 2: Warning message for form section */
-  formSectionWarning?: FormSectionWarning
-
-  /** Completed action info */
-  completedAction?: CompletedAction
-
-  /** Whether to show the header section (default: true) */
-  showHeader?: boolean
 }

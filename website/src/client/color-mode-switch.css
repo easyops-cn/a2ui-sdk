@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+a {
+  cursor: pointer;
+  display: block;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+a:hover {
+  background-color: var(--muted-color);
+}
+
+a:focus {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+}
+
+.lucide {
+  width: 1em;
+  height: 1em;
+  font-size: 1.5rem;
+}
+
+.lucide-moon {
+  display: none;
+}
+
+a[data-theme='dark'] {
+  .lucide-moon {
+    display: block;
+  }
+
+  .lucide-sun {
+    display: none;
+  }
+}

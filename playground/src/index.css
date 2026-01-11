@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+@source "../../src/**/*.{ts,tsx}";
+
+@theme inline {
+  --color-primary: #009488;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: #ffffff;
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(222.2 84% 4.9%);
+  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-input: hsl(214.3 31.8% 91.4%);
+  --color-ring: #009488;
+}
+
+html {
+  --primary-color: #009488;
+  --text-color: hsl(10, 20%, 20%);
+  --muted-color: hsl(10, 20%, 94%);
+  --background-color: hsl(10, 10%, 98%);
+  --border-color: hsl(10, 10%, 85%);
+  --editor-bg: hsl(0, 0%, 100%);
+  --preview-bg: hsl(0, 0%, 98%);
+
+  color-scheme: light;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) {
+    --primary-color: #80cbc4;
+    --text-color: hsl(210, 50%, 96%);
+    --muted-color: rgb(64, 71, 86);
+    --background-color: hsl(230, 25%, 18%);
+    --border-color: hsl(230, 20%, 30%);
+    --editor-bg: hsl(230, 25%, 14%);
+    --preview-bg: hsl(230, 25%, 16%);
+
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+html[data-theme='dark'] {
+  --primary-color: #80cbc4;
+  --text-color: hsl(210, 50%, 96%);
+  --muted-color: rgb(64, 71, 86);
+  --background-color: hsl(230, 25%, 18%);
+  --border-color: hsl(230, 20%, 30%);
+  --editor-bg: hsl(230, 25%, 14%);
+  --preview-bg: hsl(230, 25%, 16%);
+
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Error Display */
+.error-display {
+  padding: 16px;
+  background-color: hsl(0, 70%, 95%);
+  border: 1px solid hsl(0, 70%, 80%);
+  border-radius: 8px;
+  color: hsl(0, 70%, 30%);
+}
+
+html[data-theme='dark'] .error-display,
+html:not([data-theme='light']) .error-display {
+  background-color: hsl(0, 50%, 20%);
+  border-color: hsl(0, 50%, 35%);
+  color: hsl(0, 70%, 80%);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme='light']) .error-display {
+    background-color: hsl(0, 50%, 20%);
+    border-color: hsl(0, 50%, 35%);
+    color: hsl(0, 70%, 80%);
+  }
+}
+
+.error-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.error-message {
+  font-family: monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}

@@ -5,7 +5,7 @@
  * It should be placed at the top level of any component tree that uses A2UI.
  */
 
-import React, { type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { SurfaceProvider } from './SurfaceContext'
 import { DataModelProvider } from './DataModelContext'
 import { ActionProvider } from './ActionContext'

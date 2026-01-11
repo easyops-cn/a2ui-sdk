@@ -131,7 +131,7 @@ export function mergeAtPath(
 ): DataModel {
   if (!path || path === '/') {
     // Merge at root
-    return { ...dataModel, ...data }
+    return { ...dataModel, ...data } as DataModel
   }
 
   // Get current value at path
