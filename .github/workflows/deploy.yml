@@ -30,12 +30,6 @@ jobs:
       - name: Build @easyops-cn/a2ui-react
         run: npm run build
 
-      - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
       - name: Build playground
         run: npm run build -w playground
 
