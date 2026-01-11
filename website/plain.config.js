@@ -1,7 +1,7 @@
 // @ts-check
 /** @type {import("plain-blog").SiteConfig} */
 export default {
-  baseUrl: '/',
+  baseUrl: '/a2ui-react/',
   site: {
     title: 'A2UI React Renderer',
     description: 'A React renderer for A2UI protocol',

@@ -31,7 +31,7 @@ npm run lint:fix     # ESLint with auto-fix
 
 ```bash
 npm run build -w website     # Build website (outputs to website/dist/)
-npx -y serve website/dist    # Serve built website locally
+npm run serve -w website     # Serve built website locally
 ```
 
 ### Playground

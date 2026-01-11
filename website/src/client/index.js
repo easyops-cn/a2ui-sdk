@@ -13,9 +13,12 @@ if (CSS.supports('color-scheme', 'dark')) {
       constructor() {
         super()
 
-        const shadowRoot = this.attachShadow({ mode: 'open' })
+        const shadowRoot = this.attachShadow({
+          mode: 'open',
+          delegatesFocus: true,
+        })
 
-        shadowRoot.innerHTML = `<style>${ColorModeCss}</style><a role="button">${MoonSvg}${SunSvg}</a>`
+        shadowRoot.innerHTML = `<style>${ColorModeCss}</style><a role="button" tabindex="0">${MoonSvg}${SunSvg}</a>`
 
         // @ts-ignore
         this._switch = shadowRoot.querySelector('a')

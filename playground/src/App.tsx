@@ -65,7 +65,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header title="A2UI Playground">
+      <Header title="A2UI React Renderer">
         <ThemeToggle theme={theme} onToggle={toggleTheme} />
       </Header>
       <main className="main-content">

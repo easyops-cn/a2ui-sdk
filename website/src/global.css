@@ -65,7 +65,7 @@ body {
 
 h1 {
   font-size: 32px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -120,6 +120,39 @@ body > header {
   justify-content: space-between;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-nav a {
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: none;
+  padding: 6px 14px;
+  transition: color 0.2s ease;
+}
+
+.header-nav a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.header-nav a.active {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 body > header > a {
   box-shadow: none;
   text-decoration: none;
@@ -134,7 +167,7 @@ body > header {
 
 body > header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
   color: var(--primary-color);
 }
 
@@ -337,8 +370,8 @@ a[role='button'] {
   }
 
   body > header h1 {
-    font-size: 32px;
-    line-height: 50px;
+    font-size: 24px;
+    line-height: 36px;
   }
 
   .shiki {

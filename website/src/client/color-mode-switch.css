@@ -9,7 +9,17 @@
 a {
   cursor: pointer;
   display: block;
-  padding: 4px;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+a:hover {
+  background-color: var(--muted-color);
+}
+
+a:focus {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
 }
 
 svg {

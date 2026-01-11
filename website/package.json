@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "build": "plain-blog",
-    "watch": "node --watch ../node_modules/.bin/plain-blog"
+    "watch": "node --watch ../node_modules/.bin/plain-blog",
+    "serve": "serve ./dist -c ../serve.json"
   },
   "dependencies": {
-    "plain-blog": "^0.6.5",
     "react": "^19.2.3"
+  },
+  "devDependencies": {
+    "plain-blog": "^0.6.5",
+    "serve": "^14.2.5"
   }
 }

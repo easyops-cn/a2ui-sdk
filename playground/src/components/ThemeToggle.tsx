@@ -13,7 +13,7 @@ export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
     </button>
   )
 }

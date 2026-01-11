@@ -11,17 +11,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 24px 16px;
+  padding: 32px 16px;
   max-width: 1240px;
   margin: 0 auto;
   width: 100%;
   flex-shrink: 0;
+  line-height: 28px;
 }
 
 .app-title {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
+  line-height: 25px;
   color: var(--primary-color);
 }
 
@@ -29,6 +31,39 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-nav a {
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 14px;
+  transition: color 0.2s ease;
+}
+
+.header-nav a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.header-nav a.active {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* Theme Toggle */
@@ -61,7 +96,7 @@
   display: flex;
   flex: 1;
   min-height: 0;
-  padding: 0 24px 24px;
+  padding: 0 16px 24px;
   gap: 24px;
   max-width: 1240px;
   margin: 0 auto;
@@ -196,6 +231,6 @@
 
 @media (min-width: 704px) {
   .app-title {
-    font-size: 32px;
+    font-size: 24px;
   }
 }

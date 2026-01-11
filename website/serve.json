@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "a2ui-react/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "a2ui-react/**", "destination": "/index.html" }
+  ]
+}
