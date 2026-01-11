@@ -1,3 +1,10 @@
+A React renderer library for [A2UI](https://a2ui.org) (Agent-to-User Interface) specifications.
+
+Supported A2UI versions:
+
+- `0.8` - ✅
+- `0.9` - 🚧 In Progress
+
 ## Installation
 
 ```sh
@@ -21,6 +28,8 @@ function App() {
 ```
 
 ### Custom components
+
+We supports all components in A2UI standard catalog out of the box. You can override default components or add new custom components via the `components` prop, which takes a `Map<string, React.ComponentType>`.
 
 ```tsx
 import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'

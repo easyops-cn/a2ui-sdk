@@ -14,12 +14,6 @@ export const examples: Example[] = [
     description: 'Basic Text component demonstration',
     messages: [
       {
-        beginRendering: {
-          surfaceId: 'main',
-          root: 'root',
-        },
-      },
-      {
         surfaceUpdate: {
           surfaceId: 'main',
           components: [
@@ -27,7 +21,8 @@ export const examples: Example[] = [
               id: 'root',
               component: {
                 Column: {
-                  children: { explicitList: ['heading', 'text'] },
+                  children: { explicitList: ['heading', 'text', 'button'] },
+                  alignment: 'start',
                 },
               },
             },
@@ -52,103 +47,33 @@ export const examples: Example[] = [
                 },
               },
             },
+            {
+              id: 'button',
+              component: {
+                Button: {
+                  child: 'button-text',
+                  primary: true,
+                  action: {
+                    name: 'hello-click',
+                  },
+                },
+              },
+            },
+            {
+              id: 'button-text',
+              component: {
+                Text: {
+                  text: { literalString: 'Get Started' },
+                },
+              },
+            },
           ],
         },
       },
-    ],
-  },
-  {
-    id: 'layout-demo',
-    title: 'Layout Demo',
-    description: 'Column and Row layout with multiple children',
-    messages: [
       {
         beginRendering: {
           surfaceId: 'main',
           root: 'root',
-        },
-      },
-      {
-        surfaceUpdate: {
-          surfaceId: 'main',
-          components: [
-            {
-              id: 'root',
-              component: {
-                Column: {
-                  children: { explicitList: ['header', 'content'] },
-                },
-              },
-            },
-            {
-              id: 'header',
-              component: {
-                Text: {
-                  text: { literalString: 'Layout Example' },
-                  usageHint: 'h2',
-                },
-              },
-            },
-            {
-              id: 'content',
-              component: {
-                Row: {
-                  children: { explicitList: ['card1', 'card2', 'card3'] },
-                },
-              },
-            },
-            {
-              id: 'card1',
-              component: {
-                Card: {
-                  child: 'card1-text',
-                },
-              },
-            },
-            {
-              id: 'card1-text',
-              component: {
-                Text: {
-                  text: { literalString: 'Card 1' },
-                  usageHint: 'body',
-                },
-              },
-            },
-            {
-              id: 'card2',
-              component: {
-                Card: {
-                  child: 'card2-text',
-                },
-              },
-            },
-            {
-              id: 'card2-text',
-              component: {
-                Text: {
-                  text: { literalString: 'Card 2' },
-                  usageHint: 'body',
-                },
-              },
-            },
-            {
-              id: 'card3',
-              component: {
-                Card: {
-                  child: 'card3-text',
-                },
-              },
-            },
-            {
-              id: 'card3-text',
-              component: {
-                Text: {
-                  text: { literalString: 'Card 3' },
-                  usageHint: 'body',
-                },
-              },
-            },
-          ],
         },
       },
     ],
@@ -158,12 +83,6 @@ export const examples: Example[] = [
     title: 'Button Actions',
     description: 'Interactive Button with action handling',
     messages: [
-      {
-        beginRendering: {
-          surfaceId: 'main',
-          root: 'root',
-        },
-      },
       {
         surfaceUpdate: {
           surfaceId: 'main',
@@ -256,6 +175,12 @@ export const examples: Example[] = [
           ],
         },
       },
+      {
+        beginRendering: {
+          surfaceId: 'main',
+          root: 'root',
+        },
+      },
     ],
   },
   {
@@ -263,12 +188,6 @@ export const examples: Example[] = [
     title: 'Form Inputs',
     description: 'TextField and Checkbox components',
     messages: [
-      {
-        beginRendering: {
-          surfaceId: 'main',
-          root: 'root',
-        },
-      },
       {
         surfaceUpdate: {
           surfaceId: 'main',
@@ -341,6 +260,12 @@ export const examples: Example[] = [
           ],
         },
       },
+      {
+        beginRendering: {
+          surfaceId: 'main',
+          root: 'root',
+        },
+      },
     ],
   },
   {
@@ -348,12 +273,6 @@ export const examples: Example[] = [
     title: 'Data Binding',
     description: 'Components with ValueSource path bindings',
     messages: [
-      {
-        beginRendering: {
-          surfaceId: 'main',
-          root: 'root',
-        },
-      },
       {
         surfaceUpdate: {
           surfaceId: 'main',
@@ -441,6 +360,12 @@ export const examples: Example[] = [
           contents: [
             { key: 'message', valueString: 'Hello from data binding!' },
           ],
+        },
+      },
+      {
+        beginRendering: {
+          surfaceId: 'main',
+          root: 'root',
         },
       },
     ],

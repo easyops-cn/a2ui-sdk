@@ -2,25 +2,27 @@
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Header */
+/* Header - 与 website 保持一致 */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
-  background-color: var(--primary-color);
-  color: white;
-  border-bottom: 1px solid var(--border-color);
+  padding: 24px 24px 16px;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .app-title {
   margin: 0;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  color: var(--primary-color);
 }
 
 .app-header-actions {
@@ -39,25 +41,31 @@
   padding: 0;
   border: none;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
+  background-color: transparent;
+  color: var(--text-color);
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .theme-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: var(--muted-color);
 }
 
 .theme-toggle:focus {
-  outline: 2px solid white;
+  outline: 2px solid var(--text-color);
   outline-offset: 2px;
 }
 
+/* Main Content */
 .main-content {
   display: flex;
   flex: 1;
   min-height: 0;
+  padding: 0 24px 24px;
+  gap: 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* Split Panel Layout */
@@ -66,37 +74,40 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  overflow: hidden;
+  min-height: 0;
 }
 
 .panel-header {
-  padding: 8px 16px;
+  padding: 0;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-color);
-  background-color: var(--muted-color);
-  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  min-height: 48px;
+  flex-shrink: 0;
+  height: 44px;
 }
 
-.editor-panel {
-  border-right: 1px solid var(--border-color);
-}
-
+/* Editor Panel */
 .editor-panel .panel-content {
   flex: 1;
-  overflow: auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   background-color: var(--editor-bg);
 }
 
+/* Preview Panel */
 .preview-panel .panel-content {
   flex: 1;
+  min-height: 0;
   overflow: auto;
   padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   background-color: var(--preview-bg);
 }
 
@@ -147,6 +158,7 @@
 /* JSON Editor */
 .json-editor {
   height: 100%;
+  overflow: auto;
 }
 
 .json-editor .cm-editor {
@@ -171,13 +183,19 @@
   font-style: italic;
 }
 
-/* Responsive - Desktop only (1024px+) */
-@media (min-width: 1024px) {
+/* Responsive */
+@media (max-width: 1023px) {
   .main-content {
-    flex-direction: row;
+    flex-direction: column;
   }
 
   .panel {
-    width: 50%;
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 704px) {
+  .app-title {
+    font-size: 32px;
   }
 }

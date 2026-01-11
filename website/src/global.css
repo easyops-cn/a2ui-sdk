@@ -194,8 +194,8 @@ body > main > nav {
 
 article > p,
 article > blockquote > p {
-  margin-top: 32px;
-  margin-bottom: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 article > p > a > img,
@@ -230,8 +230,8 @@ article blockquote {
 
 article table {
   width: 100%;
-  margin-top: 32px;
-  margin-bottom: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
   border-collapse: separate;
   border-spacing: 0px;
 }
