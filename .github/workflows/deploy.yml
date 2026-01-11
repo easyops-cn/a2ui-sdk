@@ -42,14 +42,14 @@ jobs:
       - name: Build website
         run: npm run build -w website
 
-      - name: Copy playground dist to website dist
-        run: cp -r playground/dist website/dist/playground
+      - name: Copy website dist to build/a2ui-react, and playground dist to build/a2ui-react/playground
+        run: mkdir -p build && cp -r website/dist build/a2ui-react && cp -r playground/dist build/a2ui-react/playground
 
       - name: Deploy to Netlify (pull request)
         id: netlify-deploy
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: ./website/dist
+          publish-dir: ./build
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "${{ github.event.pull_request.title }}"
@@ -64,6 +64,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.GH_TOKEN_EVE }}
-          publish_dir: ./website/dist
+          publish_dir: ./build/a2ui-react
           force_orphan: true
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
