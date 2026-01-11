@@ -154,6 +154,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
             mode="single"
             selected={selectedDate}
             onSelect={handleDateSelect}
+            captionLayout="dropdown"
             initialFocus
           />
           {enableTime && (

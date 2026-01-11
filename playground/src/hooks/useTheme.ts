@@ -23,6 +23,8 @@ export function useTheme() {
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme)
     document.documentElement.dataset.theme = newTheme
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.classList.add(newTheme)
     localStorage.setItem('theme', newTheme)
   }, [])
 
@@ -33,6 +35,7 @@ export function useTheme() {
   // Initialize theme on mount
   useEffect(() => {
     document.documentElement.dataset.theme = theme
+    document.documentElement.classList.add(theme)
   }, [])
 
   // Listen for system theme changes
