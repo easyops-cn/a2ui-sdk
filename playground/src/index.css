@@ -15,6 +15,8 @@
   --color-border: hsl(214.3 31.8% 91.4%);
   --color-input: hsl(214.3 31.8% 91.4%);
   --color-ring: #009488;
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222.2 84% 4.9%);
 }
 
 html {
@@ -40,6 +42,8 @@ html {
     --border-color: hsl(230, 20%, 30%);
     --editor-bg: hsl(230, 25%, 14%);
     --preview-bg: hsl(230, 25%, 16%);
+    --color-popover: hsl(230, 25%, 18%);
+    --color-popover-foreground: hsl(210, 50%, 96%);
 
     color-scheme: dark;
     -webkit-font-smoothing: antialiased;
@@ -55,6 +59,8 @@ html[data-theme='dark'] {
   --border-color: hsl(230, 20%, 30%);
   --editor-bg: hsl(230, 25%, 14%);
   --preview-bg: hsl(230, 25%, 16%);
+  --color-popover: hsl(230, 25%, 18%);
+  --color-popover-foreground: hsl(210, 50%, 96%);
 
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;

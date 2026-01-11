@@ -445,11 +445,12 @@ describe('MultipleChoiceComponent', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  it('should render select with options', async () => {
+  it('should render select with options when maxAllowedSelections is 1', async () => {
     render(
       <MultipleChoiceComponent
         surfaceId="surface-1"
         componentId="choice-1"
+        maxAllowedSelections={1}
         options={[
           { label: { literalString: 'Option A' }, value: 'a' },
           { label: { literalString: 'Option B' }, value: 'b' },
@@ -462,17 +463,92 @@ describe('MultipleChoiceComponent', () => {
     expect(screen.getByRole('combobox')).toBeInTheDocument()
   })
 
-  it('should show placeholder when no selection', () => {
+  it('should show placeholder when no selection and maxAllowedSelections is 1', () => {
     render(
       <MultipleChoiceComponent
         surfaceId="surface-1"
         componentId="choice-1"
+        maxAllowedSelections={1}
         options={[{ label: { literalString: 'Option A' }, value: 'a' }]}
       />,
       { wrapper }
     )
 
     expect(screen.getByText('Select an option')).toBeInTheDocument()
+  })
+
+  it('should render checkboxes for multi-select by default', () => {
+    render(
+      <MultipleChoiceComponent
+        surfaceId="surface-1"
+        componentId="choice-1"
+        options={[
+          { label: { literalString: 'Option A' }, value: 'a' },
+          { label: { literalString: 'Option B' }, value: 'b' },
+        ]}
+      />,
+      { wrapper }
+    )
+
+    // Should render checkboxes instead of combobox
+    const checkboxes = screen.getAllByRole('checkbox')
+    expect(checkboxes).toHaveLength(2)
+    expect(screen.getByText('Option A')).toBeInTheDocument()
+    expect(screen.getByText('Option B')).toBeInTheDocument()
+  })
+
+  it('should allow multiple selections', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MultipleChoiceComponent
+        surfaceId="surface-1"
+        componentId="choice-1"
+        selections={{ path: '/form/selections' }}
+        options={[
+          { label: { literalString: 'Option A' }, value: 'a' },
+          { label: { literalString: 'Option B' }, value: 'b' },
+        ]}
+      />,
+      { wrapper }
+    )
+
+    const checkboxes = screen.getAllByRole('checkbox')
+    await user.click(checkboxes[0])
+    await user.click(checkboxes[1])
+
+    // Re-query after clicks since component re-renders
+    const updatedCheckboxes = screen.getAllByRole('checkbox')
+    expect(updatedCheckboxes[0]).toHaveAttribute('data-state', 'checked')
+    expect(updatedCheckboxes[1]).toHaveAttribute('data-state', 'checked')
+  })
+
+  it('should respect maxAllowedSelections limit', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <MultipleChoiceComponent
+        surfaceId="surface-1"
+        componentId="choice-1"
+        selections={{ path: '/form/selections' }}
+        maxAllowedSelections={2}
+        options={[
+          { label: { literalString: 'Option A' }, value: 'a' },
+          { label: { literalString: 'Option B' }, value: 'b' },
+          { label: { literalString: 'Option C' }, value: 'c' },
+        ]}
+      />,
+      { wrapper }
+    )
+
+    const checkboxes = screen.getAllByRole('checkbox')
+    await user.click(checkboxes[0])
+    await user.click(checkboxes[1])
+
+    // Re-query after clicks since component re-renders
+    const updatedCheckboxes = screen.getAllByRole('checkbox')
+    // Third checkbox should be disabled after reaching max
+    expect(updatedCheckboxes[2]).toBeDisabled()
   })
 
   it('should have correct displayName', () => {

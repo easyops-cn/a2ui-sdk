@@ -15,7 +15,7 @@ export const DividerComponent = memo(function DividerComponent({
   return (
     <Separator
       orientation={axis}
-      className={axis === 'vertical' ? 'h-auto' : 'w-full'}
+      className={axis === 'vertical' ? 'self-stretch h-auto!' : 'w-full'}
     />
   )
 })

@@ -9,11 +9,19 @@ import { useTheme } from './hooks/useTheme'
 import { examples } from './data/examples'
 import './App.css'
 
+function getInitialExampleId(): string {
+  const params = new URLSearchParams(window.location.search)
+  const exampleId = params.get('example')
+  if (exampleId && examples.some((e) => e.id === exampleId)) {
+    return exampleId
+  }
+  return examples[0]?.id ?? ''
+}
+
 function App() {
   const { theme, toggleTheme } = useTheme()
-  const [selectedExampleId, setSelectedExampleId] = useState(
-    examples[0]?.id ?? ''
-  )
+  const [selectedExampleId, setSelectedExampleId] =
+    useState(getInitialExampleId)
   const [jsonContent, setJsonContent] = useState('')
   const [parsedMessages, setParsedMessages] = useState<A2UIMessage[] | null>(
     null
@@ -56,6 +64,10 @@ function App() {
       setJsonContent(json)
       setParsedMessages(example.messages)
       setParseError(null)
+      // Update URL query parameter
+      const url = new URL(window.location.href)
+      url.searchParams.set('example', id)
+      window.history.replaceState(null, '', url.toString())
     }
   }, [])
 
