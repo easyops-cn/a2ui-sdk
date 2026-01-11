@@ -1,10 +1,10 @@
-Installation:
+## Installation
 
 ```sh
-npm install @elevo-cn/a2ui-react@
+npm install @elevo-cn/a2ui-react
 ```
 
-Basic usage:
+## Usage
 
 ```tsx
 import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'
@@ -20,7 +20,7 @@ function App() {
 }
 ```
 
-With customized components:
+### Custom components
 
 ```tsx
 import { A2UIRender, A2UIMessage, A2UIAction } from '@elevo-cn/a2ui-react/0.8'
@@ -44,7 +44,7 @@ function App() {
 }
 ```
 
-Customized button component with action dispatch:
+Custom button component with action dispatch:
 
 ```tsx
 import {
@@ -75,7 +75,7 @@ export function CustomButtonComponent({
 }
 ```
 
-Customized switch component with data binding:
+Custom switch component with data binding:
 
 ```tsx
 import { useDataBinding, useFormBinding } from '@elevo-cn/a2ui-react/0.8'

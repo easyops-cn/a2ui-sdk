@@ -4,7 +4,7 @@ export default function Header() {
   const { baseUrl, site } = useSiteContext()
 
   return (
-    <header className="page-header home">
+    <header>
       <div className="title-container">
         <h1>
           <a href={baseUrl}>{site.title}</a>

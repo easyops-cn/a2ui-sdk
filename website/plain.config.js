@@ -9,6 +9,7 @@ export default {
     url: 'https://a2ui-react.js.org',
   },
   locales: ['en'],
+  toc: true,
   shiki: {
     // theme: "light-plus",
     themes: {
