@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A2UI React Renderer Library (`@easyops-cn/a2ui-react`) - A React implementation for rendering A2UI (Agent-to-User Interface) specifications. This is a library package (not an application) that downstream developers consume.
+A2UI React Renderer Library (`@easyops-cn/a2ui-react`) - A React implementation for rendering A2UI protocol. This is a library package (not an application) that downstream developers consume.
 
 ## Monorepo Structure
 

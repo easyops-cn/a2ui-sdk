@@ -1,9 +1,8 @@
-A React renderer library for [A2UI](https://a2ui.org) (Agent-to-User Interface) specifications.
+A React renderer library for [A2UI](https://a2ui.org) protocol.
 
-Supported A2UI versions:
+Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
-- `0.8` - ✅
-- `0.9` - 🚧 In Progress
+Currently A2UI protocol v0.8 is fully supported. Work on v0.9 is in progress.
 
 ## Installation
 
@@ -13,8 +12,20 @@ npm install @easyops-cn/a2ui-react
 
 ## Usage
 
+First, use the `@source` directive to tell Tailwind to scan the library code for class names in your global CSS:
+
+```css
+@source "../node_modules/@easyops-cn/a2ui-react";
+```
+
+Next, use the `A2UIRender` component to render A2UI messages:
+
 ```tsx
-import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+import {
+  A2UIRender,
+  type A2UIMessage,
+  type A2UIAction,
+} from '@easyops-cn/a2ui-react/0.8'
 
 function App() {
   const messages: A2UIMessage[] = []
@@ -29,7 +40,7 @@ function App() {
 
 ### Custom components
 
-We supports all components in A2UI standard catalog out of the box. You can override default components or add new custom components via the `components` prop, which takes a `Map<string, React.ComponentType>`.
+You can override default components or add new custom components via the `components` prop, which takes a `Map<string, React.ComponentType>`.
 
 ```tsx
 import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'

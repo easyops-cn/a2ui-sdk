@@ -9,8 +9,10 @@
 /* Header - 与 website 保持一致 */
 .app-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 32px 16px;
   max-width: 1240px;
   margin: 0 auto;
@@ -27,16 +29,17 @@
   color: var(--primary-color);
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .app-header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 32px;
 }
 
 .header-nav {
@@ -50,7 +53,7 @@
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
-  padding: 6px 14px;
+  padding: 6px 8px;
   transition: color 0.2s ease;
 }
 
@@ -64,6 +67,12 @@
   color: var(--primary-color);
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+.header-nav a[target='_blank'] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
 }
 
 /* Theme Toggle */
@@ -226,6 +235,17 @@
 
   .panel {
     min-height: 300px;
+  }
+}
+
+@media (max-width: 703px) {
+  .app-title {
+    flex: 0 0 100%;
+  }
+
+  .header-right {
+    flex: 0 0 calc(100% + 6px);
+    margin-left: -6px;
   }
 }
 

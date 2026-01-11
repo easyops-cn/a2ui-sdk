@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -22,12 +25,19 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build @easyops-cn/a2ui-react
         run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
       - name: Build playground
         run: npm run build -w playground
@@ -38,9 +48,25 @@ jobs:
       - name: Copy playground dist to website dist
         run: cp -r playground/dist website/dist/playground
 
+      - name: Deploy to Netlify (pull request)
+        id: netlify-deploy
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: ./website/dist
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "${{ github.event.pull_request.title }}"
+          netlify-config-path: ./netlify.toml
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 2
+        if: github.event_name == 'pull_request'
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.GH_TOKEN_EVE }}
           publish_dir: ./website/dist
           force_orphan: true
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
