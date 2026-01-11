@@ -66,7 +66,7 @@ playground/
 ### Implementation for User Story 1
 
 - [x] T011 [P] [US1] Create JsonEditor component with CodeMirror integration in playground/src/components/JsonEditor.tsx
-- [x] T012 [P] [US1] Create Preview component wrapping A2UIRender with error boundary in playground/src/components/Preview.tsx
+- [x] T012 [P] [US1] Create Preview component wrapping A2UIRenderer with error boundary in playground/src/components/Preview.tsx
 - [x] T013 [US1] Create split-panel layout in playground/src/App.tsx with editor (left) and preview (right)
 - [x] T014 [US1] Add layout styles for split-panel (50/50) in playground/src/App.css
 - [x] T015 [US1] Implement JSON parsing with error handling in App.tsx (parse on change, update preview or show error)

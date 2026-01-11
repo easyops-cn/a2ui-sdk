@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A2UI React Renderer Library (`@easyops-cn/a2ui-react`) - A React implementation for rendering A2UI protocol. This is a library package (not an application) that downstream developers consume.
+A2UI React Renderer (`@easyops-cn/a2ui-react`) - A React implementation for rendering A2UI protocol. This is a library package (not an application) that downstream developers consume.
 
 ## Monorepo Structure
 
@@ -43,11 +43,15 @@ npm run build -w playground  # Build playground
 
 ## Library Usage (Downstream API)
 
-The primary entry point is `A2UIRender` component:
+The primary entry point is `A2UIRenderer` component:
 
 ```tsx
-import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
-;<A2UIRender messages={messages} onAction={handleAction} />
+import {
+  A2UIRenderer,
+  A2UIMessage,
+  A2UIAction,
+} from '@easyops-cn/a2ui-react/0.8'
+;<A2UIRenderer messages={messages} onAction={handleAction} />
 ```
 
 Custom components can override defaults or add new ones via `components` prop (Map<string, React.ComponentType>).
@@ -58,7 +62,7 @@ Custom components use hooks: `useDispatchAction`, `useDataBinding`, `useFormBind
 
 ```javascript
 import { v0_8 } from '@easyops-cn/a2ui-react'       // Main namespace export
-import { ... } from '@easyops-cn/a2ui-react/0.8'    // Core module (A2UIRender, hooks, types)
+import { ... } from '@easyops-cn/a2ui-react/0.8'    // Core module (A2UIRenderer, hooks, types)
 ```
 
 ## Architecture

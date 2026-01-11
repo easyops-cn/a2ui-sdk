@@ -5,9 +5,9 @@
 
 ## Summary
 
-Implement the A2UIRender component and public API exports for the A2UI React renderer library. The library already has substantial infrastructure implemented (contexts, hooks, component registry, default components). The remaining work focuses on:
+Implement the A2UIRenderer component and public API exports for the A2UI React renderer library. The library already has substantial infrastructure implemented (contexts, hooks, component registry, default components). The remaining work focuses on:
 
-1. Creating the main `A2UIRender` component that matches the README.md API
+1. Creating the main `A2UIRenderer` component that matches the README.md API
 2. Setting up the versioned export path (`@easyops-cn/a2ui-react/0.8`)
 3. Adding development-mode placeholder for unknown components
 4. Ensuring all public types and hooks are properly exported
@@ -65,7 +65,7 @@ The constitution template is not yet customized for this project. Proceeding wit
 
 | Component/Module          | Status     | Required For                                |
 | ------------------------- | ---------- | ------------------------------------------- |
-| **A2UIRender**            | ❌ Missing | Main entry component per README.md          |
+| **A2UIRenderer**          | ❌ Missing | Main entry component per README.md          |
 | **index.ts exports**      | ❌ Missing | Versioned path `@easyops-cn/a2ui-react/0.8` |
 | **Dev-mode placeholder**  | ❌ Missing | Unknown component handling per spec         |
 | **ComponentsMap support** | ❌ Missing | Custom component override per README.md     |
@@ -91,8 +91,8 @@ src/
 ├── index.ts                    # Root export (existing)
 └── 0.8/
     ├── index.ts                 # NEW: Versioned public API exports
-    ├── A2UIRender.tsx          # NEW: Main render component
-    ├── A2UIRender.test.tsx     # NEW: Tests for A2UIRender
+    ├── A2UIRenderer.tsx          # NEW: Main render component
+    ├── A2UIRenderer.test.tsx     # NEW: Tests for A2UIRenderer
     ├── contexts/               # Existing: Context providers
     │   ├── A2UIProvider.tsx
     │   ├── ActionContext.tsx

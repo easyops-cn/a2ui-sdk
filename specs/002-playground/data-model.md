@@ -72,7 +72,7 @@ JSON.parse() attempted
 │ parsedMessages = result             │ parsedMessages = null
 │ parseError = null                   │ parseError = error.message
 │   ↓                                 │   ↓
-│ A2UIRender receives messages        │ ErrorDisplay shown
+│ A2UIRenderer receives messages        │ ErrorDisplay shown
 └─────────────────────────────────────┘
 ```
 
@@ -124,7 +124,7 @@ UI re-renders with new theme
                    │ renders
                    ▼
             ┌─────────────┐
-            │  A2UIRender │
+            │  A2UIRenderer │
             └─────────────┘
 ```
 

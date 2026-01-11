@@ -1,19 +1,19 @@
 /**
- * A2UIRender - Main entry component for rendering A2UI messages.
+ * A2UIRenderer - Main entry component for rendering A2UI messages.
  *
  * This component processes A2UI messages and renders the resulting UI.
  * It supports custom component overrides via the components prop.
  *
  * @example
  * ```tsx
- * import { A2UIRender, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
+ * import { A2UIRenderer, A2UIMessage, A2UIAction } from '@easyops-cn/a2ui-react/0.8'
  *
  * function App() {
  *   const messages: A2UIMessage[] = [...]
  *   const handleAction = (action: A2UIAction) => {
  *     console.log('Action:', action)
  *   }
- *   return <A2UIRender messages={messages} onAction={handleAction} />
+ *   return <A2UIRenderer messages={messages} onAction={handleAction} />
  * }
  * ```
  */
@@ -38,7 +38,7 @@ export type ComponentsMap = Map<
 >
 
 /**
- * Props for A2UIRender component.
+ * Props for A2UIRenderer component.
  */
 export interface A2UIRenderProps {
   /** Array of A2UI messages to render */
@@ -105,21 +105,21 @@ function A2UIRenderInner({ messages }: { messages: A2UIMessage[] }) {
  * @example
  * ```tsx
  * // Basic usage
- * <A2UIRender messages={messages} onAction={handleAction} />
+ * <A2UIRenderer messages={messages} onAction={handleAction} />
  *
  * // With custom components
  * const customComponents = new Map([
  *   ['Button', CustomButton],
  *   ['Switch', CustomSwitch],
  * ])
- * <A2UIRender
+ * <A2UIRenderer
  *   messages={messages}
  *   onAction={handleAction}
  *   components={customComponents}
  * />
  * ```
  */
-export function A2UIRender({
+export function A2UIRenderer({
   messages,
   onAction,
   components,
@@ -139,4 +139,4 @@ export function A2UIRender({
   )
 }
 
-A2UIRender.displayName = 'A2UI.Render'
+A2UIRenderer.displayName = 'A2UI.Render'

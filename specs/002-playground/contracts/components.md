@@ -115,6 +115,6 @@ type ThemeToggleHandler = () => void
 ### Action Dispatch Event
 
 ```typescript
-// Triggered when A2UIRender dispatches an action
+// Triggered when A2UIRenderer dispatches an action
 type ActionHandler = (action: A2UIAction) => void
 ```

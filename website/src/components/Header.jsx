@@ -1,7 +1,7 @@
 import { useSiteContext } from 'plain-blog/SiteContext'
 
-export default function Header() {
-  const { baseUrl, site } = useSiteContext()
+export default function Header(props) {
+  const { baseUrl, site, url } = useSiteContext()
 
   return (
     <header>
@@ -10,8 +10,14 @@ export default function Header() {
       </h1>
       <div className="header-right">
         <nav className="header-nav">
-          <a href={baseUrl} className="active">
+          <a href={baseUrl} className={url === baseUrl ? 'active' : ''}>
             Docs
+          </a>
+          <a
+            href={`${baseUrl}api/`}
+            className={url === `${baseUrl}api/` ? 'active' : ''}
+          >
+            API Reference
           </a>
           <a href={`${baseUrl}playground/`}>Playground</a>
           <a

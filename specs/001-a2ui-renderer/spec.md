@@ -16,17 +16,17 @@
 
 ### User Story 1 - Basic Message Rendering (Priority: P1)
 
-As a developer, I want to render A2UI messages using the A2UIRender component so that I can display dynamic UI content from A2UI protocol messages.
+As a developer, I want to render A2UI messages using the A2UIRenderer component so that I can display dynamic UI content from A2UI protocol messages.
 
 **Why this priority**: This is the core functionality - without basic rendering, no other features can work. It enables the fundamental use case of displaying A2UI messages.
 
-**Independent Test**: Can be fully tested by passing an array of A2UIMessage objects to A2UIRender and verifying the UI renders correctly. Delivers immediate value by enabling basic A2UI integration.
+**Independent Test**: Can be fully tested by passing an array of A2UIMessage objects to A2UIRenderer and verifying the UI renders correctly. Delivers immediate value by enabling basic A2UI integration.
 
 **Acceptance Scenarios**:
 
-1. **Given** an empty messages array, **When** A2UIRender is rendered, **Then** no UI components are displayed
-2. **Given** a messages array with valid A2UIMessage objects, **When** A2UIRender is rendered, **Then** all message components are displayed in order
-3. **Given** a messages array with nested components, **When** A2UIRender is rendered, **Then** nested components are rendered correctly within their parent containers
+1. **Given** an empty messages array, **When** A2UIRenderer is rendered, **Then** no UI components are displayed
+2. **Given** a messages array with valid A2UIMessage objects, **When** A2UIRenderer is rendered, **Then** all message components are displayed in order
+3. **Given** a messages array with nested components, **When** A2UIRenderer is rendered, **Then** nested components are rendered correctly within their parent containers
 
 ---
 
@@ -56,9 +56,9 @@ As a developer, I want to override default components with custom implementation
 
 **Acceptance Scenarios**:
 
-1. **Given** a ComponentsMap with a custom Button component, **When** A2UIRender renders a Button, **Then** the custom Button component is used instead of the default
-2. **Given** a ComponentsMap with multiple custom components, **When** A2UIRender renders those component types, **Then** each custom component is used appropriately
-3. **Given** a ComponentsMap that does not override a component type, **When** A2UIRender renders that component type, **Then** the default component is used
+1. **Given** a ComponentsMap with a custom Button component, **When** A2UIRenderer renders a Button, **Then** the custom Button component is used instead of the default
+2. **Given** a ComponentsMap with multiple custom components, **When** A2UIRenderer renders those component types, **Then** each custom component is used appropriately
+3. **Given** a ComponentsMap that does not override a component type, **When** A2UIRenderer renders that component type, **Then** the default component is used
 
 ---
 
@@ -72,7 +72,7 @@ As a developer, I want to add new custom component types that don't exist in the
 
 **Acceptance Scenarios**:
 
-1. **Given** a ComponentsMap with a new component type "Switch", **When** A2UIRender encounters a Switch component in messages, **Then** the custom Switch component is rendered
+1. **Given** a ComponentsMap with a new component type "Switch", **When** A2UIRenderer encounters a Switch component in messages, **Then** the custom Switch component is rendered
 2. **Given** a custom component using useDispatchAction hook, **When** the component dispatches an action, **Then** the action flows through the onAction callback correctly
 
 ---
@@ -120,12 +120,12 @@ As a developer, I want to use form binding hooks in custom components so that I 
 
 ### Functional Requirements
 
-- **FR-001**: System MUST export A2UIRender component that accepts messages and onAction props
+- **FR-001**: System MUST export A2UIRenderer component that accepts messages and onAction props
 - **FR-002**: System MUST export A2UIMessage type for defining message structures
 - **FR-003**: System MUST export A2UIAction type for defining action payloads
-- **FR-004**: A2UIRender MUST render all components defined in the messages array
-- **FR-005**: A2UIRender MUST invoke onAction callback when user interactions trigger actions
-- **FR-006**: A2UIRender MUST accept an optional components prop (ComponentsMap) for custom component overrides
+- **FR-004**: A2UIRenderer MUST render all components defined in the messages array
+- **FR-005**: A2UIRenderer MUST invoke onAction callback when user interactions trigger actions
+- **FR-006**: A2UIRenderer MUST accept an optional components prop (ComponentsMap) for custom component overrides
 - **FR-007**: System MUST export useDispatchAction hook for custom components to dispatch actions
 - **FR-008**: System MUST export ComponentRenderer component for rendering child components within custom components
 - **FR-009**: System MUST export useDataBinding hook for reading data from the A2UI context

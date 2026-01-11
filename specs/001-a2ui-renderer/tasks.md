@@ -16,7 +16,7 @@
 ## Path Conventions
 
 - **Single library project**: `src/0.8/` at repository root
-- Tests co-located with source files (e.g., `A2UIRender.test.tsx`)
+- Tests co-located with source files (e.g., `A2UIRenderer.test.tsx`)
 
 ---
 
@@ -46,30 +46,30 @@
 - [x] T011 Add dev-mode placeholder component for unknown types in src/0.8/components/UnknownComponent.tsx
 - [x] T012 Update ComponentRenderer to render UnknownComponent in dev mode, skip in production
 
-**Checkpoint**: Foundation ready - A2UIRender component can now be implemented
+**Checkpoint**: Foundation ready - A2UIRenderer component can now be implemented
 
 ---
 
 ## Phase 3: User Story 1 - Basic Message Rendering (Priority: P1) 🎯 MVP
 
-**Goal**: Render A2UI messages using the A2UIRender component
+**Goal**: Render A2UI messages using the A2UIRenderer component
 
-**Independent Test**: Pass an array of A2UIMessage objects to A2UIRender and verify the UI renders correctly
+**Independent Test**: Pass an array of A2UIMessage objects to A2UIRenderer and verify the UI renders correctly
 
 ### Tests for User Story 1
 
-- [x] T013 [P] [US1] Create test file src/0.8/A2UIRender.test.tsx with test setup
+- [x] T013 [P] [US1] Create test file src/0.8/A2UIRenderer.test.tsx with test setup
 - [x] T014 [P] [US1] Add test: renders nothing for empty messages array
 - [x] T015 [P] [US1] Add test: renders components from valid A2UIMessage objects
 - [x] T016 [P] [US1] Add test: renders nested components correctly
 
 ### Implementation for User Story 1
 
-- [x] T017 [US1] Create A2UIRender component in src/0.8/A2UIRender.tsx
+- [x] T017 [US1] Create A2UIRenderer component in src/0.8/A2UIRenderer.tsx
 - [x] T018 [US1] Implement messages prop handling with useA2UIMessageHandler
 - [x] T019 [US1] Implement surface rendering loop (render all surfaces from context)
 - [x] T020 [US1] Add null/undefined messages handling (graceful empty render)
-- [x] T021 [US1] Export A2UIRender from src/0.8/index.ts
+- [x] T021 [US1] Export A2UIRenderer from src/0.8/index.ts
 
 **Checkpoint**: User Story 1 complete - basic rendering works independently
 
@@ -89,8 +89,8 @@
 
 ### Implementation for User Story 2
 
-- [x] T025 [US2] Add onAction prop to A2UIRender component in src/0.8/A2UIRender.tsx
-- [x] T026 [US2] Pass onAction to A2UIProvider in A2UIRender
+- [x] T025 [US2] Add onAction prop to A2UIRenderer component in src/0.8/A2UIRenderer.tsx
+- [x] T026 [US2] Pass onAction to A2UIProvider in A2UIRenderer
 - [x] T027 [US2] Add test: no error when action dispatched without onAction callback
 
 **Checkpoint**: User Stories 1 AND 2 complete - rendering and actions work
@@ -111,7 +111,7 @@
 
 ### Implementation for User Story 3
 
-- [x] T031 [US3] Add components prop (ComponentsMap) to A2UIRender in src/0.8/A2UIRender.tsx
+- [x] T031 [US3] Add components prop (ComponentsMap) to A2UIRenderer in src/0.8/A2UIRenderer.tsx
 - [x] T032 [US3] Wrap rendering with ComponentsMapProvider passing custom components
 - [x] T033 [US3] Merge custom components with defaults in ComponentsMapContext
 
@@ -199,7 +199,7 @@
 - **Setup (Phase 1)**: No dependencies - can start immediately
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS user stories 3-4
 - **User Story 1 (Phase 3)**: Depends on Setup (Phase 1) only
-- **User Story 2 (Phase 4)**: Depends on User Story 1 (needs A2UIRender component)
+- **User Story 2 (Phase 4)**: Depends on User Story 1 (needs A2UIRenderer component)
 - **User Story 3 (Phase 5)**: Depends on Foundational (Phase 2) for ComponentsMapContext
 - **User Story 4 (Phase 6)**: Depends on User Story 3 (extends ComponentsMap support)
 - **User Story 5 (Phase 7)**: Depends on Setup (Phase 1) - hooks already exist

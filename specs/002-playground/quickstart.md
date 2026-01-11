@@ -44,7 +44,7 @@ playground/src/
 │   ├── Header.tsx       # App header with title and theme toggle
 │   ├── ThemeToggle.tsx  # Sun/moon theme switch
 │   ├── JsonEditor.tsx   # CodeMirror JSON editor
-│   ├── Preview.tsx      # A2UIRender wrapper
+│   ├── Preview.tsx      # A2UIRenderer wrapper
 │   ├── ExampleSelector.tsx  # Example dropdown
 │   └── ErrorDisplay.tsx # Error state component
 ├── data/
@@ -87,14 +87,14 @@ import { json } from '@codemirror/lang-json'
 />
 ```
 
-### A2UIRender Integration
+### A2UIRenderer Integration
 
 ```typescript
-import { A2UIRender, type A2UIMessage } from '@easyops-cn/a2ui-react/0.8'
+import { A2UIRenderer, type A2UIMessage } from '@easyops-cn/a2ui-react/0.8'
 
 // Parse JSON and render
 const messages: A2UIMessage[] = JSON.parse(jsonContent)
-<A2UIRender messages={messages} onAction={handleAction} />
+<A2UIRenderer messages={messages} onAction={handleAction} />
 ```
 
 ### Error Boundary Pattern
