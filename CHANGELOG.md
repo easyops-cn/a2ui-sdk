@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/easyops-cn/a2ui-react/compare/v0.0.2...v0.0.3) (2026-01-12)
+
+
+### Bug Fixes
+
+* add 0.8 as entry ([6db3c71](https://github.com/easyops-cn/a2ui-react/commit/6db3c71a2710ecb23039c3ead99b6dfc5378fc3f))
+
 ## 0.0.2 (2026-01-12)
 
 
