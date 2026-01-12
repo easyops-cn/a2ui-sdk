@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/easyops-cn/a2ui-react/compare/v0.0.6...v0.0.7) (2026-01-12)
+
+
+### Features
+
+* refactor: set onAction on A2UIRenderer instead of A2UIProvider ([77e1ecc](https://github.com/easyops-cn/a2ui-react/commit/77e1ecc899a2bc628b86d46db18838b453d46f9c))
+
 ## [0.0.6](https://github.com/easyops-cn/a2ui-react/compare/v0.0.5...v0.0.6) (2026-01-12)
 
 
