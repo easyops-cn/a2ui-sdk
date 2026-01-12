@@ -1,26 +1,17 @@
 /**
  * DateTimeInputComponent - Date and/or time input with two-way binding.
- * Uses shadcn/ui Calendar and Popover components.
+ * Uses native HTML5 input types (date, datetime-local, time).
  */
 
-import { memo, useCallback, useMemo, useState } from 'react'
-import { CalendarIcon } from 'lucide-react'
-import { format, parse, isValid } from 'date-fns'
+import { memo, useCallback } from 'react'
+import { CalendarIcon, ClockIcon } from 'lucide-react'
 import type { DateTimeInputComponentProps } from '@/0.8/types'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 /**
- * DateTimeInput component - date/time picker using Calendar and Popover.
+ * DateTimeInput component - date/time picker using native HTML5 inputs.
  */
 export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   surfaceId,
@@ -32,151 +23,41 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
 }: DateTimeInputComponentProps) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [dateValue, setDateValue] = useFormBinding<string>(surfaceId, value, '')
-  const [open, setOpen] = useState(false)
 
-  // Parse the string value to Date object
-  const selectedDate = useMemo(() => {
-    if (!dateValue) return undefined
-
-    let date: Date | undefined
-    if (enableDate && enableTime) {
-      // datetime-local format: "YYYY-MM-DDTHH:mm"
-      date = parse(dateValue, "yyyy-MM-dd'T'HH:mm", new Date())
-    } else if (enableDate) {
-      // date format: "YYYY-MM-DD"
-      date = parse(dateValue, 'yyyy-MM-dd', new Date())
-    } else if (enableTime) {
-      // time format: "HH:mm" - create a date with today's date
-      date = parse(dateValue, 'HH:mm', new Date())
-    }
-
-    return date && isValid(date) ? date : undefined
-  }, [dateValue, enableDate, enableTime])
-
-  // Extract time parts for time input
-  const timeValue = useMemo(() => {
-    if (!selectedDate || !enableTime) return ''
-    return format(selectedDate, 'HH:mm')
-  }, [selectedDate, enableTime])
-
-  // Handle date selection from calendar
-  const handleDateSelect = useCallback(
-    (date: Date | undefined) => {
-      if (!date) {
-        setDateValue('')
-        return
-      }
-
-      if (enableDate && enableTime) {
-        // Preserve existing time if any
-        const existingTime = selectedDate
-          ? format(selectedDate, 'HH:mm')
-          : '00:00'
-        const [hours, minutes] = existingTime.split(':').map(Number)
-        date.setHours(hours, minutes)
-        setDateValue(format(date, "yyyy-MM-dd'T'HH:mm"))
-      } else {
-        setDateValue(format(date, 'yyyy-MM-dd'))
-        // Close popover after date selection when time is not enabled
-        setOpen(false)
-      }
-    },
-    [setDateValue, enableDate, enableTime, selectedDate]
-  )
-
-  // Handle time change
-  const handleTimeChange = useCallback(
+  const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newTime = e.target.value
-      if (!newTime) return
-
-      const [hours, minutes] = newTime.split(':').map(Number)
-
-      if (enableDate && enableTime) {
-        // Update time on existing date or use today
-        const baseDate = selectedDate || new Date()
-        baseDate.setHours(hours, minutes)
-        setDateValue(format(baseDate, "yyyy-MM-dd'T'HH:mm"))
-      } else if (enableTime && !enableDate) {
-        // Time only mode
-        setDateValue(newTime)
-      }
+      setDateValue(e.target.value)
     },
-    [setDateValue, enableDate, enableTime, selectedDate]
+    [setDateValue]
   )
-
-  // Format display text
-  const displayText = useMemo(() => {
-    if (!selectedDate) {
-      if (enableDate && enableTime) return 'Select date and time'
-      if (enableDate) return 'Select date'
-      return 'Select time'
-    }
-
-    if (enableDate && enableTime) {
-      return format(selectedDate, 'yyyy-MM-dd HH:mm')
-    } else if (enableDate) {
-      return format(selectedDate, 'yyyy-MM-dd')
-    } else {
-      return format(selectedDate, 'HH:mm')
-    }
-  }, [selectedDate, enableDate, enableTime])
 
   const id = `datetime-${componentId}`
 
-  // Time-only mode: just show time input
-  if (enableTime && !enableDate) {
-    return (
-      <div className={cn('flex flex-col gap-2')}>
-        {labelText && <Label htmlFor={id}>{labelText}</Label>}
-        <Input
-          id={id}
-          type="time"
-          value={dateValue}
-          onChange={handleTimeChange}
-          className="w-full"
-        />
-      </div>
-    )
-  }
+  // Determine input type based on enableDate and enableTime
+  const inputType =
+    enableDate && enableTime ? 'datetime-local' : enableDate ? 'date' : 'time'
+
+  // Choose icon based on mode
+  const Icon = enableDate ? CalendarIcon : ClockIcon
 
   return (
     <div className={cn('flex flex-col gap-2')}>
       {labelText && <Label htmlFor={id}>{labelText}</Label>}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id={id}
-            variant="outline"
-            className={cn(
-              'w-full justify-start text-left font-normal',
-              !selectedDate && 'text-muted-foreground'
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {displayText}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleDateSelect}
-            captionLayout="dropdown"
-            initialFocus
-          />
-          {enableTime && (
-            <div className="border-t p-3">
-              <Input
-                type="time"
-                value={timeValue}
-                onChange={handleTimeChange}
-                className="w-full"
-              />
-            </div>
+      <div className="relative">
+        <input
+          id={id}
+          type={inputType}
+          value={dateValue}
+          onChange={handleChange}
+          className={cn(
+            'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+            'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+            'pr-9 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-9 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer'
           )}
-        </PopoverContent>
-      </Popover>
+        />
+        <Icon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      </div>
     </div>
   )
 })

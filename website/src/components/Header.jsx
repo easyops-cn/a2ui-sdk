@@ -17,7 +17,7 @@ export default function Header(props) {
             href={`${baseUrl}api/`}
             className={url === `${baseUrl}api/` ? 'active' : ''}
           >
-            API Reference
+            API
           </a>
           <a href={`${baseUrl}playground/`}>Playground</a>
           <a

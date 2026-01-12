@@ -1,5 +1,7 @@
 # A2UI React Renderer
 
+![NPM Version](https://img.shields.io/npm/v/%40easyops-cn%2Fa2ui-react)
+
 A React renderer library for [A2UI](https://a2ui.org) protocol.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).

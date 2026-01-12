@@ -14,7 +14,7 @@ export function Header({ title, children }: HeaderProps) {
       <div className="header-right">
         <nav className="header-nav">
           <a href="/a2ui-react/">Docs</a>
-          <a href="/a2ui-react/api/">API Reference</a>
+          <a href="/a2ui-react/api/">API</a>
           <a href="/a2ui-react/playground/" className="active">
             Playground
           </a>
