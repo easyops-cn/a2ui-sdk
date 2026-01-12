@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/easyops-cn/a2ui-react/compare/v0.0.8...v0.0.9) (2026-01-12)
+
+
+### Features
+
+* Add label for DateTimeInput, MultipleChoice, Slider ([1ee9023](https://github.com/easyops-cn/a2ui-react/commit/1ee902316cce8070f54fd08b85e69ee32d9fdee7))
+
 ## [0.0.8](https://github.com/easyops-cn/a2ui-react/compare/v0.0.7...v0.0.8) (2026-01-12)
 
 
