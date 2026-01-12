@@ -9,6 +9,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { A2UIRenderer } from './A2UIRenderer'
 import { A2UIProvider, type ComponentsMap } from './contexts/A2UIProvider'
+import { useSurfaceContext } from './contexts/SurfaceContext'
 import type { A2UIMessage, BaseComponentProps, Action } from './types'
 import { useDispatchAction } from './hooks/useDispatchAction'
 import { useDataBinding, useFormBinding } from './hooks/useDataBinding'
@@ -231,8 +232,8 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} onAction={onAction}>
-          <A2UIRenderer />
+        <A2UIProvider messages={messages}>
+          <A2UIRenderer onAction={onAction} />
         </A2UIProvider>
       )
 
@@ -272,8 +273,8 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} onAction={onAction}>
-          <A2UIRenderer />
+        <A2UIProvider messages={messages}>
+          <A2UIRenderer onAction={onAction} />
         </A2UIProvider>
       )
 
@@ -333,8 +334,8 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} onAction={onAction}>
-          <A2UIRenderer />
+        <A2UIProvider messages={messages}>
+          <A2UIRenderer onAction={onAction} />
         </A2UIProvider>
       )
 
@@ -614,12 +615,8 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider
-          messages={messages}
-          onAction={onAction}
-          components={customComponents}
-        >
-          <A2UIRenderer />
+        <A2UIProvider messages={messages} components={customComponents}>
+          <A2UIRenderer onAction={onAction} />
         </A2UIProvider>
       )
 
@@ -903,9 +900,11 @@ describe('A2UIRenderer', () => {
 
     it('middleware can access A2UI hooks', () => {
       function CustomMiddleware({ children }: { children: React.ReactNode }) {
-        const dispatchAction = useDispatchAction()
+        // Middleware can access SurfaceContext and DataModelContext hooks
+        // but not ActionContext (which is now inside A2UIRenderer)
+        const { surfaces } = useSurfaceContext()
         return (
-          <div data-testid="middleware" data-has-dispatch={!!dispatchAction}>
+          <div data-testid="middleware" data-has-surfaces={surfaces.size > 0}>
             {children}
           </div>
         )
@@ -932,7 +931,7 @@ describe('A2UIRenderer', () => {
       )
 
       expect(screen.getByTestId('middleware')).toHaveAttribute(
-        'data-has-dispatch',
+        'data-has-surfaces',
         'true'
       )
     })

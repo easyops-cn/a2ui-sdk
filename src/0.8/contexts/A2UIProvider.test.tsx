@@ -4,13 +4,12 @@
  * Tests for the combined A2UI provider component.
  */
 
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { renderHook } from '@testing-library/react'
 import { A2UIProvider } from './A2UIProvider'
 import { useSurfaceContext } from './SurfaceContext'
 import { useDataModelContext } from './DataModelContext'
-import { useActionContext } from './ActionContext'
 import { useComponentsMapContext } from './ComponentsMapContext'
 import type { ReactNode } from 'react'
 import type { A2UIMessage } from '../types'
@@ -47,67 +46,12 @@ describe('A2UIProvider', () => {
       expect(result.current.setDataValue).toBeDefined()
     })
 
-    it('should provide ActionContext', () => {
-      const { result } = renderHook(() => useActionContext(), { wrapper })
-      expect(result.current).toBeDefined()
-      expect(result.current.dispatchAction).toBeDefined()
-    })
-
     it('should provide ComponentsMapContext', () => {
       const { result } = renderHook(() => useComponentsMapContext(), {
         wrapper,
       })
       expect(result.current).toBeDefined()
       expect(result.current.getComponent).toBeDefined()
-    })
-  })
-
-  describe('onAction prop', () => {
-    it('should pass onAction to ActionProvider', () => {
-      const onAction = vi.fn()
-
-      const wrapper = ({ children }: { children: ReactNode }) => (
-        <A2UIProvider messages={[]} onAction={onAction}>
-          {children}
-        </A2UIProvider>
-      )
-
-      const { result } = renderHook(() => useActionContext(), { wrapper })
-
-      act(() => {
-        result.current.dispatchAction('surface-1', 'button-1', {
-          name: 'test',
-        })
-      })
-
-      expect(onAction).toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: 'test',
-          surfaceId: 'surface-1',
-          sourceComponentId: 'button-1',
-        })
-      )
-    })
-
-    it('should work without onAction prop', () => {
-      const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-
-      const wrapper = ({ children }: { children: ReactNode }) => (
-        <A2UIProvider messages={[]}>{children}</A2UIProvider>
-      )
-
-      const { result } = renderHook(() => useActionContext(), { wrapper })
-
-      // Should not throw
-      expect(() => {
-        act(() => {
-          result.current.dispatchAction('surface-1', 'button-1', {
-            name: 'test',
-          })
-        })
-      }).not.toThrow()
-
-      consoleWarn.mockRestore()
     })
   })
 
@@ -179,13 +123,10 @@ describe('A2UIProvider', () => {
 
   describe('integration', () => {
     it('should allow interaction between contexts', () => {
-      const onAction = vi.fn()
-
-      // Test component that uses all contexts
+      // Test component that uses contexts
       function TestComponent() {
         const { initSurface, updateSurface, getSurface } = useSurfaceContext()
         const { setDataValue, getDataValue } = useDataModelContext()
-        const { dispatchAction } = useActionContext()
 
         return (
           <div>
@@ -206,16 +147,6 @@ describe('A2UIProvider', () => {
             >
               Set Data
             </button>
-            <button
-              onClick={() => {
-                dispatchAction('test-surface', 'button-1', {
-                  name: 'submit',
-                  context: [{ key: 'name', value: { path: '/name' } }],
-                })
-              }}
-            >
-              Dispatch Action
-            </button>
             <span data-testid="surface-exists">
               {getSurface('test-surface') ? 'yes' : 'no'}
             </span>
@@ -227,7 +158,7 @@ describe('A2UIProvider', () => {
       }
 
       render(
-        <A2UIProvider messages={[]} onAction={onAction}>
+        <A2UIProvider messages={[]}>
           <TestComponent />
         </A2UIProvider>
       )
@@ -247,17 +178,6 @@ describe('A2UIProvider', () => {
         screen.getByText('Set Data').click()
       })
       expect(screen.getByTestId('data-value').textContent).toBe('John')
-
-      // Dispatch action
-      act(() => {
-        screen.getByText('Dispatch Action').click()
-      })
-      expect(onAction).toHaveBeenCalledWith({
-        surfaceId: 'test-surface',
-        name: 'submit',
-        context: { name: 'John' },
-        sourceComponentId: 'button-1',
-      })
     })
 
     it('should maintain separate data for multiple surfaces', () => {

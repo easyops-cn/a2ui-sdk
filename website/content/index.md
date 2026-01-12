@@ -36,8 +36,8 @@ function App() {
   }
 
   return (
-    <A2UIProvider messages={messages} onAction={handleAction}>
-      <A2UIRenderer />
+    <A2UIProvider messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
     </A2UIProvider>
   )
 }
@@ -65,12 +65,8 @@ const ComponentsMap = new Map<string, React.ComponentType<any>>([
 
 function App() {
   return (
-    <A2UIProvider
-      components={ComponentsMap}
-      messages={messages}
-      onAction={handleAction}
-    >
-      <A2UIRenderer />
+    <A2UIProvider components={ComponentsMap} messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
     </A2UIProvider>
   )
 }

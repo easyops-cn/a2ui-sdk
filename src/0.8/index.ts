@@ -43,6 +43,7 @@ export type {
 } from './types'
 
 export type { A2UIProviderProps, ComponentsMap } from './contexts/A2UIProvider'
+export type { A2UIRendererProps } from './A2UIRenderer'
 
 // ============ Components ============
 

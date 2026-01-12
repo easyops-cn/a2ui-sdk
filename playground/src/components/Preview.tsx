@@ -73,8 +73,8 @@ export function Preview({ messages, error, onAction }: PreviewProps) {
 
   return (
     <ErrorBoundary>
-      <A2UIProvider messages={messages} onAction={onAction}>
-        <A2UIRenderer />
+      <A2UIProvider messages={messages}>
+        <A2UIRenderer onAction={onAction} />
       </A2UIProvider>
     </ErrorBoundary>
   )

@@ -14,8 +14,8 @@
  *     console.log('Action:', action)
  *   }
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
- *       <A2UIRenderer />
+ *     <A2UIProvider messages={messages}>
+ *       <A2UIRenderer onAction={handleAction} />
  *     </A2UIProvider>
  *   )
  * }
@@ -23,9 +23,9 @@
  * // With custom middleware component that uses hooks
  * function AppWithMiddleware() {
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
+ *     <A2UIProvider messages={messages}>
  *       <MyCustomMiddleware>
- *         <A2UIRenderer />
+ *         <A2UIRenderer onAction={handleAction} />
  *       </MyCustomMiddleware>
  *     </A2UIProvider>
  *   )
@@ -34,7 +34,17 @@
  */
 
 import { useSurfaceContext } from './contexts/SurfaceContext'
+import { ActionProvider } from './contexts/ActionContext'
 import { ComponentRenderer } from './components/ComponentRenderer'
+import type { ActionHandler } from './types'
+
+/**
+ * Props for A2UIRenderer.
+ */
+export interface A2UIRendererProps {
+  /** Callback when an action is dispatched */
+  onAction?: ActionHandler
+}
 
 /**
  * Component for rendering A2UI surfaces.
@@ -44,18 +54,18 @@ import { ComponentRenderer } from './components/ComponentRenderer'
  * @example
  * ```tsx
  * // Basic usage
- * <A2UIProvider messages={messages} onAction={handleAction}>
- *   <A2UIRenderer />
+ * <A2UIProvider messages={messages}>
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
  * // With custom middleware for hooks access
- * <A2UIProvider messages={messages} onAction={handleAction}>
+ * <A2UIProvider messages={messages}>
  *   <MyCustomComponent />
- *   <A2UIRenderer />
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  * ```
  */
-export function A2UIRenderer() {
+export function A2UIRenderer({ onAction }: A2UIRendererProps) {
   const { surfaces } = useSurfaceContext()
 
   // Render all surfaces
@@ -66,7 +76,7 @@ export function A2UIRenderer() {
   }
 
   return (
-    <>
+    <ActionProvider onAction={onAction}>
       {surfaceEntries.map(([surfaceId, surface]) => {
         // Only render surfaces that have a root component
         if (!surface.root) {
@@ -80,7 +90,7 @@ export function A2UIRenderer() {
           />
         )
       })}
-    </>
+    </ActionProvider>
   )
 }
 

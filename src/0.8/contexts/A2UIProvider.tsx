@@ -14,8 +14,8 @@
  *     console.log('Action:', action)
  *   }
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
- *       <A2UIRenderer />
+ *     <A2UIProvider messages={messages}>
+ *       <A2UIRenderer onAction={handleAction} />
  *     </A2UIProvider>
  *   )
  * }
@@ -23,9 +23,9 @@
  * // With custom middleware component
  * function AppWithMiddleware() {
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
+ *     <A2UIProvider messages={messages}>
  *       <MyCustomMiddleware>
- *         <A2UIRenderer />
+ *         <A2UIRenderer onAction={handleAction} />
  *       </MyCustomMiddleware>
  *     </A2UIProvider>
  *   )
@@ -36,10 +36,9 @@
 import { useEffect, type ReactNode, type ComponentType } from 'react'
 import { SurfaceProvider } from './SurfaceContext'
 import { DataModelProvider } from './DataModelContext'
-import { ActionProvider } from './ActionContext'
 import { ComponentsMapProvider } from './ComponentsMapContext'
 import { componentRegistry } from '../components/ComponentRenderer'
-import type { ActionHandler, A2UIMessage, BaseComponentProps } from '../types'
+import type { A2UIMessage, BaseComponentProps } from '../types'
 import { useA2UIMessageHandler } from '../hooks/useA2UIMessageHandler'
 
 /**
@@ -56,8 +55,6 @@ export type ComponentsMap = Map<
 export interface A2UIProviderProps {
   /** Array of A2UI messages to render */
   messages: A2UIMessage[]
-  /** Callback when an action is dispatched */
-  onAction?: ActionHandler
   /** Custom component overrides */
   components?: ComponentsMap
   children: ReactNode
@@ -93,20 +90,18 @@ function A2UIMessageProcessor({
  * Provides:
  * - SurfaceContext: Component tree management
  * - DataModelContext: Data model state
- * - ActionContext: Action dispatching
  * - ComponentsMapContext: Custom component overrides
  *
  * @param props - Component props
  * @param props.messages - Array of A2UI messages to render
- * @param props.onAction - Optional callback when an action is dispatched
  * @param props.components - Optional custom component overrides
  * @param props.children - Child components (typically A2UIRenderer)
  *
  * @example
  * ```tsx
  * // Basic usage
- * <A2UIProvider messages={messages} onAction={handleAction}>
- *   <A2UIRenderer />
+ * <A2UIProvider messages={messages}>
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
  * // With custom components
@@ -116,22 +111,20 @@ function A2UIMessageProcessor({
  * ])
  * <A2UIProvider
  *   messages={messages}
- *   onAction={handleAction}
  *   components={customComponents}
  * >
- *   <A2UIRenderer />
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
  * // With custom middleware for hooks access
- * <A2UIProvider messages={messages} onAction={handleAction}>
+ * <A2UIProvider messages={messages}>
  *   <MyCustomComponent />
- *   <A2UIRenderer />
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  * ```
  */
 export function A2UIProvider({
   messages,
-  onAction,
   components,
   children,
 }: A2UIProviderProps) {
@@ -141,16 +134,14 @@ export function A2UIProvider({
   return (
     <SurfaceProvider>
       <DataModelProvider>
-        <ActionProvider onAction={onAction}>
-          <ComponentsMapProvider
-            components={components}
-            defaultComponents={componentRegistry}
-          >
-            <A2UIMessageProcessor messages={safeMessages}>
-              {children}
-            </A2UIMessageProcessor>
-          </ComponentsMapProvider>
-        </ActionProvider>
+        <ComponentsMapProvider
+          components={components}
+          defaultComponents={componentRegistry}
+        >
+          <A2UIMessageProcessor messages={safeMessages}>
+            {children}
+          </A2UIMessageProcessor>
+        </ComponentsMapProvider>
       </DataModelProvider>
     </SurfaceProvider>
   )
