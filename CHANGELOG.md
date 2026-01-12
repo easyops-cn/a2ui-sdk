@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/easyops-cn/a2ui-react/compare/v0.0.5...v0.0.6) (2026-01-12)
+
+
+### Features
+
+* refactor: separate A2UIProvider and A2UIRenderer ([8c406f8](https://github.com/easyops-cn/a2ui-react/commit/8c406f837b63b67930523fa1f0ada7653604c1f7))
+
 ## [0.0.5](https://github.com/easyops-cn/a2ui-react/compare/v0.0.4...v0.0.5) (2026-01-12)
 
 
