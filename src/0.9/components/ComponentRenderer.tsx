@@ -116,31 +116,3 @@ export function registerComponent(
 ): void {
   componentRegistry[type] = component
 }
-
-/**
- * Helper component that renders children IDs.
- * Used by container components to render their children.
- */
-export interface ChildrenRendererProps {
-  surfaceId: string
-  childIds: string[]
-}
-
-export function ChildrenRenderer({
-  surfaceId,
-  childIds,
-}: ChildrenRendererProps) {
-  return (
-    <>
-      {childIds.map((childId) => (
-        <ComponentRenderer
-          key={childId}
-          surfaceId={surfaceId}
-          componentId={childId}
-        />
-      ))}
-    </>
-  )
-}
-
-ChildrenRenderer.displayName = 'A2UI.ChildrenRenderer'

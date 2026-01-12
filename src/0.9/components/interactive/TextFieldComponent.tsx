@@ -6,6 +6,7 @@ import { memo, useCallback } from 'react'
 import type { TextFieldComponent as TextFieldComponentType } from '../../types'
 import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
+import { useValidation } from '../../hooks/useValidation'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -35,6 +36,7 @@ export const TextFieldComponent = memo(function TextFieldComponent({
     textField.value,
     ''
   )
+  const { valid, errors } = useValidation(surfaceId, textField.checks)
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -59,10 +61,25 @@ export const TextFieldComponent = memo(function TextFieldComponent({
           id={id}
           value={value}
           onChange={handleChange}
-          className="min-h-[100px]"
+          className={cn('min-h-[100px]', !valid && 'border-destructive')}
+          aria-invalid={!valid}
         />
       ) : (
-        <Input id={id} type={inputType} value={value} onChange={handleChange} />
+        <Input
+          id={id}
+          type={inputType}
+          value={value}
+          onChange={handleChange}
+          className={cn(!valid && 'border-destructive')}
+          aria-invalid={!valid}
+        />
+      )}
+      {errors.length > 0 && (
+        <div className="text-sm text-destructive">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
       )}
     </div>
   )

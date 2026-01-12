@@ -132,16 +132,18 @@ import {
   A2UIProvider,
   A2UIRenderer,
   ComponentRenderer,
+  useDataBinding,
 } from '@easyops-cn/a2ui-react/0.9'
 
 // Custom component using hooks
-function MyCustomCard({ id, child, title }) {
-  const resolvedTitle = useDataBinding(title)
+function MyCustomCard({ surfaceId, component }) {
+  const { child, title } = component
+  const resolvedTitle = useDataBinding(surfaceId, title, '')
 
   return (
     <div className="my-custom-card">
       <h3>{resolvedTitle}</h3>
-      <ComponentRenderer id={child} />
+      <ComponentRenderer surfaceId={surfaceId} componentId={child} />
     </div>
   )
 }
@@ -221,21 +223,22 @@ This renders three Text components with "Alice", "Bob", and "Charlie".
 ## Available Hooks
 
 ```tsx
-// Get data binding value
-const value = useDataBinding({ path: '/user/name' })
+// Get data binding value (requires surfaceId and value source)
+const value = useDataBinding(surfaceId, { path: '/user/name' }, '')
 
 // Two-way form binding
-const [value, setValue] = useFormBinding({ path: '/form/email' })
+const [value, setValue] = useFormBinding(surfaceId, { path: '/form/email' }, '')
 
 // Dispatch action programmatically
 const dispatch = useDispatchAction()
-dispatch({ name: 'custom', context: { key: 'value' } })
+dispatch(surfaceId, componentId, { name: 'custom', context: { key: 'value' } })
 
-// Access surface context
-const { components, rootId } = useSurfaceContext()
+// Access surface context (full API)
+const { surfaces, getComponent, getDataModel, setDataValue } =
+  useSurfaceContext()
 
-// Access data model
-const { dataModel, updateDataModel } = useDataModelContext()
+// Get data model for a surface
+const dataModel = useDataModel(surfaceId)
 ```
 
 ## Multi-Surface Support

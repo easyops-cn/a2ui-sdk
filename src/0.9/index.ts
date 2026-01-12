@@ -79,10 +79,7 @@ export type { A2UIRendererProps } from './A2UIRenderer'
 
 export { A2UIProvider } from './contexts/A2UIProvider'
 export { A2UIRenderer } from './A2UIRenderer'
-export {
-  ComponentRenderer,
-  ChildrenRenderer,
-} from './components/ComponentRenderer'
+export { ComponentRenderer } from './components/ComponentRenderer'
 
 // ============ Hooks ============
 
@@ -93,5 +90,16 @@ export {
   useStringBinding,
   useDataModel,
 } from './hooks/useDataBinding'
+export { useValidation } from './hooks/useValidation'
 export { useSurfaceContext } from './contexts/SurfaceContext'
 export { useScope, useScopeBasePath } from './contexts/ScopeContext'
+
+// ============ Validation Utilities ============
+
+export {
+  validationFunctions,
+  evaluateChecks,
+  evaluateCheckRule,
+  type ValidationFunction,
+  type EvaluationContext,
+} from './utils/validation'

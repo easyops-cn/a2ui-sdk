@@ -6,6 +6,7 @@ import { memo, useCallback } from 'react'
 import type { CheckBoxComponent as CheckBoxComponentType } from '../../types'
 import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
+import { useValidation } from '../../hooks/useValidation'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
@@ -24,6 +25,7 @@ export const CheckBoxComponent = memo(function CheckBoxComponent({
     checkBox.value,
     false
   )
+  const { valid, errors } = useValidation(surfaceId, checkBox.checks)
 
   const handleChange = useCallback(
     (newChecked: boolean) => {
@@ -38,12 +40,26 @@ export const CheckBoxComponent = memo(function CheckBoxComponent({
   const style = checkBox.weight ? { flexGrow: checkBox.weight } : undefined
 
   return (
-    <div className={cn('flex items-center gap-3')} style={style}>
-      <Checkbox id={id} checked={checked} onCheckedChange={handleChange} />
-      {labelText && (
-        <Label htmlFor={id} className="cursor-pointer">
-          {labelText}
-        </Label>
+    <div className={cn('flex flex-col gap-1')} style={style}>
+      <div className="flex items-center gap-3">
+        <Checkbox
+          id={id}
+          checked={checked}
+          onCheckedChange={handleChange}
+          aria-invalid={!valid}
+        />
+        {labelText && (
+          <Label htmlFor={id} className="cursor-pointer">
+            {labelText}
+          </Label>
+        )}
+      </div>
+      {errors.length > 0 && (
+        <div className="text-sm text-destructive ml-6">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
       )}
     </div>
   )

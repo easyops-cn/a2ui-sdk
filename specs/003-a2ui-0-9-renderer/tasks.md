@@ -211,23 +211,23 @@ Based on plan.md structure:
 
 ### Tests for User Story 7
 
-- [ ] T068 [P] [US7] Write tests for validation utility in `src/0.9/utils/validation.test.ts`
-- [ ] T069 [P] [US7] Write tests for useValidation hook in `src/0.9/hooks/useValidation.test.ts`
+- [x] T068 [P] [US7] Write tests for validation utility in `src/0.9/utils/validation.test.ts`
+- [x] T069 [P] [US7] Write tests for useValidation hook in `src/0.9/hooks/useValidation.test.ts`
 
 ### Implementation for User Story 7
 
-- [ ] T070 [US7] Implement validation functions (required, email, regex, length, numeric) in `src/0.9/utils/validation.ts`
-- [ ] T071 [US7] Implement LogicExpression evaluator in `src/0.9/utils/validation.ts` (and, or, not)
-- [ ] T072 [US7] Implement useValidation hook in `src/0.9/hooks/useValidation.ts`
-- [ ] T073 [US7] Update TextFieldComponent with checks support in `src/0.9/components/interactive/TextFieldComponent.tsx`
-- [ ] T074 [US7] Update CheckBoxComponent with checks support in `src/0.9/components/interactive/CheckBoxComponent.tsx`
-- [ ] T075 [US7] Update ChoicePickerComponent with checks support in `src/0.9/components/interactive/ChoicePickerComponent.tsx`
-- [ ] T076 [US7] Update SliderComponent with checks support in `src/0.9/components/interactive/SliderComponent.tsx`
-- [ ] T077 [US7] Update DateTimeInputComponent with checks support in `src/0.9/components/interactive/DateTimeInputComponent.tsx`
-- [ ] T078 [US7] Update ButtonComponent with checks (disable on failure) in `src/0.9/components/interactive/ButtonComponent.tsx`
+- [x] T070 [US7] Implement validation functions (required, email, regex, length, numeric) in `src/0.9/utils/validation.ts`
+- [x] T071 [US7] Implement LogicExpression evaluator in `src/0.9/utils/validation.ts` (and, or, not)
+- [x] T072 [US7] Implement useValidation hook in `src/0.9/hooks/useValidation.ts`
+- [x] T073 [US7] Update TextFieldComponent with checks support in `src/0.9/components/interactive/TextFieldComponent.tsx`
+- [x] T074 [US7] Update CheckBoxComponent with checks support in `src/0.9/components/interactive/CheckBoxComponent.tsx`
+- [x] T075 [US7] Update ChoicePickerComponent with checks support in `src/0.9/components/interactive/ChoicePickerComponent.tsx`
+- [x] T076 [US7] Update SliderComponent with checks support in `src/0.9/components/interactive/SliderComponent.tsx`
+- [x] T077 [US7] Update DateTimeInputComponent with checks support in `src/0.9/components/interactive/DateTimeInputComponent.tsx`
+- [x] T078 [US7] Update ButtonComponent with checks (disable on failure) in `src/0.9/components/interactive/ButtonComponent.tsx`
 - [ ] T079 [US7] Write integration tests for validation in `src/0.9/components/interactive/interactive.test.tsx`
 
-**Checkpoint**: Validation works - checks evaluate and display errors, buttons disable on failure
+**Checkpoint**: Validation works - checks evaluate and display errors, buttons disable on failure ✅
 
 ---
 
@@ -261,13 +261,13 @@ Based on plan.md structure:
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T090 [P] Add console.warn logging for recoverable issues (missing child IDs, non-existent paths)
-- [ ] T091 [P] Add console.error logging for critical errors (duplicate surfaceId, malformed messages)
-- [ ] T092 [P] Add circular reference detection in component tree rendering
-- [ ] T093 [P] Verify all property renames from 0.8 are handled (justify/align, trigger/content, tabs, value, variant, min/max)
-- [ ] T094 Run all tests and ensure passing with `npm run test:run`
-- [ ] T095 Verify quickstart.md examples work correctly
-- [ ] T096 Run build and verify 0.9 exports correctly with `npm run build`
+- [x] T090 [P] Add console.warn logging for recoverable issues (missing child IDs, non-existent paths)
+- [x] T091 [P] Add console.error logging for critical errors (duplicate surfaceId, malformed messages)
+- [x] T092 [P] Add circular reference detection in component tree rendering
+- [x] T093 [P] Verify all property renames from 0.8 are handled (justify/align, trigger/content, tabs, value, variant, min/max)
+- [x] T094 Run all tests and ensure passing with `npm run test:run`
+- [x] T095 Verify quickstart.md examples work correctly
+- [x] T096 Run build and verify 0.9 exports correctly with `npm run build`
 
 ---
 

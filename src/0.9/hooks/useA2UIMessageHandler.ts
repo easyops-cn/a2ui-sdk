@@ -60,11 +60,13 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
     updateDataModel,
     deleteSurface,
     clearSurfaces,
-    getSurface,
   } = useSurfaceContext()
 
   // Buffer for messages received before createSurface
   const messageBuffer = useRef<Map<string, A2UIMessage[]>>(new Map())
+
+  // Track created surfaces synchronously (state updates are async)
+  const createdSurfacesRef = useRef<Set<string>>(new Set())
 
   /**
    * Applies buffered messages for a surface.
@@ -109,6 +111,8 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
       if ('createSurface' in message) {
         const { surfaceId, catalogId } = message.createSurface
         createSurface(surfaceId, catalogId)
+        // Track synchronously so subsequent messages in the same batch work
+        createdSurfacesRef.current.add(surfaceId)
         // Apply any buffered messages
         applyBufferedMessages(surfaceId)
         return
@@ -117,9 +121,9 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
       // Handle updateComponents
       if ('updateComponents' in message) {
         const { surfaceId, components } = message.updateComponents
-        const surface = getSurface(surfaceId)
 
-        if (!surface) {
+        // Check synchronous tracking (not async state)
+        if (!createdSurfacesRef.current.has(surfaceId)) {
           // Buffer until createSurface is received
           bufferMessage(surfaceId, message)
           return
@@ -132,9 +136,9 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
       // Handle updateDataModel
       if ('updateDataModel' in message) {
         const { surfaceId, path, value } = message.updateDataModel
-        const surface = getSurface(surfaceId)
 
-        if (!surface) {
+        // Check synchronous tracking (not async state)
+        if (!createdSurfacesRef.current.has(surfaceId)) {
           // Buffer until createSurface is received
           bufferMessage(surfaceId, message)
           return
@@ -148,7 +152,8 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
       if ('deleteSurface' in message) {
         const { surfaceId } = message.deleteSurface
         deleteSurface(surfaceId)
-        // Also clear any buffered messages for this surface
+        // Also clear tracking and buffered messages for this surface
+        createdSurfacesRef.current.delete(surfaceId)
         messageBuffer.current.delete(surfaceId)
         return
       }
@@ -158,7 +163,6 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
       updateComponents,
       updateDataModel,
       deleteSurface,
-      getSurface,
       applyBufferedMessages,
       bufferMessage,
     ]
@@ -176,6 +180,7 @@ export function useA2UIMessageHandler(): A2UIMessageHandler {
   const clear = useCallback(() => {
     clearSurfaces()
     messageBuffer.current.clear()
+    createdSurfacesRef.current.clear()
   }, [clearSurfaces])
 
   return {

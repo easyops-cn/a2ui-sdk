@@ -6,6 +6,7 @@ import { memo, useCallback } from 'react'
 import type { SliderComponent as SliderComponentType } from '../../types'
 import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
+import { useValidation } from '../../hooks/useValidation'
 import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
@@ -22,6 +23,7 @@ export const SliderComponent = memo(function SliderComponent({
   const labelText = useStringBinding(surfaceId, slider.label, '')
   const min = slider.min ?? 0
   const max = slider.max ?? 100
+  const { valid, errors } = useValidation(surfaceId, slider.checks)
 
   const [sliderValue, setSliderValue] = useFormBinding<number>(
     surfaceId,
@@ -53,12 +55,20 @@ export const SliderComponent = memo(function SliderComponent({
         min={min}
         max={max}
         step={1}
+        aria-invalid={!valid}
       />
       <div className="flex justify-between text-sm text-muted-foreground">
         <span>{min}</span>
         <span className="font-medium text-foreground">{sliderValue}</span>
         <span>{max}</span>
       </div>
+      {errors.length > 0 && (
+        <div className="text-sm text-destructive">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
     </div>
   )
 })

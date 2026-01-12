@@ -8,6 +8,7 @@ import { CalendarIcon, ClockIcon } from 'lucide-react'
 import type { DateTimeInputComponent as DateTimeInputComponentType } from '../../types'
 import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
+import { useValidation } from '../../hooks/useValidation'
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 
@@ -22,6 +23,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   const labelText = useStringBinding(surfaceId, dateTimeInput.label, '')
   const enableDate = dateTimeInput.enableDate ?? true
   const enableTime = dateTimeInput.enableTime ?? false
+  const { valid, errors } = useValidation(surfaceId, dateTimeInput.checks)
 
   const [dateValue, setDateValue] = useFormBinding<string>(
     surfaceId,
@@ -59,15 +61,24 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
           type={inputType}
           value={dateValue}
           onChange={handleChange}
+          aria-invalid={!valid}
           className={cn(
             'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-            'pr-9 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-9 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer'
+            'pr-9 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-9 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer',
+            !valid && 'border-destructive'
           )}
         />
         <Icon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       </div>
+      {errors.length > 0 && (
+        <div className="text-sm text-destructive">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
     </div>
   )
 })

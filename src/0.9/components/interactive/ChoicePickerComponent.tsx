@@ -10,6 +10,7 @@ import type {
 } from '../../types'
 import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
+import { useValidation } from '../../hooks/useValidation'
 import {
   Select,
   SelectContent,
@@ -48,6 +49,7 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
   const labelText = useStringBinding(surfaceId, choicePicker.label, '')
   const variant = choicePicker.variant ?? 'multipleSelection'
   const isSingleSelection = variant === 'mutuallyExclusive'
+  const { valid, errors } = useValidation(surfaceId, choicePicker.checks)
 
   const [selectedValue, setSelectedValue] = useFormBinding<string | string[]>(
     surfaceId,
@@ -100,7 +102,11 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
       <div className={cn('flex flex-col gap-2')} style={style}>
         {labelText && <Label htmlFor={id}>{labelText}</Label>}
         <Select value={currentValue} onValueChange={handleSingleChange}>
-          <SelectTrigger id={id}>
+          <SelectTrigger
+            id={id}
+            className={cn(!valid && 'border-destructive')}
+            aria-invalid={!valid}
+          >
             <SelectValue placeholder="Select an option" />
           </SelectTrigger>
           <SelectContent>
@@ -111,6 +117,13 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
             ))}
           </SelectContent>
         </Select>
+        {errors.length > 0 && (
+          <div className="text-sm text-destructive">
+            {errors.map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
       </div>
     )
   }
@@ -144,6 +157,13 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
           </div>
         )
       })}
+      {errors.length > 0 && (
+        <div className="text-sm text-destructive">
+          {errors.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
+        </div>
+      )}
     </div>
   )
 })

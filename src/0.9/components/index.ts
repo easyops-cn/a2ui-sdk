@@ -36,11 +36,7 @@ import {
 } from './interactive'
 
 // Re-export component renderer
-export {
-  ComponentRenderer,
-  ChildrenRenderer,
-  registerComponent,
-} from './ComponentRenderer'
+export { ComponentRenderer, registerComponent } from './ComponentRenderer'
 export { UnknownComponent } from './UnknownComponent'
 
 // Re-export all components
