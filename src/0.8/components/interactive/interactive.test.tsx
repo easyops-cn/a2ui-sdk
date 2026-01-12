@@ -350,7 +350,7 @@ describe('DateTimeInputComponent', () => {
     )
     // Component uses Calendar/Popover UI, renders a button trigger
     expect(
-      screen.getByRole('button', { name: /选择日期/i })
+      screen.getByRole('button', { name: /Select date/i })
     ).toBeInTheDocument()
   })
 
@@ -365,7 +365,7 @@ describe('DateTimeInputComponent', () => {
       { wrapper }
     )
     expect(
-      screen.getByRole('button', { name: /选择日期/i })
+      screen.getByRole('button', { name: /Select date/i })
     ).toBeInTheDocument()
   })
 
@@ -395,7 +395,7 @@ describe('DateTimeInputComponent', () => {
     )
     // Component uses Calendar/Popover UI with time input inside
     expect(
-      screen.getByRole('button', { name: /选择日期和时间/i })
+      screen.getByRole('button', { name: /Select date and time/i })
     ).toBeInTheDocument()
   })
 

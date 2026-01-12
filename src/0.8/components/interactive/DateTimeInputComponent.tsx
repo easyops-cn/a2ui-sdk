@@ -3,7 +3,7 @@
  * Uses shadcn/ui Calendar and Popover components.
  */
 
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { CalendarIcon } from 'lucide-react'
 import { format, parse, isValid } from 'date-fns'
 import type { DateTimeInputComponentProps } from '@/0.8/types'
@@ -32,6 +32,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
 }: DateTimeInputComponentProps) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [dateValue, setDateValue] = useFormBinding<string>(surfaceId, value, '')
+  const [open, setOpen] = useState(false)
 
   // Parse the string value to Date object
   const selectedDate = useMemo(() => {
@@ -76,6 +77,8 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
         setDateValue(format(date, "yyyy-MM-dd'T'HH:mm"))
       } else {
         setDateValue(format(date, 'yyyy-MM-dd'))
+        // Close popover after date selection when time is not enabled
+        setOpen(false)
       }
     },
     [setDateValue, enableDate, enableTime, selectedDate]
@@ -105,9 +108,9 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   // Format display text
   const displayText = useMemo(() => {
     if (!selectedDate) {
-      if (enableDate && enableTime) return '选择日期和时间'
-      if (enableDate) return '选择日期'
-      return '选择时间'
+      if (enableDate && enableTime) return 'Select date and time'
+      if (enableDate) return 'Select date'
+      return 'Select time'
     }
 
     if (enableDate && enableTime) {
@@ -140,7 +143,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   return (
     <div className={cn('flex flex-col gap-2')}>
       {labelText && <Label htmlFor={id}>{labelText}</Label>}
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             id={id}
