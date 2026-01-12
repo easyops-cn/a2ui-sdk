@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.10](https://github.com/easyops-cn/a2ui-react/compare/v0.0.9...v0.0.10) (2026-01-12)
+
+
+### Bug Fixes
+
+* **DateTimeInput:** use native input with type date/time ([c07228b](https://github.com/easyops-cn/a2ui-react/commit/c07228b5922c2bb004e04b506d27eb7a6e6f32e8))
+* **DateTimeInput:** use native input with type date/time ([e5a9b5a](https://github.com/easyops-cn/a2ui-react/commit/e5a9b5a6043ae6c48ac148da81fadc6b1dc1faf9))
+* use English placeholder by default, close popover after select date ([a7bde3a](https://github.com/easyops-cn/a2ui-react/commit/a7bde3a9ba640f42bf1660dc456ade2eea77f6d7))
+
 ## [0.0.9](https://github.com/easyops-cn/a2ui-react/compare/v0.0.8...v0.0.9) (2026-01-12)
 
 
