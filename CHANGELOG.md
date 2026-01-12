@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/easyops-cn/a2ui-react/compare/v0.0.7...v0.0.8) (2026-01-12)
+
+
+### Features
+
+* expose useSurfaceContext and useDataModelContext ([db55af5](https://github.com/easyops-cn/a2ui-react/commit/db55af5da590890d7038295a3ab27b1f086f7173))
+
 ## [0.0.7](https://github.com/easyops-cn/a2ui-react/compare/v0.0.6...v0.0.7) (2026-01-12)
 
 
