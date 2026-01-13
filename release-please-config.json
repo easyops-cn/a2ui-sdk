@@ -1,8 +1,6 @@
 {
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    ".": {
-      "component": "root"
-    },
     "packages/types": {
       "component": "types"
     },
@@ -24,7 +22,7 @@
     {
       "type": "linked-versions",
       "groupName": "A2UI SDK",
-      "components": ["root", "types", "utils", "react"]
+      "components": ["types", "utils", "react"]
     }
   ]
 }
