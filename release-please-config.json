@@ -1,6 +1,8 @@
 {
   "packages": {
-    ".": {},
+    ".": {
+      "component": "root"
+    },
     "packages/types": {
       "component": "types"
     },
@@ -21,7 +23,7 @@
     {
       "type": "linked-versions",
       "group-name": "a2ui-sdk",
-      "components": ["types", "utils", "react"]
+      "components": ["root", "types", "utils", "react"]
     }
   ]
 }
