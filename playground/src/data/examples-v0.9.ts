@@ -1057,6 +1057,160 @@ export const examplesV09: ExampleV09[] = [
     ],
   },
   {
+    id: 'interpolation',
+    title: 'Interpolation',
+    description: 'String interpolation with ${path} syntax for dynamic text',
+    messages: [
+      {
+        createSurface: {
+          surfaceId: 'main',
+          catalogId: 'standard',
+        },
+      },
+      {
+        updateComponents: {
+          surfaceId: 'main',
+          components: [
+            {
+              id: 'root',
+              component: 'Column',
+              children: [
+                'heading',
+                'description',
+                'user-card',
+                'input-section',
+                'stats-card',
+              ],
+            },
+            {
+              id: 'heading',
+              component: 'Text',
+              text: 'String Interpolation Demo',
+              variant: 'h2',
+            },
+            {
+              id: 'description',
+              component: 'Text',
+              text: 'V0.9 supports \\${path} syntax to embed data model values directly in strings.',
+              variant: 'body',
+            },
+            {
+              id: 'user-card',
+              component: 'Card',
+              child: 'user-content',
+            },
+            {
+              id: 'user-content',
+              component: 'Column',
+              children: ['greeting', 'user-info', 'status'],
+            },
+            {
+              id: 'greeting',
+              component: 'Text',
+              text: 'Hello, ${/user/name}!',
+              variant: 'h3',
+            },
+            {
+              id: 'user-info',
+              component: 'Text',
+              text: 'Email: ${/user/email} | Role: ${/user/role}',
+              variant: 'body',
+            },
+            {
+              id: 'status',
+              component: 'Text',
+              text: 'Account created on ${/user/createdAt}',
+              variant: 'caption',
+            },
+            {
+              id: 'input-section',
+              component: 'Column',
+              children: ['input-label', 'name-input', 'preview'],
+            },
+            {
+              id: 'input-label',
+              component: 'Text',
+              text: 'Try changing the name:',
+              variant: 'caption',
+            },
+            {
+              id: 'name-input',
+              component: 'TextField',
+              label: 'Name',
+              value: { path: '/user/name' },
+            },
+            {
+              id: 'preview',
+              component: 'Text',
+              text: 'Preview: Welcome back, ${/user/name}! You have ${/stats/unread} unread messages.',
+              variant: 'body',
+            },
+            {
+              id: 'stats-card',
+              component: 'Card',
+              child: 'stats-content',
+            },
+            {
+              id: 'stats-content',
+              component: 'Column',
+              children: ['stats-title', 'stats-row'],
+            },
+            {
+              id: 'stats-title',
+              component: 'Text',
+              text: 'Statistics for ${/user/name}',
+              variant: 'h4',
+            },
+            {
+              id: 'stats-row',
+              component: 'Row',
+              children: ['stat1', 'stat2', 'stat3'],
+              justify: 'spaceEvenly',
+            },
+            {
+              id: 'stat1',
+              component: 'Text',
+              text: '${/stats/posts} posts',
+              variant: 'body',
+            },
+            {
+              id: 'stat2',
+              component: 'Text',
+              text: '${/stats/followers} followers',
+              variant: 'body',
+            },
+            {
+              id: 'stat3',
+              component: 'Text',
+              text: '${/stats/following} following',
+              variant: 'body',
+            },
+          ],
+        },
+      },
+      {
+        updateDataModel: {
+          surfaceId: 'main',
+          path: '/',
+          value: {
+            user: {
+              name: 'Alice',
+              email: 'alice@example.com',
+              role: 'Admin',
+              createdAt: '2024-01-15',
+            },
+            stats: {
+              posts: 42,
+              followers: 1280,
+              following: 350,
+              unread: 5,
+            },
+          },
+        },
+      },
+    ],
+  },
+  {
     id: 'divider',
     title: 'Divider',
     description: 'Divider component for visual separation',

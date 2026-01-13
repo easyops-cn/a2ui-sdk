@@ -52,7 +52,6 @@ import {
   type A2UIMessage,
   type A2UIAction,
 } from '@easyops-cn/a2ui-react/0.8'
-
 ;<A2UIProvider messages={messages}>
   <A2UIRenderer onAction={handleAction} />
 </A2UIProvider>
@@ -104,6 +103,8 @@ Tests co-located with source (`*.test.tsx`). Uses Vitest + React Testing Library
 TypeScript 5.9, React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority)
 
 ## Active Technologies
+
+- TypeScript 5.9 + React 19, Vitest (testing) (004-string-interpolation-parser)
 
 - TypeScript 5.9 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority), lucide-react (icons) (003-a2ui-0-9-renderer)
 - N/A (client-side rendering library) (003-a2ui-0-9-renderer)

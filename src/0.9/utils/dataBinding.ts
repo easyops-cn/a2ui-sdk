@@ -14,10 +14,13 @@ import type {
   FormBindableValue,
 } from '../types'
 import { getValueByPath, resolvePath } from './pathUtils'
-import { hasInterpolation, interpolate } from './interpolation'
+import { interpolate } from './interpolation'
 
-// Re-export hasInterpolation for backward compatibility
-export { hasInterpolation } from './interpolation'
+// Check for interpolation using simple string check
+function hasInterpolation(value: string): boolean {
+  // Check for ${...} no matter if it is escaped or not
+  return value.includes('${')
+}
 
 /**
  * Type guard to check if a value is a path binding.

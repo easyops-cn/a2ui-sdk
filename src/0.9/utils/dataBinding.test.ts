@@ -8,7 +8,6 @@ import { describe, it, expect } from 'vitest'
 import {
   isPathBinding,
   isFunctionCall,
-  hasInterpolation,
   getBindingPath,
   resolveValue,
   resolveString,
@@ -95,31 +94,8 @@ describe('dataBinding', () => {
     })
   })
 
-  describe('hasInterpolation', () => {
-    it('should return true for string with interpolation', () => {
-      expect(hasInterpolation('Hello, ${/user/name}!')).toBe(true)
-    })
-
-    it('should return true for string with multiple interpolations', () => {
-      expect(hasInterpolation('${/greeting}, ${/name}!')).toBe(true)
-    })
-
-    it('should return false for plain string', () => {
-      expect(hasInterpolation('Hello, World!')).toBe(false)
-    })
-
-    it('should return false for escaped interpolation', () => {
-      expect(hasInterpolation('Escaped \\${value}')).toBe(false)
-    })
-
-    it('should return false for empty string', () => {
-      expect(hasInterpolation('')).toBe(false)
-    })
-
-    it('should return false for incomplete interpolation', () => {
-      expect(hasInterpolation('${incomplete')).toBe(false)
-    })
-  })
+  // Note: hasInterpolation is now an internal function (not exported)
+  // Tests for interpolation behavior are in interpolation.test.ts
 
   describe('getBindingPath', () => {
     it('should return path for path binding', () => {

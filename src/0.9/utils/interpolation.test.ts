@@ -1,69 +1,73 @@
 /**
- * Tests for interpolation utilities.
+ * Tests for the public interpolation API.
+ * Tests the new refactored parser module.
  */
 
 import { describe, it, expect } from 'vitest'
-import {
-  hasInterpolation,
-  parseInterpolation,
-  interpolate,
-  getInterpolationDependencies,
-} from './interpolation'
-
-describe('hasInterpolation', () => {
-  it('should return true for strings with interpolation', () => {
-    expect(hasInterpolation('Hello, ${/user/name}!')).toBe(true)
-    expect(hasInterpolation('${/value}')).toBe(true)
-    expect(hasInterpolation('Start ${/a} middle ${/b} end')).toBe(true)
-  })
-
-  it('should return false for strings without interpolation', () => {
-    expect(hasInterpolation('Hello, World!')).toBe(false)
-    expect(hasInterpolation('')).toBe(false)
-    expect(hasInterpolation('No interpolation here')).toBe(false)
-  })
-
-  it('should return false for escaped interpolation', () => {
-    expect(hasInterpolation('Escaped \\${/user/name}')).toBe(false)
-    expect(hasInterpolation('\\${a} \\${b}')).toBe(false)
-  })
-
-  it('should return true when mix of escaped and unescaped', () => {
-    expect(hasInterpolation('\\${escaped} ${/unescaped}')).toBe(true)
-  })
-})
+import { parseInterpolation, interpolate } from './interpolation'
+import type { PathNode, LiteralNode, FunctionCallNode } from './interpolation'
 
 describe('parseInterpolation', () => {
-  it('should extract single path', () => {
-    expect(parseInterpolation('Hello, ${/user/name}!')).toEqual(['/user/name'])
+  it('should parse simple path expression', () => {
+    const ast = parseInterpolation('${/user/name}')
+    expect(ast.type).toBe('interpolatedString')
+    expect(ast.parts).toHaveLength(1)
+
+    const pathNode = ast.parts[0] as PathNode
+    expect(pathNode.type).toBe('path')
+    expect(pathNode.path).toBe('/user/name')
+    expect(pathNode.absolute).toBe(true)
   })
 
-  it('should extract multiple paths', () => {
-    expect(parseInterpolation('${/a} and ${/b} and ${/c}')).toEqual([
-      '/a',
-      '/b',
-      '/c',
-    ])
+  it('should parse mixed content', () => {
+    const ast = parseInterpolation('Hello, ${/user/name}!')
+    expect(ast.parts).toHaveLength(3)
+
+    expect((ast.parts[0] as LiteralNode).type).toBe('literal')
+    expect((ast.parts[0] as LiteralNode).value).toBe('Hello, ')
+
+    expect((ast.parts[1] as PathNode).type).toBe('path')
+    expect((ast.parts[1] as PathNode).path).toBe('/user/name')
+
+    expect((ast.parts[2] as LiteralNode).type).toBe('literal')
+    expect((ast.parts[2] as LiteralNode).value).toBe('!')
   })
 
-  it('should trim whitespace in expressions', () => {
-    expect(parseInterpolation('${ /user/name }')).toEqual(['/user/name'])
-    expect(parseInterpolation('${  /path  }')).toEqual(['/path'])
+  it('should parse function call', () => {
+    const ast = parseInterpolation('${now()}')
+
+    const funcNode = ast.parts[0] as FunctionCallNode
+    expect(funcNode.type).toBe('functionCall')
+    expect(funcNode.name).toBe('now')
+    expect(funcNode.args).toHaveLength(0)
   })
 
-  it('should return empty array for no interpolation', () => {
-    expect(parseInterpolation('Hello, World!')).toEqual([])
-    expect(parseInterpolation('')).toEqual([])
+  it('should parse nested expressions', () => {
+    const ast = parseInterpolation('${upper(${/name})}')
+
+    const funcNode = ast.parts[0] as FunctionCallNode
+    expect(funcNode.type).toBe('functionCall')
+    expect(funcNode.name).toBe('upper')
+    expect(funcNode.args).toHaveLength(1)
+
+    const arg = funcNode.args[0] as PathNode
+    expect(arg.type).toBe('path')
+    expect(arg.path).toBe('/name')
   })
 
-  it('should skip escaped expressions', () => {
-    expect(parseInterpolation('\\${/escaped}')).toEqual([])
-    expect(parseInterpolation('\\${/a} ${/b}')).toEqual(['/b'])
+  it('should handle escaped expressions', () => {
+    const ast = parseInterpolation('\\${escaped}')
+    expect(ast.parts).toHaveLength(1)
+    expect((ast.parts[0] as LiteralNode).value).toBe('${escaped}')
   })
 
-  it('should handle relative paths', () => {
-    expect(parseInterpolation('${name}')).toEqual(['name'])
-    expect(parseInterpolation('${./relative}')).toEqual(['./relative'])
+  it('should parse relative paths', () => {
+    const ast = parseInterpolation('${name}')
+
+    const pathNode = ast.parts[0] as PathNode
+    expect(pathNode.type).toBe('path')
+    expect(pathNode.path).toBe('name')
+    expect(pathNode.absolute).toBe(false)
   })
 })
 
@@ -162,31 +166,58 @@ describe('interpolate', () => {
       ).toBe('John has 42 items')
     })
   })
-})
 
-describe('getInterpolationDependencies', () => {
-  it('should return absolute paths', () => {
-    expect(getInterpolationDependencies('${/user/name}')).toEqual([
-      '/user/name',
-    ])
-    expect(getInterpolationDependencies('${/a} ${/b}')).toEqual(['/a', '/b'])
+  describe('function calls', () => {
+    const testFunctions = {
+      upper: (str: unknown) => String(str).toUpperCase(),
+      lower: (str: unknown) => String(str).toLowerCase(),
+      add: (...args: unknown[]) =>
+        args.reduce((sum: number, val) => sum + Number(val), 0),
+    }
+
+    it('should invoke functions from context', () => {
+      expect(interpolate("${upper('hello')}", {}, null, testFunctions)).toBe(
+        'HELLO'
+      )
+      expect(interpolate("${lower('HELLO')}", {}, null, testFunctions)).toBe(
+        'hello'
+      )
+      expect(interpolate('${add(1, 2, 3)}', {}, null, testFunctions)).toBe('6')
+    })
+
+    it('should handle function with path arguments', () => {
+      expect(
+        interpolate('${upper(${/user/name})}', dataModel, null, testFunctions)
+      ).toBe('JOHN')
+    })
+
+    it('should handle nested function calls', () => {
+      expect(
+        interpolate('${add(${/user/age}, 10)}', dataModel, null, testFunctions)
+      ).toBe('40')
+    })
   })
 
-  it('should resolve relative paths with basePath', () => {
-    expect(getInterpolationDependencies('${name}', '/user')).toEqual([
-      '/user/name',
-    ])
-    expect(getInterpolationDependencies('${name} ${age}', '/user')).toEqual([
-      '/user/name',
-      '/user/age',
-    ])
+  describe('JSON Pointer escapes', () => {
+    it('should resolve keys with forward slash', () => {
+      const model = { 'a/b': 'value' }
+      expect(interpolate('${/a~1b}', model)).toBe('value')
+    })
+
+    it('should resolve keys with tilde', () => {
+      const model = { 'm~n': 'value' }
+      expect(interpolate('${/m~0n}', model)).toBe('value')
+    })
   })
 
-  it('should return empty array for no interpolation', () => {
-    expect(getInterpolationDependencies('Hello')).toEqual([])
-  })
-
-  it('should skip escaped expressions', () => {
-    expect(getInterpolationDependencies('\\${/escaped}')).toEqual([])
+  describe('custom functions', () => {
+    it('should use custom functions', () => {
+      const customFunctions = {
+        greet: (name: unknown) => `Hello, ${name}!`,
+      }
+      expect(interpolate("${greet('World')}", {}, null, customFunctions)).toBe(
+        'Hello, World!'
+      )
+    })
   })
 })
