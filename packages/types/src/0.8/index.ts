@@ -1,7 +1,7 @@
 /**
- * A2UI React Renderer - Type Definitions
+ * A2UI SDK - Type Definitions
  *
- * Core type definitions for the A2UI React renderer.
+ * Core type definitions for the A2UI SDK.
  * Based on the A2UI specification documents.
  */
 

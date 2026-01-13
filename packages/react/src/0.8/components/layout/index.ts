@@ -1,5 +1,5 @@
 /**
- * A2UI React Renderer - Layout Components
+ * A2UI SDK for React - Layout Components
  */
 
 export { RowComponent } from './RowComponent'

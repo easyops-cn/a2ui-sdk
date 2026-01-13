@@ -45,8 +45,8 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
-      - name: Copy website dist to build/a2ui-sdk, and playground dist to build/a2ui-sdk/playground
-        run: mkdir -p build && cp -r website/dist build/a2ui-sdk && cp -r playground/dist build/a2ui-sdk/playground
+      - name: Copy website dist to build, and playground dist to build/playground
+        run: cp -r website/dist build && cp -r playground/dist build/playground
 
       - name: Deploy to Netlify (pull request)
         id: netlify-deploy
@@ -67,7 +67,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.GH_TOKEN_EVE }}
-          publish_dir: ./build/a2ui-sdk
+          publish_dir: ./build
           force_orphan: true
           cname: a2ui-sdk.js.org
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

@@ -1,7 +1,7 @@
 /**
- * A2UI React Renderer - Public API
+ * A2UI SDK for React - Public API
  *
- * This is the main entry point for the A2UI React renderer library.
+ * This is the main entry point for the A2UI SDK for React.
  * Import from '@a2ui-sdk/react/0.8'
  *
  * @example

@@ -1,5 +1,5 @@
 /**
- * A2UI React Renderer - Components Exports
+ * A2UI SDK for React - Components Exports
  */
 
 export { ComponentRenderer, registerComponent } from './ComponentRenderer'
