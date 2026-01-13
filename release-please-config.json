@@ -18,6 +18,10 @@
   "include-component-in-tag": true,
   "plugins": [
     {
+      "type": "node-workspace",
+      "merge": false
+    },
+    {
       "type": "linked-versions",
       "groupName": "A2UI SDK",
       "components": ["root", "types", "utils", "react"]
