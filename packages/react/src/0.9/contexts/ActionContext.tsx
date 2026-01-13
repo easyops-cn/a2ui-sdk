@@ -19,7 +19,7 @@ import type {
   DynamicValue,
   DataModel,
 } from '@a2ui-sdk/types/0.9'
-import { resolveContext } from '../utils/dataBinding'
+import { resolveContext } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Action context value interface.

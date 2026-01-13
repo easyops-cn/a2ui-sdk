@@ -11,6 +11,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "npm run test:run -w packages/utils && npm run test:run -w packages/react",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"

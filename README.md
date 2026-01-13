@@ -2,15 +2,36 @@
 
 [![NPM Version](https://img.shields.io/npm/v/%40a2ui-sdk%2Freact)](https://www.npmjs.com/package/@easyops-cn/a2ui-sdk)
 
-The SDK for [A2UI](https://a2ui.org) protocol.
+The TypeScript/React SDK for [A2UI](https://a2ui.org) protocol.
 
-NOTE: this is not the official SDK maintained by the A2UI team.
+NOTE: this is NOT the official SDK maintained by the A2UI team.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
-Currently A2UI protocol v0.8 is fully supported. Work on v0.9 is in progress.
+Currently both A2UI protocol v0.8 and v0.9 (draft 2026-01-12) are fully supported.
 
 [Docs](https://easyops-cn.github.io/a2ui-sdk/) | [Playground](https://easyops-cn.github.io/a2ui-sdk/playground/)
+
+## Packages
+
+This SDK provides different levels of APIs to suit various use cases:
+
+| Package                                                            | Description                                                                                                                      |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| [`@a2ui-sdk/react`](https://www.npmjs.com/package/@a2ui-sdk/react) | React components for rendering A2UI protocol. <br />Use this for rendering A2UI surfaces in React applications.                  |
+| [`@a2ui-sdk/utils`](https://www.npmjs.com/package/@a2ui-sdk/utils) | Utility functions for A2UI protocol (e.g., string interpolation, path utilities). <br />Use this when building custom renderers. |
+| [`@a2ui-sdk/types`](https://www.npmjs.com/package/@a2ui-sdk/types) | TypeScript type definitions for A2UI protocol. <br />Use this for type-safe A2UI message handling.                               |
+
+```javascript
+// React renderer - full rendering solution
+import { A2UIProvider, A2UIRenderer } from '@a2ui-sdk/react/0.8'
+
+// Utilities - for custom renderer implementations
+import { resolveValue } from '@a2ui-sdk/utils/0.8'
+
+// Types only - for type-safe message handling
+import type { A2UIMessage, A2UIAction } from '@a2ui-sdk/types/0.8'
+```
 
 ## Installation
 

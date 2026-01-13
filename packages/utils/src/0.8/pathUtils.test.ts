@@ -5,13 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import {
-  getValueByPath,
-  setValueByPath,
-  mergeAtPath,
-  normalizePath,
-  joinPaths,
-} from './pathUtils'
+import { getValueByPath, setValueByPath, mergeAtPath } from './pathUtils.js'
 import type { DataModel } from '@a2ui-sdk/types/0.8'
 
 describe('pathUtils', () => {
@@ -263,91 +257,6 @@ describe('pathUtils', () => {
       const result = mergeAtPath(model, '/user', { age: 30 })
       expect(model).toEqual({ user: { name: 'John' } })
       expect(result).toEqual({ user: { name: 'John', age: 30 } })
-    })
-  })
-
-  describe('normalizePath', () => {
-    it('should add leading slash if missing', () => {
-      expect(normalizePath('user/name')).toBe('/user/name')
-    })
-
-    it('should keep existing leading slash', () => {
-      expect(normalizePath('/user/name')).toBe('/user/name')
-    })
-
-    it('should remove trailing slash', () => {
-      expect(normalizePath('/user/name/')).toBe('/user/name')
-    })
-
-    it('should remove trailing slash but keep single root slash', () => {
-      expect(normalizePath('/')).toBe('/')
-    })
-
-    it('should handle single slash path', () => {
-      expect(normalizePath('/')).toBe('/')
-    })
-
-    it('should add leading and remove trailing slash', () => {
-      expect(normalizePath('user/name/')).toBe('/user/name')
-    })
-
-    it('should trim whitespace', () => {
-      expect(normalizePath('  /user/name  ')).toBe('/user/name')
-    })
-
-    it('should handle empty string', () => {
-      expect(normalizePath('')).toBe('/')
-    })
-
-    it('should handle whitespace only', () => {
-      expect(normalizePath('   ')).toBe('/')
-    })
-
-    it('should handle multiple trailing slashes', () => {
-      expect(normalizePath('/user/name//')).toBe('/user/name/')
-      // Note: only removes one trailing slash
-    })
-  })
-
-  describe('joinPaths', () => {
-    it('should join base and relative paths', () => {
-      expect(joinPaths('/user', 'name')).toBe('/user/name')
-    })
-
-    it('should handle leading slash in relative path', () => {
-      expect(joinPaths('/user', '/name')).toBe('/user/name')
-    })
-
-    it('should handle trailing slash in base path', () => {
-      expect(joinPaths('/user/', 'name')).toBe('/user/name')
-    })
-
-    it('should handle both leading and trailing slashes', () => {
-      expect(joinPaths('/user/', '/name/')).toBe('/user/name')
-    })
-
-    it('should return base path for empty relative path', () => {
-      expect(joinPaths('/user', '')).toBe('/user')
-    })
-
-    it('should handle root base path', () => {
-      expect(joinPaths('/', 'user')).toBe('/user')
-    })
-
-    it('should handle root base path with leading slash in relative', () => {
-      expect(joinPaths('/', '/user')).toBe('/user')
-    })
-
-    it('should normalize base path without leading slash', () => {
-      expect(joinPaths('user', 'name')).toBe('/user/name')
-    })
-
-    it('should handle multi-segment relative path', () => {
-      expect(joinPaths('/base', 'a/b/c')).toBe('/base/a/b/c')
-    })
-
-    it('should handle whitespace in relative path', () => {
-      expect(joinPaths('/user', '  name  ')).toBe('/user/name')
     })
   })
 })

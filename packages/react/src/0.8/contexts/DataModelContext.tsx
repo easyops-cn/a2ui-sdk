@@ -14,7 +14,11 @@ import {
   type ReactNode,
 } from 'react'
 import type { DataModel, DataModelValue } from '@a2ui-sdk/types/0.8'
-import { getValueByPath, setValueByPath, mergeAtPath } from '../utils/pathUtils'
+import {
+  getValueByPath,
+  setValueByPath,
+  mergeAtPath,
+} from '@a2ui-sdk/utils/0.8'
 
 /**
  * DataModel context value interface.

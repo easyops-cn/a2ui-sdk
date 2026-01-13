@@ -8,9 +8,8 @@ import {
   evaluateCheckRule,
   evaluateChecks,
   resolveArgs,
-  extractCheckDependencies,
   type EvaluationContext,
-} from './validation'
+} from './validation.js'
 
 describe('validationFunctions', () => {
   describe('required', () => {
@@ -424,86 +423,5 @@ describe('evaluateChecks', () => {
     const result = evaluateChecks(checks, dataModel, null)
 
     expect(result).toEqual({ valid: true, errors: [] })
-  })
-})
-
-describe('extractCheckDependencies', () => {
-  it('should extract paths from simple checks', () => {
-    const checks = [
-      {
-        call: 'required',
-        args: { value: { path: '/form/name' } },
-        message: 'Required',
-      },
-      {
-        call: 'email',
-        args: { value: { path: '/form/email' } },
-        message: 'Invalid',
-      },
-    ]
-
-    const paths = extractCheckDependencies(checks)
-
-    expect(paths).toContain('/form/name')
-    expect(paths).toContain('/form/email')
-    expect(paths).toHaveLength(2)
-  })
-
-  it('should extract paths from nested AND checks', () => {
-    const checks = [
-      {
-        and: [
-          {
-            call: 'required',
-            args: { value: { path: '/a' } },
-            message: 'A required',
-          },
-          {
-            call: 'required',
-            args: { value: { path: '/b' } },
-            message: 'B required',
-          },
-        ],
-        message: 'Both required',
-      },
-    ]
-
-    const paths = extractCheckDependencies(checks)
-
-    expect(paths).toContain('/a')
-    expect(paths).toContain('/b')
-  })
-
-  it('should ignore literal values', () => {
-    const checks = [
-      {
-        call: 'length',
-        args: { value: { path: '/name' }, min: 3, max: 10 },
-        message: 'Length error',
-      },
-    ]
-
-    const paths = extractCheckDependencies(checks)
-
-    expect(paths).toEqual(['/name'])
-  })
-
-  it('should deduplicate paths', () => {
-    const checks = [
-      {
-        call: 'required',
-        args: { value: { path: '/name' } },
-        message: 'Required',
-      },
-      {
-        call: 'length',
-        args: { value: { path: '/name' }, min: 3 },
-        message: 'Too short',
-      },
-    ]
-
-    const paths = extractCheckDependencies(checks)
-
-    expect(paths).toEqual(['/name'])
   })
 })

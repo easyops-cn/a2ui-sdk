@@ -11,7 +11,7 @@ import type {
   DataModel,
   ValidationResult,
 } from '@a2ui-sdk/types/0.9'
-import { resolveValue, isPathBinding } from './dataBinding'
+import { resolveValue } from './dataBinding.js'
 
 // ============ Validation Functions ============
 
@@ -210,46 +210,4 @@ export function evaluateChecks(
     valid: errors.length === 0,
     errors,
   }
-}
-
-/**
- * Extracts all paths referenced in a CheckRule for dependency tracking.
- * This is useful for knowing which data model paths affect validation.
- */
-export function extractCheckDependencies(checks: CheckRule[]): string[] {
-  const paths = new Set<string>()
-
-  function extractFromArgs(args: Record<string, DynamicValue> | undefined) {
-    if (!args) return
-    for (const value of Object.values(args)) {
-      if (isPathBinding(value)) {
-        paths.add(value.path)
-      }
-    }
-  }
-
-  function extractFromRule(rule: CheckRule) {
-    if (rule.args) {
-      extractFromArgs(rule.args)
-    }
-    if (rule.and) {
-      for (const r of rule.and) {
-        extractFromRule(r)
-      }
-    }
-    if (rule.or) {
-      for (const r of rule.or) {
-        extractFromRule(r)
-      }
-    }
-    if (rule.not) {
-      extractFromRule(rule.not)
-    }
-  }
-
-  for (const check of checks) {
-    extractFromRule(check)
-  }
-
-  return Array.from(paths)
 }

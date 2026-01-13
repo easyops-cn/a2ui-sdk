@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import type { A2UIMessage } from '@a2ui-sdk/types/0.8'
 import { useSurfaceContext } from '../contexts/SurfaceContext'
 import { useDataModelContext } from '../contexts/DataModelContext'
-import { contentsToObject } from '../utils/dataBinding'
+import { contentsToObject } from '@a2ui-sdk/utils/0.8'
 
 /**
  * Return type for the message handler hook.

@@ -9,7 +9,7 @@ import type {
   DataEntry,
   DataModelValue,
 } from '@a2ui-sdk/types/0.8'
-import { getValueByPath } from './pathUtils'
+import { getValueByPath } from './pathUtils.js'
 
 /**
  * Resolves a ValueSource to its actual value.
@@ -66,31 +66,6 @@ export function resolveValue<T = unknown>(
 }
 
 /**
- * Checks if a value source is a path reference.
- *
- * @param source - The value source to check
- * @returns True if the source is a path reference
- */
-export function isPathReference(
-  source: ValueSource | undefined
-): source is { path: string } {
-  return source !== undefined && source !== null && 'path' in source
-}
-
-/**
- * Gets the path from a value source, or undefined if it's not a path reference.
- *
- * @param source - The value source
- * @returns The path string or undefined
- */
-export function getPath(source: ValueSource | undefined): string | undefined {
-  if (isPathReference(source)) {
-    return source.path
-  }
-  return undefined
-}
-
-/**
  * Converts a DataEntry array to a plain object.
  * This is used for processing dataModelUpdate message contents.
  *
@@ -144,46 +119,6 @@ function normalizeKey(key: string): string {
     return segments[segments.length - 1] || key
   }
   return key
-}
-
-/**
- * Creates a literal string value source.
- *
- * @param value - The string value
- * @returns A ValueSource with literalString
- */
-export function literalString(value: string): ValueSource {
-  return { literalString: value }
-}
-
-/**
- * Creates a literal number value source.
- *
- * @param value - The number value
- * @returns A ValueSource with literalNumber
- */
-export function literalNumber(value: number): ValueSource {
-  return { literalNumber: value }
-}
-
-/**
- * Creates a literal boolean value source.
- *
- * @param value - The boolean value
- * @returns A ValueSource with literalBoolean
- */
-export function literalBoolean(value: boolean): ValueSource {
-  return { literalBoolean: value }
-}
-
-/**
- * Creates a path reference value source.
- *
- * @param path - The data model path
- * @returns A ValueSource with path
- */
-export function pathRef(path: string): ValueSource {
-  return { path }
 }
 
 /**

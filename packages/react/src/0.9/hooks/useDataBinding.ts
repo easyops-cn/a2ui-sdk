@@ -15,11 +15,7 @@ import type {
 } from '@a2ui-sdk/types/0.9'
 import { useSurfaceContext } from '../contexts/SurfaceContext'
 import { useScope } from '../contexts/ScopeContext'
-import {
-  resolveValue,
-  resolveString,
-  isPathBinding,
-} from '../utils/dataBinding'
+import { resolveValue, resolveString, isPathBinding } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Resolves a DynamicValue to its actual value.

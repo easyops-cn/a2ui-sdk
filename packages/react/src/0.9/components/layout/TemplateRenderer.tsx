@@ -9,7 +9,7 @@ import { memo } from 'react'
 import type { TemplateBinding, DataModel } from '@a2ui-sdk/types/0.9'
 import { ScopeProvider } from '../../contexts/ScopeContext'
 import { ComponentRenderer } from '../ComponentRenderer'
-import { getValueByPath, resolvePath } from '../../utils/pathUtils'
+import { getValueByPath, resolvePath } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Props for TemplateRenderer.

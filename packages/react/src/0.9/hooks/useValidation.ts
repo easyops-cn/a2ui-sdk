@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import type { CheckRule, ValidationResult } from '@a2ui-sdk/types/0.9'
 import { useSurfaceContext } from '../contexts/SurfaceContext'
 import { useScope } from '../contexts/ScopeContext'
-import { evaluateChecks, type ValidationFunction } from '../utils/validation'
+import { evaluateChecks, type ValidationFunction } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Hook for evaluating validation checks on a component.

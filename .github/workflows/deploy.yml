@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
@@ -42,6 +42,9 @@ jobs:
       - name: Build website
         run: npm run build -w website
 
+      - name: Run unit tests
+        run: npm run test
+
       - name: Copy website dist to build/a2ui-sdk, and playground dist to build/a2ui-sdk/playground
         run: mkdir -p build && cp -r website/dist build/a2ui-sdk && cp -r playground/dist build/a2ui-sdk/playground
 
@@ -66,4 +69,5 @@ jobs:
           personal_token: ${{ secrets.GH_TOKEN_EVE }}
           publish_dir: ./build/a2ui-sdk
           force_orphan: true
+          cname: a2ui-sdk.js.org
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

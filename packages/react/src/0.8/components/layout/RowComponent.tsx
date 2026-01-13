@@ -10,7 +10,7 @@ import type {
 } from '@a2ui-sdk/types/0.8'
 import { useDataModel } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
-import { getValueByPath } from '@/0.8/utils/pathUtils'
+import { getValueByPath } from '@a2ui-sdk/utils/0.8'
 import { ComponentRenderer } from '../ComponentRenderer'
 
 /**
