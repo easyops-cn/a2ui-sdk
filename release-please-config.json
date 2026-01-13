@@ -18,7 +18,7 @@
   "plugins": [
     {
       "type": "linked-versions",
-      "group-name": "a2ui-sdk",
+      "groupName": "A2UI SDK",
       "components": ["root", "types", "utils", "react"]
     }
   ]
