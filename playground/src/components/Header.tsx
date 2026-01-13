@@ -9,13 +9,13 @@ export function Header({ title, children }: HeaderProps) {
   return (
     <header className="app-header">
       <h1 className="app-title">
-        <a href="/a2ui-react/">{title}</a>
+        <a href="/a2ui-sdk/">{title}</a>
       </h1>
       <div className="header-right">
         <nav className="header-nav">
-          <a href="/a2ui-react/">Docs</a>
-          <a href="/a2ui-react/api/">API</a>
-          <a href="/a2ui-react/playground/" className="active">
+          <a href="/a2ui-sdk/">Docs</a>
+          <a href="/a2ui-sdk/api/">API</a>
+          <a href="/a2ui-sdk/playground/" className="active">
             Playground
           </a>
           <a
