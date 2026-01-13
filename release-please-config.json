@@ -17,10 +17,6 @@
   "include-component-in-tag": true,
   "plugins": [
     {
-      "type": "node-workspace",
-      "merge": false
-    },
-    {
       "type": "linked-versions",
       "group-name": "a2ui-sdk",
       "components": ["root", "types", "utils", "react"]
