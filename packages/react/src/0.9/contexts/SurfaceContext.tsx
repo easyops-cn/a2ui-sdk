@@ -17,7 +17,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { Component, DataModel, SurfaceState } from '@a2ui-sdk/types/0.9'
-import { setValueByPath } from '../utils/pathUtils'
+import { setValueByPath } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Surface context value interface.

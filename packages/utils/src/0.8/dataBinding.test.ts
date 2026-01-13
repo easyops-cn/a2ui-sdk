@@ -7,15 +7,9 @@
 import { describe, it, expect } from 'vitest'
 import {
   resolveValue,
-  isPathReference,
-  getPath,
   contentsToObject,
-  literalString,
-  literalNumber,
-  literalBoolean,
-  pathRef,
   resolveActionContext,
-} from './dataBinding'
+} from './dataBinding.js'
 import type { DataModel, ValueSource, DataEntry } from '@a2ui-sdk/types/0.8'
 
 describe('dataBinding', () => {
@@ -159,62 +153,6 @@ describe('dataBinding', () => {
     })
   })
 
-  describe('isPathReference', () => {
-    it('should return true for path reference', () => {
-      expect(isPathReference({ path: '/user/name' })).toBe(true)
-    })
-
-    it('should return false for literalString', () => {
-      expect(isPathReference({ literalString: 'Hello' })).toBe(false)
-    })
-
-    it('should return false for literalNumber', () => {
-      expect(isPathReference({ literalNumber: 42 })).toBe(false)
-    })
-
-    it('should return false for literalBoolean', () => {
-      expect(isPathReference({ literalBoolean: true })).toBe(false)
-    })
-
-    it('should return false for literalArray', () => {
-      expect(isPathReference({ literalArray: ['a', 'b'] })).toBe(false)
-    })
-
-    it('should return false for undefined', () => {
-      expect(isPathReference(undefined)).toBe(false)
-    })
-
-    it('should return false for null', () => {
-      expect(isPathReference(null as unknown as ValueSource)).toBe(false)
-    })
-  })
-
-  describe('getPath', () => {
-    it('should return path from path reference', () => {
-      expect(getPath({ path: '/user/name' })).toBe('/user/name')
-    })
-
-    it('should return undefined for literalString', () => {
-      expect(getPath({ literalString: 'Hello' })).toBeUndefined()
-    })
-
-    it('should return undefined for literalNumber', () => {
-      expect(getPath({ literalNumber: 42 })).toBeUndefined()
-    })
-
-    it('should return undefined for literalBoolean', () => {
-      expect(getPath({ literalBoolean: true })).toBeUndefined()
-    })
-
-    it('should return undefined for literalArray', () => {
-      expect(getPath({ literalArray: ['a'] })).toBeUndefined()
-    })
-
-    it('should return undefined for undefined source', () => {
-      expect(getPath(undefined)).toBeUndefined()
-    })
-  })
-
   describe('contentsToObject', () => {
     it('should convert string entry', () => {
       const contents: DataEntry[] = [{ key: 'name', valueString: 'John' }]
@@ -309,60 +247,6 @@ describe('dataBinding', () => {
     it('should handle entry with no value type', () => {
       const contents: DataEntry[] = [{ key: 'empty' }]
       expect(contentsToObject(contents)).toEqual({})
-    })
-  })
-
-  describe('literal factory functions', () => {
-    describe('literalString', () => {
-      it('should create literalString value source', () => {
-        expect(literalString('Hello')).toEqual({ literalString: 'Hello' })
-      })
-
-      it('should create empty literalString', () => {
-        expect(literalString('')).toEqual({ literalString: '' })
-      })
-    })
-
-    describe('literalNumber', () => {
-      it('should create literalNumber value source', () => {
-        expect(literalNumber(42)).toEqual({ literalNumber: 42 })
-      })
-
-      it('should create zero literalNumber', () => {
-        expect(literalNumber(0)).toEqual({ literalNumber: 0 })
-      })
-
-      it('should create negative literalNumber', () => {
-        expect(literalNumber(-10)).toEqual({ literalNumber: -10 })
-      })
-
-      it('should create float literalNumber', () => {
-        expect(literalNumber(3.14)).toEqual({ literalNumber: 3.14 })
-      })
-    })
-
-    describe('literalBoolean', () => {
-      it('should create true literalBoolean', () => {
-        expect(literalBoolean(true)).toEqual({ literalBoolean: true })
-      })
-
-      it('should create false literalBoolean', () => {
-        expect(literalBoolean(false)).toEqual({ literalBoolean: false })
-      })
-    })
-
-    describe('pathRef', () => {
-      it('should create path reference', () => {
-        expect(pathRef('/user/name')).toEqual({ path: '/user/name' })
-      })
-
-      it('should create root path reference', () => {
-        expect(pathRef('/')).toEqual({ path: '/' })
-      })
-
-      it('should create path without leading slash', () => {
-        expect(pathRef('user/name')).toEqual({ path: 'user/name' })
-      })
     })
   })
 

@@ -5,10 +5,8 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import type { DataModel } from '@a2ui-sdk/types/0.9'
 import {
   parseJsonPointer,
-  createJsonPointer,
   getValueByPath,
   setValueByPath,
   normalizePath,
@@ -16,6 +14,7 @@ import {
   resolvePath,
   joinPaths,
 } from './pathUtils.js'
+import type { DataModel } from '@a2ui-sdk/types/0.9'
 
 describe('pathUtils', () => {
   describe('parseJsonPointer', () => {
@@ -57,32 +56,6 @@ describe('pathUtils', () => {
 
     it('should handle path without leading slash', () => {
       expect(parseJsonPointer('user/name')).toEqual(['user', 'name'])
-    })
-  })
-
-  describe('createJsonPointer', () => {
-    it('should return "/" for empty array', () => {
-      expect(createJsonPointer([])).toBe('/')
-    })
-
-    it('should create simple path', () => {
-      expect(createJsonPointer(['user'])).toBe('/user')
-    })
-
-    it('should create nested path', () => {
-      expect(createJsonPointer(['user', 'name'])).toBe('/user/name')
-    })
-
-    it('should escape / to ~1', () => {
-      expect(createJsonPointer(['a/b'])).toBe('/a~1b')
-    })
-
-    it('should escape ~ to ~0', () => {
-      expect(createJsonPointer(['m~n'])).toBe('/m~0n')
-    })
-
-    it('should handle combined escapes', () => {
-      expect(createJsonPointer(['~/'])).toBe('/~0~1')
     })
   })
 

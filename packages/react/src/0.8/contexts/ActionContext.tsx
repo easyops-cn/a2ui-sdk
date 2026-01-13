@@ -14,7 +14,7 @@ import {
 } from 'react'
 import type { Action, ActionPayload, ActionHandler } from '@a2ui-sdk/types/0.8'
 import { useDataModelContext } from './DataModelContext'
-import { resolveActionContext } from '../utils/dataBinding'
+import { resolveActionContext } from '@a2ui-sdk/utils/0.8'
 
 /**
  * Action context value interface.

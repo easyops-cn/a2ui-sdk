@@ -93,13 +93,3 @@ export {
 export { useValidation } from './hooks/useValidation'
 export { useSurfaceContext } from './contexts/SurfaceContext'
 export { useScope, useScopeBasePath } from './contexts/ScopeContext'
-
-// ============ Validation Utilities ============
-
-export {
-  validationFunctions,
-  evaluateChecks,
-  evaluateCheckRule,
-  type ValidationFunction,
-  type EvaluationContext,
-} from './utils/validation'

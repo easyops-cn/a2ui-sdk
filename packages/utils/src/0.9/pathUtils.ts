@@ -37,30 +37,6 @@ export function parseJsonPointer(path: string): string[] {
 }
 
 /**
- * Creates a JSON Pointer path from segments.
- *
- * @param segments - Array of path segments
- * @returns JSON Pointer path string
- *
- * @example
- * createJsonPointer(["user", "name"]);   // "/user/name"
- * createJsonPointer(["a/b"]);            // "/a~1b"
- * createJsonPointer([]);                 // "/"
- */
-export function createJsonPointer(segments: string[]): string {
-  if (segments.length === 0) {
-    return '/'
-  }
-
-  // Escape special characters (~ -> ~0, / -> ~1)
-  const escaped = segments.map((segment) =>
-    segment.replace(/~/g, '~0').replace(/\//g, '~1')
-  )
-
-  return '/' + escaped.join('/')
-}
-
-/**
  * Gets a value from the data model by JSON Pointer path.
  *
  * @param dataModel - The data model to read from

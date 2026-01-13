@@ -16,6 +16,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./0.8": {
+      "types": "./dist/0.8/index.d.ts",
+      "default": "./dist/0.8/index.js"
+    },
     "./0.9": {
       "types": "./dist/0.9/index.d.ts",
       "default": "./dist/0.9/index.js"
@@ -26,7 +30,10 @@
   ],
   "scripts": {
     "dev": "tsc -b --watch",
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "license": "Apache-2.0",
   "devDependencies": {

@@ -12,25 +12,6 @@
  * // result: "Hello, John!"
  */
 
-export type {
-  TokenType,
-  Token,
-  ASTNode,
-  LiteralNode,
-  PathNode,
-  FunctionCallNode,
-  InterpolatedStringNode,
-  ParseError,
-  DataModel,
-  FunctionRegistry,
-  InterpolationFunction,
-  EvaluationContext,
-} from './types.js'
-
-export { tokenize } from './lexer.js'
-export { parse } from './parser.js'
-export { evaluate } from './evaluator.js'
-
 import type {
   InterpolatedStringNode,
   DataModel,

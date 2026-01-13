@@ -8,14 +8,11 @@ import { describe, it, expect } from 'vitest'
 import {
   isPathBinding,
   isFunctionCall,
-  getBindingPath,
   resolveValue,
   resolveString,
-  resolveNumber,
-  resolveBoolean,
   resolveContext,
-} from './dataBinding'
-import type { DataModel } from '@a2ui-sdk/types/0.9'
+} from './dataBinding.js'
+import type { DataModel, FormBindableValue } from '@a2ui-sdk/types/0.9'
 
 describe('dataBinding', () => {
   const testModel: DataModel = {
@@ -62,7 +59,9 @@ describe('dataBinding', () => {
     })
 
     it('should return false for object without path property', () => {
-      expect(isPathBinding({ other: 'value' } as unknown)).toBe(false)
+      expect(
+        isPathBinding({ other: 'value' } as unknown as FormBindableValue)
+      ).toBe(false)
     })
   })
 
@@ -96,24 +95,6 @@ describe('dataBinding', () => {
 
   // Note: hasInterpolation is now an internal function (not exported)
   // Tests for interpolation behavior are in interpolation.test.ts
-
-  describe('getBindingPath', () => {
-    it('should return path for path binding', () => {
-      expect(getBindingPath({ path: '/user/name' })).toBe('/user/name')
-    })
-
-    it('should return undefined for string literal', () => {
-      expect(getBindingPath('Hello')).toBeUndefined()
-    })
-
-    it('should return undefined for undefined', () => {
-      expect(getBindingPath(undefined)).toBeUndefined()
-    })
-
-    it('should return undefined for null', () => {
-      expect(getBindingPath(null)).toBeUndefined()
-    })
-  })
 
   describe('resolveValue', () => {
     it('should resolve string literal', () => {
@@ -193,47 +174,6 @@ describe('dataBinding', () => {
 
     it('should return empty string as default', () => {
       expect(resolveString(undefined, testModel)).toBe('')
-    })
-  })
-
-  describe('resolveNumber', () => {
-    it('should resolve number literal', () => {
-      expect(resolveNumber(42, testModel)).toBe(42)
-    })
-
-    it('should resolve path binding to number', () => {
-      expect(resolveNumber({ path: '/user/age' }, testModel)).toBe(30)
-    })
-
-    it('should return default for undefined', () => {
-      expect(resolveNumber(undefined, testModel, null, 99)).toBe(99)
-    })
-
-    it('should return 0 as default', () => {
-      expect(resolveNumber(undefined, testModel)).toBe(0)
-    })
-
-    it('should return default for non-numeric string', () => {
-      expect(resolveNumber({ path: '/user/name' }, testModel, null, 0)).toBe(0)
-    })
-  })
-
-  describe('resolveBoolean', () => {
-    it('should resolve boolean literal', () => {
-      expect(resolveBoolean(true, testModel)).toBe(true)
-      expect(resolveBoolean(false, testModel)).toBe(false)
-    })
-
-    it('should resolve path binding to boolean', () => {
-      expect(resolveBoolean({ path: '/user/active' }, testModel)).toBe(true)
-    })
-
-    it('should return default for undefined', () => {
-      expect(resolveBoolean(undefined, testModel, null, true)).toBe(true)
-    })
-
-    it('should return false as default', () => {
-      expect(resolveBoolean(undefined, testModel)).toBe(false)
     })
   })
 

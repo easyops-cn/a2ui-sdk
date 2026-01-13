@@ -1,19 +1,145 @@
 # API Reference
 
-## Core
+## V0.8
+
+### React
 
 ```typescript
+// @a2ui-sdk/react/0.8
+
 /**
- * Main entry component for rendering A2UI messages.
- * @param messages - Array of A2UI messages to render
- * @param onAction - Callback when an action is dispatched
- * @param components - Custom component overrides
+ * Provider component that processes A2UI messages and sets up contexts.
  */
-function A2UIRenderer(props: {
+function A2UIProvider(props: {
   messages: A2UIMessage[]
   onAction?: (action: A2UIAction) => void
   components?: Map<string, React.ComponentType<any>>
+  children?: React.ReactNode
 }): React.ReactElement
+
+/**
+ * Main renderer component that renders all surfaces.
+ */
+function A2UIRenderer(): React.ReactElement
+
+/**
+ * Renders a component by ID from the component registry.
+ */
+function ComponentRenderer(props: {
+  surfaceId: string
+  componentId: string
+}): React.ReactElement
+
+/**
+ * Returns a function to dispatch actions from custom components.
+ */
+function useDispatchAction(): (
+  surfaceId: string,
+  componentId: string,
+  action: Action
+) => void
+
+/**
+ * Resolves a ValueSource to its actual value.
+ */
+function useDataBinding<T = unknown>(
+  surfaceId: string,
+  source: ValueSource | undefined,
+  defaultValue?: T
+): T
+
+/**
+ * Hook for two-way data binding in form components.
+ * @returns Tuple of [value, setValue]
+ */
+function useFormBinding<T = unknown>(
+  surfaceId: string,
+  source: ValueSource | undefined,
+  defaultValue?: T
+): [T, (value: T) => void]
+
+/**
+ * Hook to access the Surface context.
+ */
+function useSurfaceContext(): SurfaceContextValue
+
+/**
+ * Hook to access the DataModel context.
+ */
+function useDataModelContext(): DataModelContextValue
+```
+
+### Utils
+
+```typescript
+// @a2ui-sdk/utils/0.8
+
+/**
+ * Resolves a ValueSource to its actual value.
+ *
+ * @example
+ * // Literal values
+ * resolveValue({ literalString: "Hello" }, {}); // "Hello"
+ * resolveValue({ literalNumber: 42 }, {});      // 42
+ *
+ * // Path references
+ * const model = { user: { name: "John" } };
+ * resolveValue({ path: "/user/name" }, model);  // "John"
+ */
+function resolveValue<T = unknown>(
+  source: ValueSource | undefined,
+  dataModel: DataModel,
+  defaultValue?: T
+): T
+
+/**
+ * Converts a DataEntry array to a plain object.
+ * Used for processing dataModelUpdate message contents.
+ */
+function contentsToObject(contents: DataEntry[]): Record<string, DataModelValue>
+
+/**
+ * Resolves action context items to a plain object.
+ * Used when dispatching actions to resolve all context values.
+ */
+function resolveActionContext(
+  context: Array<{ key: string; value: ValueSource }> | undefined,
+  dataModel: DataModel
+): Record<string, unknown>
+
+/**
+ * Gets a value from the data model by path.
+ */
+function getValueByPath(
+  dataModel: DataModel,
+  path: string
+): DataModelValue | undefined
+
+/**
+ * Sets a value in the data model by path, returning a new data model.
+ * This function is immutable.
+ */
+function setValueByPath(
+  dataModel: DataModel,
+  path: string,
+  value: unknown
+): DataModel
+
+/**
+ * Merges data into the data model at a given path.
+ * Used for dataModelUpdate messages where contents are merged.
+ */
+function mergeAtPath(
+  dataModel: DataModel,
+  path: string,
+  data: Record<string, unknown>
+): DataModel
+```
+
+### Types
+
+```typescript
+// @a2ui-sdk/types/0.8
 
 /**
  * A2UI message from server to client.
@@ -35,115 +161,6 @@ interface A2UIAction {
   context: Record<string, unknown>
   sourceComponentId: string
 }
-```
-
-## Hooks
-
-```typescript
-/**
- * Returns a function to dispatch actions from custom components.
- */
-function useDispatchAction(): (
-  surfaceId: string,
-  componentId: string,
-  action: Action
-) => void
-
-/**
- * Resolves a ValueSource to its actual value.
- * @param surfaceId - The surface ID for data model lookup
- * @param source - The value source (literal or path reference)
- * @param defaultValue - Default value if source is undefined or path not found
- */
-function useDataBinding<T = unknown>(
-  surfaceId: string,
-  source: ValueSource | undefined,
-  defaultValue?: T
-): T
-
-/**
- * Hook for two-way data binding in form components.
- * @param surfaceId - The surface ID
- * @param source - The value source (must be a path reference for setting)
- * @param defaultValue - Default value if not found
- * @returns Tuple of [value, setValue]
- */
-function useFormBinding<T = unknown>(
-  surfaceId: string,
-  source: ValueSource | undefined,
-  defaultValue?: T
-): [T, (value: T) => void]
-
-/**
- * Hook to access the Surface context.
- * Provides access to surfaces and methods to manage them.
- * @throws Error if used outside of SurfaceProvider
- */
-function useSurfaceContext(): SurfaceContextValue
-
-interface SurfaceContextValue {
-  /** Map of all surfaces by surfaceId */
-  surfaces: Map<string, Surface>
-  /** Initializes a surface with root and styles */
-  initSurface: (surfaceId: string, root: string, styles?: SurfaceStyles) => void
-  /** Updates components in a surface */
-  updateSurface: (surfaceId: string, components: ComponentDefinition[]) => void
-  /** Deletes a surface */
-  deleteSurface: (surfaceId: string) => void
-  /** Gets a surface by ID */
-  getSurface: (surfaceId: string) => Surface | undefined
-  /** Gets a component from a surface */
-  getComponent: (
-    surfaceId: string,
-    componentId: string
-  ) => ComponentDefinition | undefined
-  /** Clears all surfaces */
-  clearSurfaces: () => void
-}
-
-/**
- * Hook to access the DataModel context.
- * Provides access to data models and methods to manage them.
- * @throws Error if used outside of DataModelProvider
- */
-function useDataModelContext(): DataModelContextValue
-
-interface DataModelContextValue {
-  /** Map of data models by surfaceId */
-  dataModels: Map<string, DataModel>
-  /** Updates the data model at a path with merge behavior */
-  updateDataModel: (
-    surfaceId: string,
-    path: string,
-    data: Record<string, unknown>
-  ) => void
-  /** Gets a value from the data model */
-  getDataValue: (surfaceId: string, path: string) => DataModelValue | undefined
-  /** Sets a value in the data model (used by form inputs) */
-  setDataValue: (surfaceId: string, path: string, value: unknown) => void
-  /** Gets the entire data model for a surface */
-  getDataModel: (surfaceId: string) => DataModel
-  /** Initializes the data model for a surface */
-  initDataModel: (surfaceId: string) => void
-  /** Deletes the data model for a surface */
-  deleteDataModel: (surfaceId: string) => void
-  /** Clears all data models */
-  clearDataModels: () => void
-}
-```
-
-## Others
-
-```typescript
-/**
- * Renders a component by ID from the component registry.
- * @param surfaceId - The surface ID
- * @param componentId - The component ID to render
- */
-function ComponentRenderer(props: {
-  surfaceId: string
-  componentId: string
-}): React.ReactElement
 
 /**
  * Represents a value source - either a literal value or a reference to a data model path.
@@ -161,5 +178,226 @@ type ValueSource =
 interface Action {
   name: string
   context?: ActionContextItem[]
+}
+```
+
+## V0.9
+
+### React
+
+```typescript
+// @a2ui-sdk/react/0.9
+
+/**
+ * Provider component that processes A2UI messages and sets up contexts.
+ */
+function A2UIProvider(props: {
+  messages: A2UIMessage[]
+  onAction?: (action: A2UIAction) => void
+  components?: Map<string, React.ComponentType<any>>
+  children?: React.ReactNode
+}): React.ReactElement
+
+/**
+ * Main renderer component that renders all surfaces.
+ */
+function A2UIRenderer(): React.ReactElement
+
+/**
+ * Renders a component by ID from the component registry.
+ */
+function ComponentRenderer(props: {
+  surfaceId: string
+  componentId: string
+}): React.ReactElement
+
+/**
+ * Returns a function to dispatch actions from custom components.
+ */
+function useDispatchAction(): (
+  surfaceId: string,
+  componentId: string,
+  action: Action
+) => void
+
+/**
+ * Resolves a DynamicValue to its actual value.
+ */
+function useDataBinding<T = unknown>(
+  source: DynamicValue | undefined,
+  defaultValue?: T
+): T
+
+/**
+ * Hook for two-way data binding in form components.
+ * @returns Tuple of [value, setValue]
+ */
+function useFormBinding<T = unknown>(
+  source: FormBindableValue | undefined,
+  defaultValue?: T
+): [T, (value: T) => void]
+
+/**
+ * Resolves a DynamicString with interpolation support.
+ */
+function useStringBinding(
+  source: DynamicString | undefined,
+  defaultValue?: string
+): string
+
+/**
+ * Hook to access the data model for a surface.
+ */
+function useDataModel(): DataModel
+
+/**
+ * Hook to validate components with check rules.
+ */
+function useValidation(checks: CheckRule[] | undefined): ValidationResult
+
+/**
+ * Hook to access the Surface context.
+ */
+function useSurfaceContext(): SurfaceContextValue
+
+/**
+ * Hook to access the current scope value.
+ */
+function useScope(): ScopeValue
+
+/**
+ * Hook to get the current scope base path.
+ */
+function useScopeBasePath(): string | null
+```
+
+### Utils
+
+```typescript
+// @a2ui-sdk/utils/0.9
+
+/**
+ * Interpolates a string template with values from the data model.
+ * Supports `${path}` syntax for data binding.
+ * @example
+ * interpolate("Hello ${/user/name}!", { user: { name: "World" } })
+ * // => "Hello World!"
+ */
+function interpolate(template: string, dataModel: DataModel): string
+
+/**
+ * Checks if a string contains interpolation expressions.
+ */
+function hasInterpolation(value: string): boolean
+
+/**
+ * Resolves a DynamicValue to its actual value.
+ */
+function resolveDynamicValue<T>(
+  value: DynamicValue | undefined,
+  dataModel: DataModel,
+  basePath: string | null,
+  defaultValue?: T
+): T
+
+/**
+ * Gets a value from the data model at a JSON Pointer path.
+ */
+function getValueByPath(dataModel: DataModel, path: string): unknown
+
+/**
+ * Sets a value in the data model at a JSON Pointer path.
+ */
+function setValueByPath(
+  dataModel: DataModel,
+  path: string,
+  value: unknown
+): DataModel
+
+/**
+ * Evaluates a CheckRule against the data model.
+ */
+function evaluateCheckRule(
+  rule: CheckRule,
+  dataModel: DataModel,
+  basePath: string | null
+): ValidationResult
+```
+
+### Types
+
+```typescript
+// @a2ui-sdk/types/0.9
+
+/**
+ * A2UI message from server to client.
+ */
+type A2UIMessage =
+  | { createSurface: CreateSurfacePayload }
+  | { updateComponents: UpdateComponentsPayload }
+  | { updateDataModel: UpdateDataModelPayload }
+  | { deleteSurface: DeleteSurfacePayload }
+
+/**
+ * Resolved action payload sent to the action handler.
+ */
+interface A2UIAction {
+  name: string
+  surfaceId: string
+  sourceComponentId: string
+  timestamp: string // ISO 8601
+  context: Record<string, unknown>
+}
+
+/**
+ * Dynamic value types for data binding.
+ */
+type DynamicValue = string | number | boolean | { path: string } | FunctionCall
+type DynamicString = string | { path: string } | FunctionCall
+type DynamicNumber = number | { path: string } | FunctionCall
+type DynamicBoolean = boolean | { path: string } | LogicExpression
+type DynamicStringList = string[] | { path: string } | FunctionCall
+
+/**
+ * Action definition (attached to Button components).
+ */
+interface Action {
+  name: string
+  context?: Record<string, DynamicValue>
+}
+
+/**
+ * Check rule for validation.
+ */
+interface CheckRule {
+  message: string
+  call?: string
+  args?: Record<string, DynamicValue>
+  and?: CheckRule[]
+  or?: CheckRule[]
+  not?: CheckRule
+  true?: true
+  false?: false
+}
+
+/**
+ * Validation result.
+ */
+interface ValidationResult {
+  valid: boolean
+  errors: string[]
+}
+
+/**
+ * Children definition for container components.
+ */
+type ChildList = string[] | TemplateBinding
+
+/**
+ * Template binding for dynamic child generation.
+ */
+interface TemplateBinding {
+  componentId: string
+  path: string
 }
 ```

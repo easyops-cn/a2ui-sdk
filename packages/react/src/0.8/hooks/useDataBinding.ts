@@ -5,7 +5,7 @@
 import { useMemo } from 'react'
 import type { ValueSource, DataModel } from '@a2ui-sdk/types/0.8'
 import { useDataModelContext } from '../contexts/DataModelContext'
-import { resolveValue } from '../utils/dataBinding'
+import { resolveValue } from '@a2ui-sdk/utils/0.8'
 
 /**
  * Resolves a ValueSource to its actual value.

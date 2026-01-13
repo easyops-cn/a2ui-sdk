@@ -9,7 +9,7 @@ import { ScopeProvider } from '../contexts/ScopeContext'
 import { useValidation } from './useValidation'
 import { useRef, type ReactNode } from 'react'
 import type { CheckRule } from '@a2ui-sdk/types/0.9'
-import type { ValidationFunction } from '../utils/validation'
+import type { ValidationFunction } from '@a2ui-sdk/utils/0.9'
 
 /**
  * Setup component that creates a surface with data.

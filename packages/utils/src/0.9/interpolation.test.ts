@@ -4,8 +4,12 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { parseInterpolation, interpolate } from './interpolation'
-import type { PathNode, LiteralNode, FunctionCallNode } from './interpolation'
+import { parseInterpolation, interpolate } from './interpolation/index.js'
+import type {
+  PathNode,
+  LiteralNode,
+  FunctionCallNode,
+} from './interpolation/types.js'
 
 describe('parseInterpolation', () => {
   it('should parse simple path expression', () => {

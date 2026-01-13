@@ -13,7 +13,7 @@ import type {
   DataModel,
   FormBindableValue,
 } from '@a2ui-sdk/types/0.9'
-import { getValueByPath, resolvePath } from './pathUtils'
+import { getValueByPath, resolvePath } from './pathUtils.js'
 import { interpolate } from '@a2ui-sdk/utils/0.9'
 
 /**
@@ -57,21 +57,6 @@ export function isFunctionCall(
     'call' in value &&
     typeof (value as { call: unknown }).call === 'string'
   )
-}
-
-/**
- * Gets the path from a dynamic value, or undefined if it's not a path binding.
- *
- * @param value - The dynamic value
- * @returns The path string or undefined
- */
-export function getBindingPath(
-  value: FormBindableValue | undefined | null
-): string | undefined {
-  if (isPathBinding(value)) {
-    return value.path
-  }
-  return undefined
 }
 
 /**
@@ -185,57 +170,6 @@ export function resolveString(
 
   // Other types (number, boolean) - convert to string
   return String(value)
-}
-
-/**
- * Resolves a dynamic number value.
- *
- * @param value - The dynamic number value
- * @param dataModel - The data model for path lookups
- * @param basePath - Optional base path for relative path resolution
- * @param defaultValue - Default value if undefined or path not found
- * @returns The resolved number
- */
-export function resolveNumber(
-  value: number | { path: string } | undefined | null,
-  dataModel: DataModel,
-  basePath: string | null = null,
-  defaultValue = 0
-): number {
-  const resolved = resolveValue(value, dataModel, basePath, defaultValue)
-  if (typeof resolved === 'number') {
-    return resolved
-  }
-  if (resolved === null || resolved === undefined) {
-    return defaultValue
-  }
-  const parsed = Number(resolved)
-  return isNaN(parsed) ? defaultValue : parsed
-}
-
-/**
- * Resolves a dynamic boolean value.
- *
- * @param value - The dynamic boolean value
- * @param dataModel - The data model for path lookups
- * @param basePath - Optional base path for relative path resolution
- * @param defaultValue - Default value if undefined or path not found
- * @returns The resolved boolean
- */
-export function resolveBoolean(
-  value: boolean | { path: string } | undefined | null,
-  dataModel: DataModel,
-  basePath: string | null = null,
-  defaultValue = false
-): boolean {
-  const resolved = resolveValue(value, dataModel, basePath, defaultValue)
-  if (typeof resolved === 'boolean') {
-    return resolved
-  }
-  if (resolved === null || resolved === undefined) {
-    return defaultValue
-  }
-  return Boolean(resolved)
 }
 
 /**
