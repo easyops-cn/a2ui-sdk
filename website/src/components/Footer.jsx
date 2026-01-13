@@ -3,7 +3,7 @@ export default function Footer() {
     <footer>
       © {new Date().getFullYear()} • Built with{' '}
       <a href="https://github.com/weareoutman/plain-blog">Plain Blog</a> •{' '}
-      <a href="https://github.com/easyops-cn/a2ui-react">GitHub</a>
+      <a href="https://github.com/easyops-cn/a2ui-sdk">GitHub</a>
     </footer>
   )
 }

@@ -19,7 +19,7 @@ export function Header({ title, children }: HeaderProps) {
             Playground
           </a>
           <a
-            href="https://github.com/easyops-cn/a2ui-react"
+            href="https://github.com/easyops-cn/a2ui-sdk"
             target="_blank"
             rel="noopener noreferrer"
           >
