@@ -10,7 +10,7 @@ Supports all components in A2UI standard catalog out of the box. Built with [sha
 
 Currently both A2UI protocol v0.8 and v0.9 (draft 2026-01-12) are fully supported.
 
-[Docs](https://easyops-cn.github.io/a2ui-sdk/) | [Playground](https://easyops-cn.github.io/a2ui-sdk/playground/)
+[Docs](https://a2ui-sdk.js.org/) | [Playground](https://a2ui-sdk.js.org/playground/)
 
 ## Packages
 

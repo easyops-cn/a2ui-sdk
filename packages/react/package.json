@@ -2,7 +2,7 @@
   "name": "@a2ui-sdk/react",
   "version": "0.1.0",
   "description": "A2UI SDK for React",
-  "homepage": "https://easyops-cn.github.io/a2ui-sdk/",
+  "homepage": "https://a2ui-sdk.js.org/",
   "repository": {
     "type": "git",
     "url": "git@github.com:easyops-cn/a2ui-sdk.git",

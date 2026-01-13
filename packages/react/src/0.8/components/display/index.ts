@@ -1,5 +1,5 @@
 /**
- * A2UI React Renderer - Display Components
+ * A2UI SDK for React - Display Components
  */
 
 export { TextComponent } from './TextComponent'

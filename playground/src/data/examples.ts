@@ -42,7 +42,7 @@ export const examples: Example[] = [
                 Text: {
                   text: {
                     literalString:
-                      'Welcome to the A2UI React Renderer Playground. Edit the JSON on the left to see changes in real-time.',
+                      'Welcome to the A2UI SDK Playground. Edit the JSON on the left to see changes in real-time.',
                   },
                   usageHint: 'body',
                 },

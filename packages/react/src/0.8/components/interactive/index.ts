@@ -1,5 +1,5 @@
 /**
- * A2UI React Renderer - Interactive Components
+ * A2UI SDK for React - Interactive Components
  */
 
 export { ButtonComponent } from './ButtonComponent'

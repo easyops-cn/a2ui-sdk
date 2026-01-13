@@ -120,7 +120,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header title="A2UI React Renderer">
+      <Header title="A2UI SDK">
         <ThemeToggle theme={theme} onToggle={toggleTheme} />
       </Header>
       <main className="main-content">

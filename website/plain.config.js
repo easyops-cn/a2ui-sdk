@@ -1,7 +1,6 @@
 // @ts-check
 /** @type {import("plain-blog").SiteConfig} */
 export default {
-  baseUrl: '/a2ui-sdk/',
   site: {
     title: 'A2UI SDK',
     description: 'The SDK for A2UI protocol',
