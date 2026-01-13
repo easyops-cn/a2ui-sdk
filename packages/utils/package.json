@@ -1,6 +1,6 @@
 {
   "name": "@a2ui-sdk/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A2UI utilities",
   "homepage": "https://a2ui-sdk.js.org/",
   "repository": {
@@ -42,6 +42,6 @@
     "vitest": "^4.0.16"
   },
   "dependencies": {
-    "@a2ui-sdk/types": "0.1.0"
+    "@a2ui-sdk/types": "0.1.1"
   }
 }

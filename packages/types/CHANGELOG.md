@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/easyops-cn/a2ui-sdk/compare/types-v0.1.0...types-v0.1.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* set base url to / ([a9b2dad](https://github.com/easyops-cn/a2ui-sdk/commit/a9b2dada08861593934e2bf5423c0cd1378590ff))
+* set base url to / ([1ea577d](https://github.com/easyops-cn/a2ui-sdk/commit/1ea577d12e880b03fc1bd08c24ed411a3f4cdaa0))
+
 ## [0.1.0](https://github.com/easyops-cn/a2ui-sdk/compare/types-v0.0.3...types-v0.1.0) (2026-01-13)
 
 
