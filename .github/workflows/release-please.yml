@@ -10,14 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
+      releases_created: ${{ steps.release.outputs['packages/types--release_created'] || steps.release.outputs['packages/utils--release_created'] || steps.release.outputs['packages/react--release_created'] }}
 
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GH_TOKEN_EVE }}
-          release-type: node
 
   npm-publish:
 
@@ -26,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # Ensure that a publication only occurs when a new release is created:
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.releases_created }}
 
     steps:
       - name: Checkout
