@@ -1,6 +1,6 @@
 {
   "name": "@a2ui-sdk/react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A2UI SDK for React",
   "homepage": "https://easyops-cn.github.io/a2ui-sdk/",
   "repository": {
@@ -41,8 +41,8 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@a2ui-sdk/types": "0.0.2",
-    "@a2ui-sdk/utils": "0.0.2",
+    "@a2ui-sdk/types": "0.0.3",
+    "@a2ui-sdk/utils": "0.0.3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
