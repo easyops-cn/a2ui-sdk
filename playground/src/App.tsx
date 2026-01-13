@@ -2,11 +2,11 @@ import { useState, useCallback, useMemo } from 'react'
 import type {
   A2UIMessage as A2UIMessageV08,
   A2UIAction as A2UIActionV08,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 import type {
   A2UIMessage as A2UIMessageV09,
   A2UIAction as A2UIActionV09,
-} from '@easyops-cn/a2ui-react/0.9'
+} from '@a2ui-sdk/react/0.9'
 import { Header } from './components/Header'
 import { ThemeToggle } from './components/ThemeToggle'
 import { JsonEditor } from './components/JsonEditor'

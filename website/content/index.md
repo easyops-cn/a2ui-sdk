@@ -1,4 +1,6 @@
-A React renderer library for [A2UI](https://a2ui.org) protocol.
+The SDK for [A2UI](https://a2ui.org) protocol.
+
+NOTE: this is not the official SDK maintained by the A2UI team.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
@@ -7,7 +9,7 @@ Currently A2UI protocol v0.8 is fully supported. Work on v0.9 is in progress.
 ## Installation
 
 ```sh
-npm install @easyops-cn/a2ui-react
+npm install @a2ui-sdk/react
 ```
 
 ## V0.8
@@ -17,7 +19,7 @@ npm install @easyops-cn/a2ui-react
 First, use the `@source` directive to tell Tailwind to scan the library code for class names in your global CSS:
 
 ```css
-@source "../node_modules/@easyops-cn/a2ui-react";
+@source "../node_modules/@a2ui-sdk/react";
 ```
 
 Next, use `A2UIProvider` and `A2UIRenderer` to render A2UI messages:
@@ -28,7 +30,7 @@ import {
   A2UIRenderer,
   type A2UIMessage,
   type A2UIAction,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 
 function App() {
   const messages: A2UIMessage[] = []
@@ -55,7 +57,7 @@ import {
   A2UIRenderer,
   type A2UIMessage,
   type A2UIAction,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 
 const ComponentsMap = new Map<string, React.ComponentType<any>>([
   // Override default Button component with a custom one
@@ -81,7 +83,7 @@ import {
   useDispatchAction,
   ComponentRenderer,
   type ButtonComponentProps,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 
 export function CustomButtonComponent({
   surfaceId,
@@ -108,7 +110,7 @@ export function CustomButtonComponent({
 Custom switch component with data binding:
 
 ```tsx
-import { useDataBinding, useFormBinding } from '@easyops-cn/a2ui-react/0.8'
+import { useDataBinding, useFormBinding } from '@a2ui-sdk/react/0.8'
 
 export function CustomSwitchComponent({
   surfaceId,
@@ -138,7 +140,7 @@ export function CustomSwitchComponent({
 First, use the `@source` directive to tell Tailwind to scan the library code for class names in your global CSS:
 
 ```css
-@source "../node_modules/@easyops-cn/a2ui-react";
+@source "../node_modules/@a2ui-sdk/react";
 ```
 
 Next, use `A2UIProvider` and `A2UIRenderer` to render A2UI messages:
@@ -149,7 +151,7 @@ import {
   A2UIRenderer,
   type A2UIMessage,
   type A2UIAction,
-} from '@easyops-cn/a2ui-react/0.9'
+} from '@a2ui-sdk/react/0.9'
 
 function App() {
   const messages: A2UIMessage[] = []

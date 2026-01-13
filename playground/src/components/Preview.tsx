@@ -4,13 +4,13 @@ import {
   A2UIRenderer as A2UIRendererV08,
   type A2UIMessage as A2UIMessageV08,
   type A2UIAction as A2UIActionV08,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 import {
   A2UIProvider as A2UIProviderV09,
   A2UIRenderer as A2UIRendererV09,
   type A2UIMessage as A2UIMessageV09,
   type A2UIAction as A2UIActionV09,
-} from '@easyops-cn/a2ui-react/0.9'
+} from '@a2ui-sdk/react/0.9'
 import { ErrorDisplay } from './ErrorDisplay'
 import type { A2UIVersion } from './VersionSelector'
 

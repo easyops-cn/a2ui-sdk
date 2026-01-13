@@ -27,7 +27,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["../src/*"],
-      "@easyops-cn/a2ui-react/0.8": ["../src/0.8/index.ts"]
+      "@a2ui-sdk/react/0.8": ["../src/0.8/index.ts"]
     }
   },
   "include": ["src"]

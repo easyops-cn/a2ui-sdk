@@ -1,4 +1,4 @@
-import type { A2UIMessage } from '@easyops-cn/a2ui-react/0.8'
+import type { A2UIMessage } from '@a2ui-sdk/react/0.8'
 
 export interface Example {
   id: string

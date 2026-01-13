@@ -1,12 +1,12 @@
 // @ts-check
 /** @type {import("plain-blog").SiteConfig} */
 export default {
-  baseUrl: '/a2ui-react/',
+  baseUrl: '/a2ui-sdk/',
   site: {
-    title: 'A2UI React Renderer',
-    description: 'A React renderer for A2UI protocol',
+    title: 'A2UI SDK',
+    description: 'The SDK for A2UI protocol',
     favicon: 'assets/favicon.svg',
-    url: 'https://a2ui-react.js.org',
+    url: 'https://a2ui-sdk.js.org',
   },
   locales: ['en'],
   toc: true,

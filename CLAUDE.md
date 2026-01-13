@@ -4,27 +4,46 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A2UI React Renderer (`@easyops-cn/a2ui-react`) - A React implementation for rendering A2UI protocol. This is a library package (not an application) that downstream developers consume.
+A2UI SDK - SDK for integrating with A2UI protocol. This is a set of library packages (not applications) that downstream developers consume.
 
 ## Monorepo Structure
 
 This is an npm workspaces monorepo:
 
-- Root package: `@easyops-cn/a2ui-react` - The main library
+- `packages/react` - `@a2ui-sdk/react` - React implementation for rendering A2UI protocol
+- `packages/types` - `@a2ui-sdk/types` - TypeScript type definitions for A2UI protocol
+- `packages/utils` - `@a2ui-sdk/utils` - Utility functions for A2UI
 - `website/` - Documentation site using plain-blog
 - `playground/` - Live demo workspace for real-time A2UI rendering development
 
 ## Commands
 
-### Library (root)
+### Root (linting & formatting)
 
 ```bash
-npm run build        # TypeScript compile + Vite build (outputs to dist/)
-npm run dev          # Start Vite dev server for local development
-npm test             # Run Vitest in watch mode
-npm run test:run     # Run tests once
-npm run lint         # Run ESLint
+npm run lint         # Run ESLint across all packages
 npm run lint:fix     # ESLint with auto-fix
+npm run format       # Format code with Prettier
+npm run format:check # Check code formatting
+```
+
+### Packages
+
+**Build order:** `types` → `utils` → `react` (each package depends on the previous)
+
+```bash
+# Types package (build first)
+npm run build -w @a2ui-sdk/types    # TypeScript compile
+
+# Utils package (depends on types)
+npm run build -w @a2ui-sdk/utils    # TypeScript compile
+npm test -w @a2ui-sdk/utils         # Run Vitest in watch mode
+
+# React package (depends on types and utils)
+npm run build -w @a2ui-sdk/react    # TypeScript compile + Vite build
+npm run dev -w @a2ui-sdk/react      # Start Vite dev server
+npm test -w @a2ui-sdk/react         # Run Vitest in watch mode
+npm run test:run -w @a2ui-sdk/react # Run tests once
 ```
 
 ### Website
@@ -51,7 +70,7 @@ import {
   A2UIRenderer,
   type A2UIMessage,
   type A2UIAction,
-} from '@easyops-cn/a2ui-react/0.8'
+} from '@a2ui-sdk/react/0.8'
 ;<A2UIProvider messages={messages}>
   <A2UIRenderer onAction={handleAction} />
 </A2UIProvider>
@@ -64,8 +83,18 @@ Custom components use hooks: `useDispatchAction`, `useDataBinding`, `useFormBind
 ## Package Exports
 
 ```javascript
-import { v0_8 } from '@easyops-cn/a2ui-react'       // Main namespace export
-import { ... } from '@easyops-cn/a2ui-react/0.8'    // Core module (A2UIRenderer, hooks, types)
+// React package
+import { v0_8 } from '@a2ui-sdk/react'       // Main namespace export
+import { ... } from '@a2ui-sdk/react/0.8'    // v0.8 module
+import { ... } from '@a2ui-sdk/react/0.9'    // v0.9 module
+
+// Types package
+import { ... } from '@a2ui-sdk/types/0.8'    // v0.8 types
+import { ... } from '@a2ui-sdk/types/0.9'    // v0.9 types
+
+// Utils package
+import { ... } from '@a2ui-sdk/utils'        // Utilities
+import { ... } from '@a2ui-sdk/utils/0.9'    // v0.9 utilities
 ```
 
 ## Architecture
@@ -88,11 +117,15 @@ A2UI messages processed in order:
 
 ### Key Directories
 
-- `src/0.8/contexts/` - React context providers (Surface, DataModel, Action)
-- `src/0.8/hooks/` - Custom hooks for data binding and actions
-- `src/0.8/components/` - Component implementations (display/, layout/, interactive/)
-- `src/0.8/schemas/` - JSON schemas for A2UI protocol
-- `src/components/ui/` - shadcn/ui primitives
+- `packages/react/src/0.8/` - A2UI v0.8 React implementation
+  - `contexts/` - React context providers (Surface, DataModel, Action)
+  - `hooks/` - Custom hooks for data binding and actions
+  - `components/` - Component implementations (display/, layout/, interactive/)
+  - `schemas/` - JSON schemas for A2UI protocol
+- `packages/react/src/0.9/` - A2UI v0.9 React implementation
+- `packages/react/src/components/ui/` - shadcn/ui primitives
+- `packages/types/src/` - TypeScript type definitions for A2UI protocol
+- `packages/utils/src/` - Utility functions (interpolation, path utils, etc.)
 
 ## Testing
 
@@ -109,9 +142,9 @@ TypeScript 5.9, React 19, Radix UI (for UI primitives), Tailwind CSS (via class-
 - TypeScript 5.9 + React 19, Radix UI (for UI primitives), Tailwind CSS (via class-variance-authority), lucide-react (icons) (003-a2ui-0-9-renderer)
 - N/A (client-side rendering library) (003-a2ui-0-9-renderer)
 
-- TypeScript 5.9, React 19 + @uiw/react-codemirror (CodeMirror 6), @codemirror/lang-json, @easyops-cn/a2ui-react, Tailwind CSS 4 (002-playground)
+- TypeScript 5.9, React 19 + @uiw/react-codemirror (CodeMirror 6), @codemirror/lang-json, Tailwind CSS 4 (002-playground)
 - localStorage (theme preference only) (002-playground)
 
 ## Recent Changes
 
-- 002-playground: Added TypeScript 5.9, React 19 + @uiw/react-codemirror (CodeMirror 6), @codemirror/lang-json, @easyops-cn/a2ui-react, Tailwind CSS 4
+- 002-playground: Added TypeScript 5.9, React 19 + @uiw/react-codemirror (CodeMirror 6), @codemirror/lang-json, Tailwind CSS 4

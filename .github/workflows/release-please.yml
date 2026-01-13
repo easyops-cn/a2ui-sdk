@@ -18,7 +18,6 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN_EVE }}
           release-type: node
-          bump-minor-pre-major: true
 
   npm-publish:
 
@@ -43,8 +42,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build @easyops-cn/a2ui-react
-        run: npm run build
+      - name: Build @a2ui-sdk/types
+        run: npm run build -w @a2ui-sdk/types
+
+      - name: Build @a2ui-sdk/utils
+        run: npm run build -w @a2ui-sdk/utils
+
+      - name: Build @a2ui-sdk/react
+        run: npm run build -w @a2ui-sdk/react
 
       - name: Publish to npm
         run: npm publish --access public

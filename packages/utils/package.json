@@ -1,0 +1,40 @@
+{
+  "name": "@a2ui-sdk/utils",
+  "version": "0.0.0",
+  "description": "A2UI utilities",
+  "homepage": "https://easyops-cn.github.io/a2ui-sdk/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:easyops-cn/a2ui-sdk.git",
+    "directory": "packages/utils"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./0.9": {
+      "types": "./dist/0.9/index.d.ts",
+      "default": "./dist/0.9/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsc -b --watch",
+    "build": "tsc -b"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.16",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.16"
+  },
+  "dependencies": {
+    "@a2ui-sdk/types": "^0.0.0"
+  }
+}

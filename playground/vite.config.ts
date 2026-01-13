@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/a2ui-react/playground/',
+  base: '/a2ui-sdk/playground/',
   plugins: [
     react({
       babel: {
@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '^/a2ui-react/(?!playground/)': {
+      '^/a2ui-sdk/(?!playground/)': {
         target: 'http://localhost:3000',
         changeOrigin: true,
       },
