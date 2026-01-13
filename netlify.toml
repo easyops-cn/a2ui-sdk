@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/"
-  to = "/a2ui-react/"
+  to = "/a2ui-sdk/"
   status = 302
   force = true
 
