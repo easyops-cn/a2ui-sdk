@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.3](https://github.com/easyops-cn/a2ui-sdk/compare/v0.0.2...v0.0.3) (2026-01-13)
+
+
+### Bug Fixes
+
+* attempt to fix release-please ([0bcfee6](https://github.com/easyops-cn/a2ui-sdk/commit/0bcfee668f642a9cd121625e04886b99f9319432))
+* eighth attempt to fix release-please ([b7c8531](https://github.com/easyops-cn/a2ui-sdk/commit/b7c8531c52ba15a31ec6b3b530c46a493daeee0d))
+* fifth attempt to fix release-please ([fb5606b](https://github.com/easyops-cn/a2ui-sdk/commit/fb5606b4faefb1ceb6f3f6ed8ea2e453ad4dc24d))
+* fourth attempt to fix release-please ([62d2a4c](https://github.com/easyops-cn/a2ui-sdk/commit/62d2a4cea03ea71fc029cf85ce48bf38c70548f7))
+* second attempt to fix release-please ([6fc18cc](https://github.com/easyops-cn/a2ui-sdk/commit/6fc18cc566465155146f3864bf12e93e5016e0eb))
+* seventh attempt to fix release-please ([2eb9dab](https://github.com/easyops-cn/a2ui-sdk/commit/2eb9dab088e3183b76ec7ade5e571f955ec0eb0e))
+* sixth attempt to fix release-please ([7f825bb](https://github.com/easyops-cn/a2ui-sdk/commit/7f825bb8944fe07146c2bccc6db72d2c16eb13d6))
+* third attempt to fix release-please ([fd3a5e5](https://github.com/easyops-cn/a2ui-sdk/commit/fd3a5e58f14a717bbb2c986bc2dc68a8ac5c4e7f))
+
 ## [0.0.2](https://github.com/easyops-cn/a2ui-sdk/compare/v0.0.1...v0.0.2) (2026-01-13)
 
 
