@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.1](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.2.0...react-v0.2.1) (2026-01-14)
+
+
+### Bug Fixes
+
+* @a2ui-sdk/* should be in deps instead of dev-deps ([8fc499c](https://github.com/easyops-cn/a2ui-sdk/commit/8fc499c9e9751158eda77c0ea16a48f475c1bc7a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @a2ui-sdk/types bumped from 0.2.0 to 0.2.1
+    * @a2ui-sdk/utils bumped from 0.2.0 to 0.2.1
+
 ## [0.2.0](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.1.1...react-v0.2.0) (2026-01-14)
 
 
