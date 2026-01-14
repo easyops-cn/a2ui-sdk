@@ -268,19 +268,31 @@ article blockquote {
 }
 
 article table {
-  width: 100%;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  width: calc(100% + 32px);
+  margin: 16px -16px;
   border-collapse: separate;
   border-spacing: 0px;
+  border: 1px solid var(--muted-color);
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 1.5;
 }
 
 article th,
 article td {
   text-align: left;
-  padding: 4px 4px 4px 0px;
+  padding: 7px 15px;
   border-color: var(--muted-color);
   border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+article th {
+  background-color: var(--muted-color);
+}
+
+article tr:last-child td {
+  border-bottom: none;
 }
 
 article p.post-date {
@@ -366,6 +378,11 @@ a[role='button'] {
 }
 
 @media screen and (max-width: 1271px) and (min-width: 704px) {
+  article table {
+    width: 100%;
+  }
+
+  article table,
   .shiki {
     margin-left: 0;
     margin-right: 0;
