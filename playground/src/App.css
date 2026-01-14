@@ -53,20 +53,15 @@
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
+  text-underline-offset: 0.25em;
   padding: 6px 8px;
   transition: color 0.2s ease;
 }
 
-.header-nav a:hover {
-  color: var(--primary-color);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
+.header-nav a:hover,
 .header-nav a.active {
   color: var(--primary-color);
   text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 .header-nav a[target='_blank'] {

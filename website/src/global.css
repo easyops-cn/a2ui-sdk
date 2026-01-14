@@ -79,17 +79,20 @@ h3 {
 
 a {
   color: var(--primary-color);
-  text-decoration: none;
-  box-shadow: 0 1px 0 0 currentColor;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
 }
 
 h1 > a,
 h2 > a,
-h3 > a {
+h3 > a,
+h4 > a,
+h5 > a,
+h6 > a {
   color: inherit;
 
   &:not(:hover) {
-    box-shadow: none;
+    text-decoration: none;
   }
 }
 
@@ -136,21 +139,15 @@ body > header {
   color: var(--text-color);
   font-size: 16px;
   font-weight: 500;
-  box-shadow: none;
+  text-decoration: none;
   padding: 6px 8px;
   transition: color 0.2s ease;
 }
 
-.header-nav a:hover {
-  color: var(--primary-color);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
+.header-nav a:hover,
 .header-nav a.active {
   color: var(--primary-color);
   text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 .header-nav a[target='_blank'] {
@@ -160,7 +157,6 @@ body > header {
 }
 
 body > header > a {
-  box-shadow: none;
   text-decoration: none;
   color: var(--primary-color);
   font-size: 24px;
@@ -346,10 +342,6 @@ footer > hr {
 
 a[role='button'] {
   cursor: pointer;
-}
-
-.search-mark {
-  box-shadow: 0 1px 0 0 currentColor;
 }
 
 /* color-mode-switch:not(:defined) {
