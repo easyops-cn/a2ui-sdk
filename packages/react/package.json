@@ -20,9 +20,17 @@
       "types": "./dist/0.8/index.d.ts",
       "default": "./dist/0.8/index.js"
     },
+    "./0.8/standard-catalog": {
+      "types": "./dist/0.8/standard-catalog/index.d.ts",
+      "default": "./dist/0.8/standard-catalog/index.js"
+    },
     "./0.9": {
       "types": "./dist/0.9/index.d.ts",
       "default": "./dist/0.9/index.js"
+    },
+    "./0.9/standard-catalog": {
+      "types": "./dist/0.9/standard-catalog/index.d.ts",
+      "default": "./dist/0.9/standard-catalog/index.js"
     }
   },
   "files": [

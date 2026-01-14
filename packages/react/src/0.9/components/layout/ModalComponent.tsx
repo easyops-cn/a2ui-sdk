@@ -4,8 +4,8 @@
  */
 
 import { memo, useState } from 'react'
-import type { ModalComponent as ModalComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { ModalComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { ComponentRenderer } from '../ComponentRenderer'
 
@@ -14,12 +14,12 @@ import { ComponentRenderer } from '../ComponentRenderer'
  */
 export const ModalComponent = memo(function ModalComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const modalComp = component as ModalComponentType
+  trigger,
+  content,
+}: A2UIComponentProps<ModalComponentProps>) {
   const [open, setOpen] = useState(false)
 
-  if (!modalComp.trigger || !modalComp.content) {
+  if (!trigger || !content) {
     return null
   }
 
@@ -27,17 +27,11 @@ export const ModalComponent = memo(function ModalComponent({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className="cursor-pointer">
-          <ComponentRenderer
-            surfaceId={surfaceId}
-            componentId={modalComp.trigger}
-          />
+          <ComponentRenderer surfaceId={surfaceId} componentId={trigger} />
         </div>
       </DialogTrigger>
       <DialogContent>
-        <ComponentRenderer
-          surfaceId={surfaceId}
-          componentId={modalComp.content}
-        />
+        <ComponentRenderer surfaceId={surfaceId} componentId={content} />
       </DialogContent>
     </Dialog>
   )

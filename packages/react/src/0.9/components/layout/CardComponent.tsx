@@ -3,8 +3,8 @@
  */
 
 import { memo } from 'react'
-import type { CardComponent as CardComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { CardComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { Card, CardContent } from '@/components/ui/card'
 import { ComponentRenderer } from '../ComponentRenderer'
 
@@ -13,21 +13,20 @@ import { ComponentRenderer } from '../ComponentRenderer'
  */
 export const CardComponent = memo(function CardComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const cardComp = component as CardComponentType
-
+  child,
+  weight,
+}: A2UIComponentProps<CardComponentProps>) {
   // Apply weight as flex-grow if set
-  const style = cardComp.weight ? { flexGrow: cardComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
-  if (!cardComp.child) {
+  if (!child) {
     return <Card style={style} />
   }
 
   return (
     <Card style={style}>
       <CardContent className="p-4">
-        <ComponentRenderer surfaceId={surfaceId} componentId={cardComp.child} />
+        <ComponentRenderer surfaceId={surfaceId} componentId={child} />
       </CardContent>
     </Card>
   )

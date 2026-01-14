@@ -12,22 +12,14 @@ import {
   type ReactNode,
   type ComponentType,
 } from 'react'
-import type { Component } from '@a2ui-sdk/types/0.9'
-
-/**
- * Props passed to A2UI components.
- * Includes the component definition and surfaceId.
- */
-export interface A2UIComponentProps {
-  /** The surface ID this component belongs to */
-  surfaceId: string
-  /** The component definition from the protocol */
-  component: Component
-}
+import type { A2UIComponentProps } from '@/0.9/components/types'
 
 /**
  * Type for a component in the components map.
+ * Components receive surfaceId, componentId, weight, and their specific props spread directly.
+ * We use a loose type here since props are dynamically spread at runtime.
  */
+
 export type A2UIComponent = ComponentType<A2UIComponentProps>
 
 /**
@@ -55,8 +47,6 @@ export const ComponentsMapContext =
  * Props for ComponentsMapProvider.
  */
 export interface ComponentsMapProviderProps {
-  /** Custom components to override or extend defaults */
-  components?: ComponentsMap
   /** Default component registry */
   defaultComponents: Record<string, A2UIComponent>
   children: ReactNode
@@ -67,23 +57,17 @@ export interface ComponentsMapProviderProps {
  *
  * @example
  * ```tsx
- * const customComponents = new Map([
- *   ['Button', CustomButton],
- *   ['Switch', CustomSwitch],
- * ])
- *
- * <ComponentsMapProvider components={customComponents} defaultComponents={defaultRegistry}>
+ * <ComponentsMapProvider defaultComponents={catalog.components}>
  *   <App />
  * </ComponentsMapProvider>
  * ```
  */
 export function ComponentsMapProvider({
-  components,
   defaultComponents,
   children,
 }: ComponentsMapProviderProps) {
   const value = useMemo<ComponentsMapContextValue>(() => {
-    const customComponents = components ?? new Map()
+    const customComponents = new Map<string, A2UIComponent>()
 
     const getComponent = (type: string): A2UIComponent | undefined => {
       // Custom components take precedence over defaults
@@ -97,7 +81,7 @@ export function ComponentsMapProvider({
       customComponents,
       getComponent,
     }
-  }, [components, defaultComponents])
+  }, [defaultComponents])
 
   return (
     <ComponentsMapContext.Provider value={value}>

@@ -6,40 +6,45 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { ComponentRenderer, registerComponent } from './ComponentRenderer'
+import { ComponentRenderer } from './ComponentRenderer'
 import { SurfaceProvider, useSurfaceContext } from '../contexts/SurfaceContext'
 import { DataModelProvider } from '../contexts/DataModelContext'
 import { ActionProvider } from '../contexts/ActionContext'
+import { ComponentsMapProvider } from '../contexts/ComponentsMapContext'
+import { standardComponents } from '../standard-catalog'
 import type { ReactNode } from 'react'
-import type {
-  BaseComponentProps,
-  ComponentDefinition,
-} from '@a2ui-sdk/types/0.8'
-import React from 'react'
+import type { ComponentDefinition } from '@a2ui-sdk/types/0.8'
 
-// Wrapper with all providers
+// Wrapper with all providers (no surface setup)
 const wrapper = ({ children }: { children: ReactNode }) => (
   <SurfaceProvider>
     <DataModelProvider>
-      <ActionProvider>{children}</ActionProvider>
+      <ActionProvider>
+        <ComponentsMapProvider defaultComponents={standardComponents}>
+          {children}
+        </ComponentsMapProvider>
+      </ActionProvider>
     </DataModelProvider>
   </SurfaceProvider>
 )
 
-// Helper component to set up surface with components
+// Helper component to set up surface with components (synchronous)
 function SurfaceSetup({
-  children,
+  surfaceId,
   components,
 }: {
-  children: ReactNode
+  surfaceId: string
   components: ComponentDefinition[]
 }) {
-  const { initSurface, updateSurface } = useSurfaceContext()
-  React.useEffect(() => {
-    initSurface('test-surface', 'root')
-    updateSurface('test-surface', components)
-  }, [initSurface, updateSurface, components])
-  return <>{children}</>
+  const { getSurface, initSurface, updateSurface } = useSurfaceContext()
+
+  // Setup synchronously on mount (not in useEffect)
+  if (!getSurface(surfaceId)) {
+    initSurface(surfaceId, 'root')
+    updateSurface(surfaceId, components)
+  }
+
+  return null
 }
 
 // Custom wrapper that sets up surface
@@ -48,7 +53,10 @@ const createSurfaceWrapper = (components: ComponentDefinition[]) => {
     <SurfaceProvider>
       <DataModelProvider>
         <ActionProvider>
-          <SurfaceSetup components={components}>{children}</SurfaceSetup>
+          <ComponentsMapProvider defaultComponents={standardComponents}>
+            <SurfaceSetup surfaceId="test-surface" components={components} />
+            {children}
+          </ComponentsMapProvider>
         </ActionProvider>
       </DataModelProvider>
     </SurfaceProvider>
@@ -330,41 +338,6 @@ describe('ComponentRenderer', () => {
 
       expect(container.querySelector('h1')).toBeInTheDocument()
       expect(container.querySelector('h1')).toHaveTextContent('Heading')
-    })
-  })
-
-  describe('registerComponent', () => {
-    it('should register and render custom component', () => {
-      // Register a custom component
-      const CustomComponent = ({
-        surfaceId,
-        componentId,
-        customProp,
-      }: BaseComponentProps & { customProp?: string }) => (
-        <div data-testid="custom-component">
-          Custom: {customProp} ({surfaceId}/{componentId})
-        </div>
-      )
-
-      registerComponent('CustomWidget', CustomComponent)
-
-      const components: ComponentDefinition[] = [
-        {
-          id: 'custom-1',
-          component: { CustomWidget: { customProp: 'test-value' } },
-        },
-      ]
-      const surfaceWrapper = createSurfaceWrapper(components)
-
-      render(
-        <ComponentRenderer surfaceId="test-surface" componentId="custom-1" />,
-        { wrapper: surfaceWrapper }
-      )
-
-      expect(screen.getByTestId('custom-component')).toBeInTheDocument()
-      expect(screen.getByTestId('custom-component')).toHaveTextContent(
-        'Custom: test-value'
-      )
     })
   })
 

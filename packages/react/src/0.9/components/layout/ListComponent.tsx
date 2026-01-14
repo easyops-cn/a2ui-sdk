@@ -6,10 +6,10 @@
 
 import { memo } from 'react'
 import type {
-  ListComponent as ListComponentType,
+  ListComponentProps,
   Align,
-} from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+} from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useDataModel } from '../../hooks/useDataBinding'
 import { useScope } from '../../contexts/ScopeContext'
 import { cn } from '@/lib/utils'
@@ -43,14 +43,13 @@ const alignStyles: Record<Align, string> = {
  */
 export const ListComponent = memo(function ListComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const listComp = component as ListComponentType
+  children,
+  direction = 'vertical',
+  align = 'stretch',
+  weight,
+}: A2UIComponentProps<ListComponentProps>) {
   const dataModel = useDataModel(surfaceId)
   const { basePath } = useScope()
-
-  const direction = listComp.direction ?? 'vertical'
-  const align = listComp.align ?? 'stretch'
 
   const className = cn(
     'flex gap-3',
@@ -59,10 +58,7 @@ export const ListComponent = memo(function ListComponent({
   )
 
   // Apply weight as flex-grow if set
-  const style = listComp.weight ? { flexGrow: listComp.weight } : undefined
-
-  // Get children - either static list or template binding
-  const children = listComp.children
+  const style = weight ? { flexGrow: weight } : undefined
 
   // Handle static list of children
   if (Array.isArray(children)) {

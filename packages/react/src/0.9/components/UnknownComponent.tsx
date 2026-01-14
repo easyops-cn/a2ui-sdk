@@ -6,7 +6,14 @@
  * In production mode, this should log a warning but render minimally.
  */
 
-import type { A2UIComponentProps } from '../contexts/ComponentsMapContext'
+import type { A2UIComponentProps } from '@/0.9/components/types'
+
+/**
+ * Props for UnknownComponent.
+ */
+export interface UnknownComponentProps {
+  componentType: string
+}
 
 /**
  * Fallback component for unknown types.
@@ -14,10 +21,10 @@ import type { A2UIComponentProps } from '../contexts/ComponentsMapContext'
  * Displays a warning box with the unknown component type name
  * to help developers identify configuration issues.
  */
-export function UnknownComponent({ component }: A2UIComponentProps) {
-  const componentType = component.component
-  const componentId = component.id
-
+export function UnknownComponent({
+  componentId,
+  componentType,
+}: A2UIComponentProps<UnknownComponentProps>) {
   // Log warning in both dev and production
   if (process.env.NODE_ENV === 'development') {
     console.warn(

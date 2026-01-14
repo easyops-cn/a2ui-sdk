@@ -3,9 +3,10 @@
  */
 
 import { memo } from 'react'
-import type { ImageComponentProps } from '@a2ui-sdk/types/0.8'
+import type { ImageComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Maps fit property to CSS object-fit values.
@@ -39,7 +40,7 @@ export const ImageComponent = memo(function ImageComponent({
   url,
   fit = 'cover',
   usageHint,
-}: ImageComponentProps) {
+}: A2UIComponentProps<ImageComponentProps>) {
   const imageUrl = useDataBinding<string>(surfaceId, url, '')
 
   if (!imageUrl) {

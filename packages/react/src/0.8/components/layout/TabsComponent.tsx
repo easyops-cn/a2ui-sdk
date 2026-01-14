@@ -3,10 +3,12 @@
  */
 
 import { memo } from 'react'
-import type { TabsComponentProps, ValueSource } from '@a2ui-sdk/types/0.8'
+import type { ValueSource } from '@a2ui-sdk/types/0.8'
+import type { TabsComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ComponentRenderer } from '../ComponentRenderer'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Tabs component - tabbed content container.
@@ -14,7 +16,7 @@ import { ComponentRenderer } from '../ComponentRenderer'
 export const TabsComponent = memo(function TabsComponent({
   surfaceId,
   tabItems,
-}: TabsComponentProps) {
+}: A2UIComponentProps<TabsComponentProps>) {
   if (!tabItems || tabItems.length === 0) {
     return null
   }

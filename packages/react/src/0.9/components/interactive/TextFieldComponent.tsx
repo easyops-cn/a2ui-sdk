@@ -3,8 +3,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { TextFieldComponent as TextFieldComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { TextFieldComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
 import { useValidation } from '../../hooks/useValidation'
 import { Input } from '@/components/ui/input'
@@ -27,16 +27,16 @@ const inputTypeMap: Record<string, string> = {
  */
 export const TextFieldComponent = memo(function TextFieldComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const textField = component as TextFieldComponentType
-  const labelText = useStringBinding(surfaceId, textField.label, '')
-  const [value, setValue] = useFormBinding<string>(
-    surfaceId,
-    textField.value,
-    ''
-  )
-  const { valid, errors } = useValidation(surfaceId, textField.checks)
+  componentId,
+  label,
+  value: valueProp,
+  variant = 'shortText',
+  checks,
+  weight,
+}: A2UIComponentProps<TextFieldComponentProps>) {
+  const labelText = useStringBinding(surfaceId, label, '')
+  const [value, setValue] = useFormBinding<string>(surfaceId, valueProp, '')
+  const { valid, errors } = useValidation(surfaceId, checks)
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -45,13 +45,12 @@ export const TextFieldComponent = memo(function TextFieldComponent({
     [setValue]
   )
 
-  const id = `textfield-${textField.id}`
-  const variant = textField.variant ?? 'shortText'
+  const id = `textfield-${componentId}`
   const inputType = inputTypeMap[variant] || 'text'
   const isLongText = variant === 'longText'
 
   // Apply weight as flex-grow if set
-  const style = textField.weight ? { flexGrow: textField.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <div className={cn('flex flex-col gap-2')} style={style}>

@@ -3,10 +3,10 @@
  */
 
 import { memo, type JSX } from 'react'
-import type { TextComponent as TextComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { TextComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
 import { useStringBinding } from '../../hooks/useDataBinding'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 
 /**
  * Maps variant to Tailwind CSS classes.
@@ -40,17 +40,17 @@ const variantElements: Record<string, keyof JSX.IntrinsicElements> = {
  */
 export const TextComponent = memo(function TextComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const textComp = component as TextComponentType
-  const textValue = useStringBinding(surfaceId, textComp.text, '')
+  text,
+  variant = 'body',
+  weight,
+}: A2UIComponentProps<TextComponentProps>) {
+  const textValue = useStringBinding(surfaceId, text, '')
 
-  const variant = textComp.variant ?? 'body'
   const className = cn(variantStyles[variant] || variantStyles.body)
   const Element = (variantElements[variant] as 'p') || 'p'
 
   // Apply weight as flex-grow if set
-  const style = textComp.weight ? { flexGrow: textComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <Element className={className} style={style}>

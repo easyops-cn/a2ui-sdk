@@ -7,9 +7,10 @@ import { render, screen, act, fireEvent } from '@testing-library/react'
 import { SurfaceProvider, useSurfaceContext } from '../contexts/SurfaceContext'
 import { ActionProvider } from '../contexts/ActionContext'
 import { ComponentsMapProvider } from '../contexts/ComponentsMapContext'
-import { ComponentRenderer, componentRegistry } from './index'
+import { ComponentRenderer } from './ComponentRenderer'
 import { useRef, type ReactNode } from 'react'
-import type { Component } from '@a2ui-sdk/types/0.9'
+import type { ComponentDefinition } from '@a2ui-sdk/types/0.9'
+import { standardCatalog } from '../standard-catalog'
 
 /**
  * Test provider with all required contexts.
@@ -24,10 +25,7 @@ function TestProvider({
   return (
     <SurfaceProvider>
       <ActionProvider onAction={onAction}>
-        <ComponentsMapProvider
-          components={new Map()}
-          defaultComponents={componentRegistry}
-        >
+        <ComponentsMapProvider defaultComponents={standardCatalog.components}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>
@@ -45,7 +43,7 @@ function SurfaceSetup({
   children,
 }: {
   surfaceId: string
-  components: Component[]
+  components: ComponentDefinition[]
   dataModel?: Record<string, unknown>
   children: ReactNode
 }) {
@@ -74,7 +72,7 @@ describe('Display Components', () => {
 
   describe('TextComponent', () => {
     it('should render literal text', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'text-1', component: 'Text', text: 'Hello World' },
       ]
 
@@ -90,7 +88,7 @@ describe('Display Components', () => {
     })
 
     it('should render text from data binding', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'text-1', component: 'Text', text: { path: '/greeting' } },
       ]
 
@@ -110,7 +108,7 @@ describe('Display Components', () => {
     })
 
     it('should render text with interpolation', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'text-1', component: 'Text', text: 'Hello, ${/user/name}!' },
       ]
 
@@ -132,7 +130,7 @@ describe('Display Components', () => {
 
   describe('DividerComponent', () => {
     it('should render a divider', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'divider-1', component: 'Divider' },
       ]
 
@@ -165,7 +163,7 @@ describe('Layout Components', () => {
 
   describe('ColumnComponent', () => {
     it('should render children in a column layout', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'col-1', component: 'Column', children: ['text-1', 'text-2'] },
         { id: 'text-1', component: 'Text', text: 'First' },
         { id: 'text-2', component: 'Text', text: 'Second' },
@@ -186,7 +184,7 @@ describe('Layout Components', () => {
 
   describe('RowComponent', () => {
     it('should render children in a row layout', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'row-1', component: 'Row', children: ['text-1', 'text-2'] },
         { id: 'text-1', component: 'Text', text: 'Left' },
         { id: 'text-2', component: 'Text', text: 'Right' },
@@ -207,7 +205,7 @@ describe('Layout Components', () => {
 
   describe('CardComponent', () => {
     it('should render card with content', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         { id: 'card-1', component: 'Card', child: 'text-1' },
         { id: 'text-1', component: 'Text', text: 'Card Content' },
       ]
@@ -226,7 +224,7 @@ describe('Layout Components', () => {
 
   describe('ListComponent', () => {
     it('should render list items based on data array', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'list-1',
           component: 'List',
@@ -272,7 +270,7 @@ describe('Interactive Components', () => {
 
   describe('ButtonComponent', () => {
     it('should render button with child text', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'btn-1',
           component: 'Button',
@@ -297,7 +295,7 @@ describe('Interactive Components', () => {
 
     it('should dispatch action on click', () => {
       const onAction = vi.fn()
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'btn-1',
           component: 'Button',
@@ -330,7 +328,7 @@ describe('Interactive Components', () => {
 
   describe('TextFieldComponent', () => {
     it('should render text input', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'input-1',
           component: 'TextField',
@@ -368,7 +366,7 @@ describe('Interactive Components', () => {
         )
       }
 
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'input-1',
           component: 'TextField',
@@ -399,7 +397,7 @@ describe('Interactive Components', () => {
 
   describe('CheckBoxComponent', () => {
     it('should render checkbox with label', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'check-1',
           component: 'CheckBox',
@@ -426,7 +424,7 @@ describe('Interactive Components', () => {
 
   describe('ChoicePickerComponent', () => {
     it('should render choice picker with options', () => {
-      const components: Component[] = [
+      const components: ComponentDefinition[] = [
         {
           id: 'picker-1',
           component: 'ChoicePicker',

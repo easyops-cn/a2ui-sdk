@@ -42,14 +42,21 @@ export type {
   ValueSource,
 } from '@a2ui-sdk/types/0.8'
 
-export type { A2UIProviderProps, ComponentsMap } from './contexts/A2UIProvider'
+export type { A2UIProviderProps } from './contexts/A2UIProvider'
 export type { A2UIRendererProps } from './A2UIRenderer'
+export type {
+  Catalog,
+  CatalogComponent,
+  CatalogComponents,
+  CatalogFunctions,
+} from './standard-catalog'
 
 // ============ Components ============
 
 export { A2UIProvider } from './contexts/A2UIProvider'
 export { A2UIRenderer } from './A2UIRenderer'
 export { ComponentRenderer } from './components/ComponentRenderer'
+export { standardCatalog } from './standard-catalog'
 
 // ============ Hooks ============
 

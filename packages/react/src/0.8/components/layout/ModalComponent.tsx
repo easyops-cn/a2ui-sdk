@@ -3,9 +3,10 @@
  */
 
 import { memo, useState } from 'react'
-import type { ModalComponentProps } from '@a2ui-sdk/types/0.8'
+import type { ModalComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { ComponentRenderer } from '../ComponentRenderer'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Modal component - dialog container with trigger.
@@ -14,7 +15,7 @@ export const ModalComponent = memo(function ModalComponent({
   surfaceId,
   entryPointChild,
   contentChild,
-}: ModalComponentProps) {
+}: A2UIComponentProps<ModalComponentProps>) {
   const [open, setOpen] = useState(false)
 
   if (!entryPointChild || !contentChild) {

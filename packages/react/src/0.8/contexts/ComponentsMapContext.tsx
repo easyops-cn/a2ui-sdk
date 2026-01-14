@@ -12,14 +12,12 @@ import {
   type ReactNode,
   type ComponentType,
 } from 'react'
-import type { BaseComponentProps } from '@a2ui-sdk/types/0.8'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Type for a component in the components map.
  */
-export type A2UIComponent = ComponentType<
-  BaseComponentProps & Record<string, unknown>
->
+export type A2UIComponent = ComponentType<A2UIComponentProps>
 
 /**
  * Map of component type names to React components.
@@ -46,8 +44,6 @@ export const ComponentsMapContext =
  * Props for ComponentsMapProvider.
  */
 export interface ComponentsMapProviderProps {
-  /** Custom components to override or extend defaults */
-  components?: ComponentsMap
   /** Default component registry */
   defaultComponents: Record<string, A2UIComponent>
   children: ReactNode
@@ -58,23 +54,17 @@ export interface ComponentsMapProviderProps {
  *
  * @example
  * ```tsx
- * const customComponents = new Map([
- *   ['Button', CustomButton],
- *   ['Switch', CustomSwitch],
- * ])
- *
- * <ComponentsMapProvider components={customComponents} defaultComponents={defaultRegistry}>
+ * <ComponentsMapProvider defaultComponents={catalog.components}>
  *   <App />
  * </ComponentsMapProvider>
  * ```
  */
 export function ComponentsMapProvider({
-  components,
   defaultComponents,
   children,
 }: ComponentsMapProviderProps) {
   const value = useMemo<ComponentsMapContextValue>(() => {
-    const customComponents = components ?? new Map()
+    const customComponents = new Map<string, A2UIComponent>()
 
     const getComponent = (type: string): A2UIComponent | undefined => {
       // Custom components take precedence over defaults
@@ -88,7 +78,7 @@ export function ComponentsMapProvider({
       customComponents,
       getComponent,
     }
-  }, [components, defaultComponents])
+  }, [defaultComponents])
 
   return (
     <ComponentsMapContext.Provider value={value}>

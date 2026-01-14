@@ -3,11 +3,15 @@
  */
 
 import { memo } from 'react'
-import type { ListComponentProps, Alignment } from '@a2ui-sdk/types/0.8'
+import type {
+  ListComponentProps,
+  Alignment,
+} from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataModel } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 import { getValueByPath } from '@a2ui-sdk/utils/0.8'
 import { ComponentRenderer } from '../ComponentRenderer'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Maps alignment values to Tailwind align-items classes.
@@ -27,7 +31,7 @@ export const ListComponent = memo(function ListComponent({
   children,
   direction = 'vertical',
   alignment = 'stretch',
-}: ListComponentProps) {
+}: A2UIComponentProps<ListComponentProps>) {
   const dataModel = useDataModel(surfaceId)
 
   const className = cn(

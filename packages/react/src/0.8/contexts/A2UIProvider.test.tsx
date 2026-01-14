@@ -11,6 +11,7 @@ import { A2UIProvider } from './A2UIProvider'
 import { useSurfaceContext } from './SurfaceContext'
 import { useDataModelContext } from './DataModelContext'
 import { useComponentsMapContext } from './ComponentsMapContext'
+import { standardCatalog } from '../standard-catalog'
 import type { ReactNode } from 'react'
 import type { A2UIMessage } from '@a2ui-sdk/types/0.8'
 
@@ -99,16 +100,21 @@ describe('A2UIProvider', () => {
     })
   })
 
-  describe('components prop', () => {
-    it('should provide custom components via ComponentsMapContext', () => {
-      function CustomButton() {
-        return <button>Custom</button>
+  describe('catalog prop', () => {
+    it('should use custom catalog components', () => {
+      function CustomText() {
+        return <span>Custom Text</span>
       }
 
-      const customComponents = new Map([['Button', CustomButton]])
+      const customCatalog = {
+        components: {
+          Text: CustomText,
+        },
+        functions: {},
+      }
 
       const wrapper = ({ children }: { children: ReactNode }) => (
-        <A2UIProvider messages={[]} components={customComponents}>
+        <A2UIProvider messages={[]} catalog={customCatalog}>
           {children}
         </A2UIProvider>
       )
@@ -117,7 +123,54 @@ describe('A2UIProvider', () => {
         wrapper,
       })
 
-      expect(result.current.getComponent('Button')).toBe(CustomButton)
+      expect(result.current.getComponent('Text')).toBe(CustomText)
+      // Other standard components should not be available
+      expect(result.current.getComponent('Button')).toBeUndefined()
+    })
+
+    it('should allow extending standard catalog with custom components', () => {
+      function CustomChart() {
+        return <div>Chart</div>
+      }
+
+      const extendedCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomChart,
+        },
+      }
+
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <A2UIProvider messages={[]} catalog={extendedCatalog}>
+          {children}
+        </A2UIProvider>
+      )
+
+      const { result } = renderHook(() => useComponentsMapContext(), {
+        wrapper,
+      })
+
+      // Custom component should be available
+      expect(result.current.getComponent('CustomChart')).toBe(CustomChart)
+      // Standard components should still be available
+      expect(result.current.getComponent('Text')).toBeDefined()
+      expect(result.current.getComponent('Button')).toBeDefined()
+    })
+
+    it('should use standard catalog when no catalog is provided', () => {
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <A2UIProvider messages={[]}>{children}</A2UIProvider>
+      )
+
+      const { result } = renderHook(() => useComponentsMapContext(), {
+        wrapper,
+      })
+
+      // Standard components should be available
+      expect(result.current.getComponent('Text')).toBeDefined()
+      expect(result.current.getComponent('Button')).toBeDefined()
+      expect(result.current.getComponent('Row')).toBeDefined()
     })
   })
 

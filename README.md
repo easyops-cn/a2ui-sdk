@@ -1,6 +1,6 @@
 # A2UI SDK
 
-[![NPM Version](https://img.shields.io/npm/v/%40a2ui-sdk%2Freact)](https://www.npmjs.com/package/@easyops-cn/a2ui-sdk)
+[![NPM Version](https://img.shields.io/npm/v/%40a2ui-sdk%2Freact)](https://www.npmjs.com/package/@a2ui-sdk/react)
 
 The TypeScript/React SDK for [A2UI](https://a2ui.org) protocol.
 

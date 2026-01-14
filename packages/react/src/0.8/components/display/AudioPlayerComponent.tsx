@@ -3,9 +3,10 @@
  */
 
 import { memo } from 'react'
-import type { AudioPlayerComponentProps } from '@a2ui-sdk/types/0.8'
+import type { AudioPlayerComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * AudioPlayer component for playing audio content.
@@ -14,7 +15,7 @@ export const AudioPlayerComponent = memo(function AudioPlayerComponent({
   surfaceId,
   url,
   description,
-}: AudioPlayerComponentProps) {
+}: A2UIComponentProps<AudioPlayerComponentProps>) {
   const audioUrl = useDataBinding<string>(surfaceId, url, '')
   const descriptionText = useDataBinding<string>(surfaceId, description, '')
 

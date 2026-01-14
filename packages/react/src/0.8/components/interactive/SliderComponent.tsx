@@ -3,11 +3,12 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { SliderComponentProps } from '@a2ui-sdk/types/0.8'
+import type { SliderComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { Slider } from '@/components/ui/slider'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Slider component - range slider input.
@@ -19,7 +20,7 @@ export const SliderComponent = memo(function SliderComponent({
   value,
   minValue = 0,
   maxValue = 100,
-}: SliderComponentProps) {
+}: A2UIComponentProps<SliderComponentProps>) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [sliderValue, setSliderValue] = useFormBinding<number>(
     surfaceId,

@@ -5,15 +5,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { SurfaceProvider, useSurfaceContext } from '../contexts/SurfaceContext'
-import {
-  ComponentsMapProvider,
-  type A2UIComponentProps,
-} from '../contexts/ComponentsMapContext'
-import {
-  ComponentRenderer,
-  registerComponent,
-  componentRegistry,
-} from './ComponentRenderer'
+import { ComponentsMapProvider } from '../contexts/ComponentsMapContext'
+import type { BaseComponentProps } from '@a2ui-sdk/types/0.9'
+import { ComponentRenderer } from './ComponentRenderer'
 import type { Component } from '@a2ui-sdk/types/0.9'
 
 /**
@@ -41,11 +35,6 @@ describe('ComponentRenderer', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
     vi.spyOn(console, 'warn').mockImplementation(() => {})
-
-    // Clear registry before each test
-    for (const key of Object.keys(componentRegistry)) {
-      delete componentRegistry[key]
-    }
   })
 
   afterEach(() => {
@@ -54,11 +43,10 @@ describe('ComponentRenderer', () => {
 
   describe('basic rendering', () => {
     it('should render component from registry', async () => {
-      // Register a test component
-      const TestText = ({ component }: A2UIComponentProps) => (
-        <span data-testid="text">{(component as { text: string }).text}</span>
+      // Test component that receives spread props (new pattern)
+      const TestText = ({ text }: BaseComponentProps & { text: string }) => (
+        <span data-testid="text">{text}</span>
       )
-      registerComponent('Text', TestText)
 
       const components: Component[] = [
         { id: 'text-1', component: 'Text', text: 'Hello World' },
@@ -66,8 +54,10 @@ describe('ComponentRenderer', () => {
 
       render(
         <SurfaceProvider>
-          <SurfaceSetup surfaceId="main" components={components} />
-          <ComponentRenderer surfaceId="main" componentId="text-1" />
+          <ComponentsMapProvider defaultComponents={{ Text: TestText }}>
+            <SurfaceSetup surfaceId="main" components={components} />
+            <ComponentRenderer surfaceId="main" componentId="text-1" />
+          </ComponentsMapProvider>
         </SurfaceProvider>
       )
 
@@ -75,24 +65,18 @@ describe('ComponentRenderer', () => {
     })
 
     it('should render custom components from context over registry', () => {
-      // Register a default component
-      const DefaultText = () => <span>Default</span>
-      registerComponent('Text', DefaultText)
-
-      // Custom component override
-      const CustomText = ({ component }: A2UIComponentProps) => (
-        <span data-testid="custom">{(component as { text: string }).text}</span>
+      // Custom component using new spread props pattern
+      const CustomText = ({ text }: BaseComponentProps & { text: string }) => (
+        <span data-testid="custom">{text}</span>
       )
 
       const components: Component[] = [
         { id: 'text-1', component: 'Text', text: 'Custom Content' },
       ]
 
-      const customMap = new Map([['Text', CustomText]])
-
       render(
         <SurfaceProvider>
-          <ComponentsMapProvider components={customMap} defaultComponents={{}}>
+          <ComponentsMapProvider defaultComponents={{ Text: CustomText }}>
             <SurfaceSetup surfaceId="main" components={components} />
             <ComponentRenderer surfaceId="main" componentId="text-1" />
           </ComponentsMapProvider>
@@ -107,7 +91,9 @@ describe('ComponentRenderer', () => {
     it('should warn and return null for non-existent component', () => {
       render(
         <SurfaceProvider>
-          <ComponentRenderer surfaceId="main" componentId="non-existent" />
+          <ComponentsMapProvider defaultComponents={{}}>
+            <ComponentRenderer surfaceId="main" componentId="non-existent" />
+          </ComponentsMapProvider>
         </SurfaceProvider>
       )
 
@@ -123,8 +109,10 @@ describe('ComponentRenderer', () => {
 
       render(
         <SurfaceProvider>
-          <SurfaceSetup surfaceId="main" components={components} />
-          <ComponentRenderer surfaceId="main" componentId="unknown-1" />
+          <ComponentsMapProvider defaultComponents={{}}>
+            <SurfaceSetup surfaceId="main" components={components} />
+            <ComponentRenderer surfaceId="main" componentId="unknown-1" />
+          </ComponentsMapProvider>
         </SurfaceProvider>
       )
 
@@ -132,31 +120,5 @@ describe('ComponentRenderer', () => {
       expect(screen.getByText(/Unknown component:/i)).toBeInTheDocument()
       expect(screen.getByText(/UnknownType/i)).toBeInTheDocument()
     })
-  })
-})
-
-describe('registerComponent', () => {
-  afterEach(() => {
-    // Clear registry
-    for (const key of Object.keys(componentRegistry)) {
-      delete componentRegistry[key]
-    }
-  })
-
-  it('should register component in registry', () => {
-    const TestComponent = () => <div>Test</div>
-    registerComponent('Test', TestComponent)
-
-    expect(componentRegistry['Test']).toBe(TestComponent)
-  })
-
-  it('should override existing component', () => {
-    const First = () => <div>First</div>
-    const Second = () => <div>Second</div>
-
-    registerComponent('Test', First)
-    registerComponent('Test', Second)
-
-    expect(componentRegistry['Test']).toBe(Second)
   })
 })

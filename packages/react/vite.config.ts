@@ -18,7 +18,15 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         '0.8/index': resolve(__dirname, 'src/0.8/index.ts'),
+        '0.8/standard-catalog/index': resolve(
+          __dirname,
+          'src/0.8/standard-catalog/index.ts'
+        ),
         '0.9/index': resolve(__dirname, 'src/0.9/index.ts'),
+        '0.9/standard-catalog/index': resolve(
+          __dirname,
+          'src/0.9/standard-catalog/index.ts'
+        ),
       },
       formats: ['es'],
     },

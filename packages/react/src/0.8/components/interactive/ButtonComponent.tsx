@@ -3,10 +3,11 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { ButtonComponentProps } from '@a2ui-sdk/types/0.8'
+import type { ButtonComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDispatchAction } from '@/0.8/hooks/useDispatchAction'
 import { Button } from '@/components/ui/button'
 import { ComponentRenderer } from '../ComponentRenderer'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Button component - triggers actions on click.
@@ -17,7 +18,7 @@ export const ButtonComponent = memo(function ButtonComponent({
   child,
   primary = false,
   action,
-}: ButtonComponentProps) {
+}: A2UIComponentProps<ButtonComponentProps>) {
   const dispatchAction = useDispatchAction()
 
   const handleClick = useCallback(() => {

@@ -5,10 +5,11 @@
 
 import { memo, useCallback } from 'react'
 import { CalendarIcon, ClockIcon } from 'lucide-react'
-import type { DateTimeInputComponentProps } from '@a2ui-sdk/types/0.8'
+import type { DateTimeInputComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * DateTimeInput component - date/time picker using native HTML5 inputs.
@@ -20,7 +21,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   value,
   enableDate = true,
   enableTime = false,
-}: DateTimeInputComponentProps) {
+}: A2UIComponentProps<DateTimeInputComponentProps>) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [dateValue, setDateValue] = useFormBinding<string>(surfaceId, value, '')
 

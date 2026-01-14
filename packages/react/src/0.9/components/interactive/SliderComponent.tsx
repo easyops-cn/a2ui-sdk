@@ -3,8 +3,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { SliderComponent as SliderComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { SliderComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
 import { useValidation } from '../../hooks/useValidation'
 import { Slider } from '@/components/ui/slider'
@@ -17,17 +17,20 @@ import { cn } from '@/lib/utils'
  */
 export const SliderComponent = memo(function SliderComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const slider = component as SliderComponentType
-  const labelText = useStringBinding(surfaceId, slider.label, '')
-  const min = slider.min ?? 0
-  const max = slider.max ?? 100
-  const { valid, errors } = useValidation(surfaceId, slider.checks)
+  componentId,
+  label,
+  min = 0,
+  max = 100,
+  value: valueProp,
+  checks,
+  weight,
+}: A2UIComponentProps<SliderComponentProps>) {
+  const labelText = useStringBinding(surfaceId, label, '')
+  const { valid, errors } = useValidation(surfaceId, checks)
 
   const [sliderValue, setSliderValue] = useFormBinding<number>(
     surfaceId,
-    slider.value,
+    valueProp,
     min
   )
 
@@ -40,10 +43,10 @@ export const SliderComponent = memo(function SliderComponent({
     [setSliderValue]
   )
 
-  const id = `slider-${slider.id}`
+  const id = `slider-${componentId}`
 
   // Apply weight as flex-grow if set
-  const style = slider.weight ? { flexGrow: slider.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <div className={cn('flex flex-col gap-2 py-2')} style={style}>

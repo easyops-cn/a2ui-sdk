@@ -8,16 +8,14 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { A2UIRenderer } from './A2UIRenderer'
-import { A2UIProvider, type ComponentsMap } from './contexts/A2UIProvider'
+import { A2UIProvider } from './contexts/A2UIProvider'
+import { standardCatalog } from './standard-catalog'
 import { useSurfaceContext } from './contexts/SurfaceContext'
-import type {
-  A2UIMessage,
-  BaseComponentProps,
-  Action,
-} from '@a2ui-sdk/types/0.8'
+import type { A2UIMessage, Action } from '@a2ui-sdk/types/0.8'
 import { useDispatchAction } from './hooks/useDispatchAction'
 import { useDataBinding, useFormBinding } from './hooks/useDataBinding'
 import { ComponentRenderer } from './components/ComponentRenderer'
+import type { A2UIComponentProps } from './components/types'
 
 // Helper to create test messages
 function createTestMessages(options: {
@@ -97,16 +95,16 @@ describe('A2UIRenderer', () => {
     })
 
     it('T014b: renders nothing for null/undefined messages', () => {
-      // @ts-expect-error - testing null handling
       const { container: c1 } = render(
+        // @ts-expect-error - testing null handling
         <A2UIProvider messages={null}>
           <A2UIRenderer />
         </A2UIProvider>
       )
       expect(c1.firstChild).toBeNull()
 
-      // @ts-expect-error - testing undefined handling
       const { container: c2 } = render(
+        // @ts-expect-error - testing undefined handling
         <A2UIProvider messages={undefined}>
           <A2UIRenderer />
         </A2UIProvider>
@@ -409,7 +407,7 @@ describe('A2UIRenderer', () => {
       function CustomButton({
         surfaceId,
         child,
-      }: BaseComponentProps & { child?: string }) {
+      }: A2UIComponentProps<{ child?: string }>) {
         return (
           <button data-testid="custom-button" data-surface={surfaceId}>
             Custom:{' '}
@@ -420,9 +418,13 @@ describe('A2UIRenderer', () => {
         )
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['Button', CustomButton],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          Button: CustomButton,
+        },
+      }
 
       const messages = createTestMessages({
         surfaceId: 'surface-1',
@@ -442,7 +444,7 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -458,16 +460,20 @@ describe('A2UIRenderer', () => {
 
       function CustomText({
         text,
-      }: BaseComponentProps & { text?: { literalString?: string } }) {
+      }: A2UIComponentProps & { text?: { literalString?: string } }) {
         return (
           <span data-testid="custom-text">Custom: {text?.literalString}</span>
         )
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['Button', CustomButton],
-        ['Text', CustomText],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          Button: CustomButton,
+          Text: CustomText,
+        },
+      }
 
       const messages = createTestMessages({
         surfaceId: 'surface-1',
@@ -488,7 +494,7 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -503,9 +509,13 @@ describe('A2UIRenderer', () => {
         return <button data-testid="custom-button">Custom Button</button>
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['Button', CustomButton],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          Button: CustomButton,
+        },
+      }
 
       const messages = createTestMessages({
         surfaceId: 'surface-1',
@@ -526,7 +536,7 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -539,10 +549,10 @@ describe('A2UIRenderer', () => {
   })
 
   describe('Phase 6: User Story 4 - Custom Component Creation', () => {
-    it('T034: new component type "Switch" renders from ComponentsMap', () => {
+    it('T034: new component type "Switch" renders from catalog', () => {
       function CustomSwitch({
         label,
-      }: BaseComponentProps & { label?: string }) {
+      }: A2UIComponentProps & { label?: string }) {
         return (
           <label data-testid="custom-switch">
             <input type="checkbox" />
@@ -551,9 +561,13 @@ describe('A2UIRenderer', () => {
         )
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['Switch', CustomSwitch],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          Switch: CustomSwitch,
+        },
+      }
 
       const messages = createTestMessages({
         surfaceId: 'surface-1',
@@ -568,7 +582,7 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -585,7 +599,7 @@ describe('A2UIRenderer', () => {
         surfaceId,
         componentId,
         action,
-      }: BaseComponentProps & { action?: Action }) {
+      }: A2UIComponentProps & { action?: Action }) {
         const dispatchAction = useDispatchAction()
 
         const handleChange = () => {
@@ -602,9 +616,13 @@ describe('A2UIRenderer', () => {
         )
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['Switch', CustomSwitch],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          Switch: CustomSwitch,
+        },
+      }
 
       const messages = createTestMessages({
         surfaceId: 'surface-1',
@@ -619,7 +637,7 @@ describe('A2UIRenderer', () => {
       })
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer onAction={onAction} />
         </A2UIProvider>
       )
@@ -642,14 +660,18 @@ describe('A2UIRenderer', () => {
       function CustomDisplay({
         surfaceId,
         text,
-      }: BaseComponentProps & { text?: { path: string } }) {
+      }: A2UIComponentProps & { text?: { path: string } }) {
         const textValue = useDataBinding<string>(surfaceId, text, 'default')
         return <span data-testid="custom-display">{textValue}</span>
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['CustomDisplay', CustomDisplay],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomDisplay,
+        },
+      }
 
       const messages: A2UIMessage[] = [
         { beginRendering: { surfaceId: 'surface-1', root: 'display-1' } },
@@ -676,7 +698,7 @@ describe('A2UIRenderer', () => {
       ]
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -690,7 +712,7 @@ describe('A2UIRenderer', () => {
       function CustomDisplay({
         surfaceId,
         text,
-      }: BaseComponentProps & { text?: { path: string } }) {
+      }: A2UIComponentProps & { text?: { path: string } }) {
         const textValue = useDataBinding<string>(
           surfaceId,
           text,
@@ -699,9 +721,13 @@ describe('A2UIRenderer', () => {
         return <span data-testid="custom-display">{textValue}</span>
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['CustomDisplay', CustomDisplay],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomDisplay,
+        },
+      }
 
       const messages: A2UIMessage[] = [
         { beginRendering: { surfaceId: 'surface-1', root: 'display-1' } },
@@ -721,7 +747,7 @@ describe('A2UIRenderer', () => {
       ]
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -737,14 +763,18 @@ describe('A2UIRenderer', () => {
       function CustomInput({
         surfaceId,
         value,
-      }: BaseComponentProps & { value?: { path: string } }) {
+      }: A2UIComponentProps & { value?: { path: string } }) {
         const [inputValue] = useFormBinding<string>(surfaceId, value, '')
         return <input data-testid="custom-input" value={inputValue} readOnly />
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['CustomInput', CustomInput],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomInput,
+        },
+      }
 
       const messages: A2UIMessage[] = [
         { beginRendering: { surfaceId: 'surface-1', root: 'input-1' } },
@@ -769,7 +799,7 @@ describe('A2UIRenderer', () => {
       ]
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -783,7 +813,7 @@ describe('A2UIRenderer', () => {
       function CustomInput({
         surfaceId,
         value,
-      }: BaseComponentProps & { value?: { path: string } }) {
+      }: A2UIComponentProps & { value?: { path: string } }) {
         const [inputValue, setInputValue] = useFormBinding<string>(
           surfaceId,
           value,
@@ -798,9 +828,13 @@ describe('A2UIRenderer', () => {
         )
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['CustomInput', CustomInput],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomInput,
+        },
+      }
 
       const messages: A2UIMessage[] = [
         { beginRendering: { surfaceId: 'surface-1', root: 'input-1' } },
@@ -818,7 +852,7 @@ describe('A2UIRenderer', () => {
       ]
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )
@@ -833,7 +867,7 @@ describe('A2UIRenderer', () => {
       function CustomInput({
         surfaceId,
         value,
-      }: BaseComponentProps & { value?: { path: string } }) {
+      }: A2UIComponentProps & { value?: { path: string } }) {
         const [inputValue] = useFormBinding<string>(
           surfaceId,
           value,
@@ -842,9 +876,13 @@ describe('A2UIRenderer', () => {
         return <input data-testid="custom-input" value={inputValue} readOnly />
       }
 
-      const customComponents: ComponentsMap = new Map([
-        ['CustomInput', CustomInput],
-      ])
+      const customCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomInput,
+        },
+      }
 
       const messages: A2UIMessage[] = [
         { beginRendering: { surfaceId: 'surface-1', root: 'input-1' } },
@@ -862,7 +900,7 @@ describe('A2UIRenderer', () => {
       ]
 
       render(
-        <A2UIProvider messages={messages} components={customComponents}>
+        <A2UIProvider messages={messages} catalog={customCatalog}>
           <A2UIRenderer />
         </A2UIProvider>
       )

@@ -7,11 +7,12 @@ import type {
   ColumnComponentProps,
   Distribution,
   Alignment,
-} from '@a2ui-sdk/types/0.8'
+} from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataModel } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 import { getValueByPath } from '@a2ui-sdk/utils/0.8'
 import { ComponentRenderer } from '../ComponentRenderer'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Maps distribution values to Tailwind justify-content classes.
@@ -43,7 +44,7 @@ export const ColumnComponent = memo(function ColumnComponent({
   children,
   distribution = 'start',
   alignment = 'stretch',
-}: ColumnComponentProps) {
+}: A2UIComponentProps<ColumnComponentProps>) {
   const dataModel = useDataModel(surfaceId)
 
   const className = cn(

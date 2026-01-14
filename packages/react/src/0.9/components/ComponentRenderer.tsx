@@ -3,24 +3,13 @@
  *
  * Uses the flat discriminator format from 0.9 protocol where
  * the component type is a property on the component itself.
+ * Props are spread directly to components like in v0.8.
  */
 
-import { memo, useContext, type ComponentType } from 'react'
+import { memo, useContext } from 'react'
 import { useComponent } from '../hooks/useComponent'
-import {
-  ComponentsMapContext,
-  type A2UIComponentProps,
-} from '../contexts/ComponentsMapContext'
+import { ComponentsMapContext } from '../contexts/ComponentsMapContext'
 import { UnknownComponent } from './UnknownComponent'
-
-/**
- * Component registry mapping component type names to React components.
- * This will be populated with actual components.
- */
-export const componentRegistry: Record<
-  string,
-  ComponentType<A2UIComponentProps>
-> = {}
 
 /**
  * Props for ComponentRenderer.
@@ -71,24 +60,34 @@ export const ComponentRenderer = memo(function ComponentRenderer({
   // Get the component type from the discriminator property
   const componentType = component.component
 
-  // Try to get component from context first (custom components), then fall back to registry
-  let ComponentImpl: ComponentType<A2UIComponentProps> | undefined
-  if (componentsMapContext) {
-    ComponentImpl = componentsMapContext.getComponent(componentType)
-  } else {
-    ComponentImpl = componentRegistry[componentType]
-  }
+  const ComponentImpl = componentsMapContext?.getComponent(componentType)
 
   // If component type is unknown, render the fallback
   if (!ComponentImpl) {
-    return <UnknownComponent surfaceId={surfaceId} component={component} />
+    return (
+      <UnknownComponent
+        surfaceId={surfaceId}
+        componentId={componentId}
+        componentType={componentType}
+      />
+    )
   }
 
   // Add to rendering set for circular reference detection
   renderingComponents.add(renderKey)
 
+  // Extract props from component, excluding 'component' (the type discriminator) and 'id'
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { component: _type, id: _id, ...props } = component
+
   try {
-    return <ComponentImpl surfaceId={surfaceId} component={component} />
+    return (
+      <ComponentImpl
+        surfaceId={surfaceId}
+        componentId={componentId}
+        {...props}
+      />
+    )
   } finally {
     // Remove from rendering set after render
     renderingComponents.delete(renderKey)
@@ -96,23 +95,3 @@ export const ComponentRenderer = memo(function ComponentRenderer({
 })
 
 ComponentRenderer.displayName = 'A2UI.ComponentRenderer'
-
-/**
- * Registers a component type in the default registry.
- *
- * @param type - The component type name
- * @param component - The React component to register
- *
- * @example
- * ```tsx
- * registerComponent('CustomChart', ({ surfaceId, component }) => {
- *   return <Chart data={component.data} />;
- * });
- * ```
- */
-export function registerComponent(
-  type: string,
-  component: ComponentType<A2UIComponentProps>
-): void {
-  componentRegistry[type] = component
-}

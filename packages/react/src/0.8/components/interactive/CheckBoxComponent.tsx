@@ -3,11 +3,12 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { CheckBoxComponentProps } from '@a2ui-sdk/types/0.8'
+import type { CheckBoxComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * CheckBox component - checkbox input with label.
@@ -17,7 +18,7 @@ export const CheckBoxComponent = memo(function CheckBoxComponent({
   componentId,
   label,
   value,
-}: CheckBoxComponentProps) {
+}: A2UIComponentProps<CheckBoxComponentProps>) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [checked, setChecked] = useFormBinding<boolean>(surfaceId, value, false)
 
