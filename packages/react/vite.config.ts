@@ -7,10 +7,13 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
+    tsconfigPaths({
+      projects: ['./tsconfig.build.json'],
+    }),
     dts({
       include: ['src'],
       outDir: 'dist',
+      tsconfigPath: './tsconfig.build.json',
     }),
   ],
   build: {
