@@ -29,7 +29,7 @@ function TestA2UIProvider({
   return (
     <SurfaceProvider>
       <ActionProvider>
-        <ComponentsMapProvider defaultComponents={testComponents}>
+        <ComponentsMapProvider components={testComponents}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>

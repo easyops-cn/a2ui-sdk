@@ -83,7 +83,7 @@ export interface Catalog {
   /** Component registry mapping type names to React components */
   components: CatalogComponents
   /** Function registry (reserved for future use) */
-  functions: CatalogFunctions
+  functions?: CatalogFunctions
 }
 
 /**
@@ -118,7 +118,7 @@ export const standardComponents: CatalogComponents = {
 /**
  * Standard functions included in the default catalog (reserved for future use).
  */
-export const standardFunctions: CatalogFunctions = {}
+// export const standardFunctions: CatalogFunctions = {}
 
 /**
  * The standard catalog containing all built-in A2UI v0.8 components and functions.
@@ -144,7 +144,7 @@ export const standardFunctions: CatalogFunctions = {}
  */
 export const standardCatalog: Catalog = {
   components: standardComponents,
-  functions: standardFunctions,
+  // functions: standardFunctions,
 }
 
 // Re-export individual components for direct imports

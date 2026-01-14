@@ -21,9 +21,7 @@ import { type ReactNode } from 'react'
 function TestA2UIProvider({ children }: { children: ReactNode }) {
   return (
     <SurfaceProvider>
-      <ComponentsMapProvider defaultComponents={{}}>
-        {children}
-      </ComponentsMapProvider>
+      <ComponentsMapProvider components={{}}>{children}</ComponentsMapProvider>
     </SurfaceProvider>
   )
 }
@@ -41,7 +39,7 @@ function TestA2UIProviderWithAction({
   return (
     <SurfaceProvider>
       <ActionProvider onAction={onAction}>
-        <ComponentsMapProvider defaultComponents={{}}>
+        <ComponentsMapProvider components={{}}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>

@@ -13,27 +13,19 @@ import {
   type ComponentType,
 } from 'react'
 import type { A2UIComponentProps } from '@/0.9/components/types'
+import { hasOwn } from '@/lib/utils'
 
 /**
  * Type for a component in the components map.
- * Components receive surfaceId, componentId, weight, and their specific props spread directly.
- * We use a loose type here since props are dynamically spread at runtime.
  */
-
-export type A2UIComponent = ComponentType<A2UIComponentProps>
-
-/**
- * Map of component type names to React components.
- */
-export type ComponentsMap = Map<string, A2UIComponent>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type A2UIComponent = ComponentType<A2UIComponentProps & any>
 
 /**
  * Context value for ComponentsMapContext.
  */
 export interface ComponentsMapContextValue {
-  /** Custom components provided by the user */
-  customComponents: ComponentsMap
-  /** Get a component by type name (custom first, then default) */
+  /** Get a component by type name */
   getComponent: (type: string) => A2UIComponent | undefined
 }
 
@@ -47,41 +39,34 @@ export const ComponentsMapContext =
  * Props for ComponentsMapProvider.
  */
 export interface ComponentsMapProviderProps {
-  /** Default component registry */
-  defaultComponents: Record<string, A2UIComponent>
+  /** Component registry */
+  components: Record<string, A2UIComponent>
   children: ReactNode
 }
 
 /**
- * Provider for custom component overrides.
+ * Provider for component registry.
  *
  * @example
  * ```tsx
- * <ComponentsMapProvider defaultComponents={catalog.components}>
+ * <ComponentsMapProvider components={catalog.components}>
  *   <App />
  * </ComponentsMapProvider>
  * ```
  */
 export function ComponentsMapProvider({
-  defaultComponents,
+  components,
   children,
 }: ComponentsMapProviderProps) {
   const value = useMemo<ComponentsMapContextValue>(() => {
-    const customComponents = new Map<string, A2UIComponent>()
-
     const getComponent = (type: string): A2UIComponent | undefined => {
-      // Custom components take precedence over defaults
-      if (customComponents.has(type)) {
-        return customComponents.get(type)
-      }
-      return defaultComponents[type]
+      return hasOwn(components, type) ? components[type] : undefined
     }
 
     return {
-      customComponents,
       getComponent,
     }
-  }, [defaultComponents])
+  }, [components])
 
   return (
     <ComponentsMapContext.Provider value={value}>

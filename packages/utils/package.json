@@ -11,6 +11,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -29,8 +30,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "tsc -b --watch",
-    "build": "tsc -b",
+    "dev": "tsc -b tsconfig.build.json --watch",
+    "build": "tsc -b tsconfig.build.json",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage"

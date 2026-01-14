@@ -25,7 +25,7 @@ function TestProvider({
   return (
     <SurfaceProvider>
       <ActionProvider onAction={onAction}>
-        <ComponentsMapProvider defaultComponents={standardCatalog.components}>
+        <ComponentsMapProvider components={standardCatalog.components}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>

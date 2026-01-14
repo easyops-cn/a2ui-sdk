@@ -54,7 +54,7 @@ describe('ComponentRenderer', () => {
 
       render(
         <SurfaceProvider>
-          <ComponentsMapProvider defaultComponents={{ Text: TestText }}>
+          <ComponentsMapProvider components={{ Text: TestText }}>
             <SurfaceSetup surfaceId="main" components={components} />
             <ComponentRenderer surfaceId="main" componentId="text-1" />
           </ComponentsMapProvider>
@@ -76,7 +76,7 @@ describe('ComponentRenderer', () => {
 
       render(
         <SurfaceProvider>
-          <ComponentsMapProvider defaultComponents={{ Text: CustomText }}>
+          <ComponentsMapProvider components={{ Text: CustomText }}>
             <SurfaceSetup surfaceId="main" components={components} />
             <ComponentRenderer surfaceId="main" componentId="text-1" />
           </ComponentsMapProvider>
@@ -91,7 +91,7 @@ describe('ComponentRenderer', () => {
     it('should warn and return null for non-existent component', () => {
       render(
         <SurfaceProvider>
-          <ComponentsMapProvider defaultComponents={{}}>
+          <ComponentsMapProvider components={{}}>
             <ComponentRenderer surfaceId="main" componentId="non-existent" />
           </ComponentsMapProvider>
         </SurfaceProvider>
@@ -109,7 +109,7 @@ describe('ComponentRenderer', () => {
 
       render(
         <SurfaceProvider>
-          <ComponentsMapProvider defaultComponents={{}}>
+          <ComponentsMapProvider components={{}}>
             <SurfaceSetup surfaceId="main" components={components} />
             <ComponentRenderer surfaceId="main" componentId="unknown-1" />
           </ComponentsMapProvider>

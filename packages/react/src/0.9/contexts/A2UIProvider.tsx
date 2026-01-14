@@ -170,7 +170,7 @@ export function A2UIProvider({
 
   return (
     <SurfaceProvider>
-      <ComponentsMapProvider defaultComponents={effectiveCatalog.components}>
+      <ComponentsMapProvider components={effectiveCatalog.components}>
         <A2UIMessageProcessor messages={safeMessages}>
           {children}
         </A2UIMessageProcessor>

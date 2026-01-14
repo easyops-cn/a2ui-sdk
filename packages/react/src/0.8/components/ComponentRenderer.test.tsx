@@ -20,7 +20,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <SurfaceProvider>
     <DataModelProvider>
       <ActionProvider>
-        <ComponentsMapProvider defaultComponents={standardComponents}>
+        <ComponentsMapProvider components={standardComponents}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>
@@ -53,7 +53,7 @@ const createSurfaceWrapper = (components: ComponentDefinition[]) => {
     <SurfaceProvider>
       <DataModelProvider>
         <ActionProvider>
-          <ComponentsMapProvider defaultComponents={standardComponents}>
+          <ComponentsMapProvider components={standardComponents}>
             <SurfaceSetup surfaceId="test-surface" components={components} />
             {children}
           </ComponentsMapProvider>
