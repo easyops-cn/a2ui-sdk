@@ -14,8 +14,8 @@
  *     console.log('Action:', action)
  *   }
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
- *       <A2UIRenderer />
+ *     <A2UIProvider messages={messages}>
+ *       <A2UIRenderer onAction={handleAction} />
  *     </A2UIProvider>
  *   )
  * }
@@ -32,25 +32,7 @@ export type {
   UpdateDataModelPayload,
   DeleteSurfacePayload,
   // Component types
-  Component,
-  TextComponent,
-  ImageComponent,
-  IconComponent,
-  VideoComponent,
-  AudioPlayerComponent,
-  DividerComponent,
-  RowComponent,
-  ColumnComponent,
-  ListComponent,
-  CardComponent,
-  TabsComponent,
-  ModalComponent,
-  ButtonComponent,
-  TextFieldComponent,
-  CheckBoxComponent,
-  ChoicePickerComponent,
-  SliderComponent,
-  DateTimeInputComponent,
+  ComponentDefinition,
   // Value types
   DynamicValue,
   DynamicString,
@@ -72,14 +54,20 @@ export type {
   DataModel,
 } from '@a2ui-sdk/types/0.9'
 
-export type { A2UIProviderProps, ComponentsMap } from './contexts/A2UIProvider'
+export type { A2UIProviderProps } from './contexts/A2UIProvider'
 export type { A2UIRendererProps } from './A2UIRenderer'
+export type {
+  Catalog,
+  CatalogComponent,
+  CatalogComponents,
+} from './standard-catalog'
 
 // ============ Components ============
 
 export { A2UIProvider } from './contexts/A2UIProvider'
 export { A2UIRenderer } from './A2UIRenderer'
 export { ComponentRenderer } from './components/ComponentRenderer'
+export { standardCatalog } from './standard-catalog'
 
 // ============ Hooks ============
 

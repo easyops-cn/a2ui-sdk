@@ -4,15 +4,32 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor, act } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 import { SurfaceProvider, useSurfaceContext } from './SurfaceContext'
 import { ActionProvider, useActionContext } from './ActionContext'
-import { ComponentsMapProvider } from './ComponentsMapContext'
+import {
+  ComponentsMapProvider,
+  useComponentsMapContext,
+} from './ComponentsMapContext'
+import { A2UIProvider } from './A2UIProvider'
+import { standardCatalog } from '../standard-catalog'
 import { type ReactNode } from 'react'
 
 /**
  * Simple test provider.
  */
-function TestA2UIProvider({
+function TestA2UIProvider({ children }: { children: ReactNode }) {
+  return (
+    <SurfaceProvider>
+      <ComponentsMapProvider components={{}}>{children}</ComponentsMapProvider>
+    </SurfaceProvider>
+  )
+}
+
+/**
+ * Test provider with action handling (wraps ActionProvider like A2UIRenderer does).
+ */
+function TestA2UIProviderWithAction({
   onAction,
   children,
 }: {
@@ -22,7 +39,7 @@ function TestA2UIProvider({
   return (
     <SurfaceProvider>
       <ActionProvider onAction={onAction}>
-        <ComponentsMapProvider components={new Map()} defaultComponents={{}}>
+        <ComponentsMapProvider components={{}}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>
@@ -34,6 +51,19 @@ function TestA2UIProvider({
  * Test consumer that exposes context values.
  */
 function TestConsumer() {
+  const surfaceCtx = useSurfaceContext()
+
+  return (
+    <div>
+      <span data-testid="surfaces">{surfaceCtx.surfaces.size}</span>
+    </div>
+  )
+}
+
+/**
+ * Test consumer that exposes context values including action context.
+ */
+function TestConsumerWithAction() {
   const surfaceCtx = useSurfaceContext()
   const actionCtx = useActionContext()
 
@@ -66,11 +96,11 @@ describe('A2UIProvider', () => {
       expect(screen.getByTestId('surfaces')).toHaveTextContent('0')
     })
 
-    it('should provide ActionContext', () => {
+    it('should provide ActionContext when wrapped with ActionProvider', () => {
       render(
-        <TestA2UIProvider>
-          <TestConsumer />
-        </TestA2UIProvider>
+        <TestA2UIProviderWithAction>
+          <TestConsumerWithAction />
+        </TestA2UIProviderWithAction>
       )
 
       expect(screen.getByTestId('has-dispatch')).toHaveTextContent('yes')
@@ -164,7 +194,7 @@ describe('A2UIProvider', () => {
   })
 
   describe('action handling', () => {
-    it('should call onAction when action is dispatched', () => {
+    it('should call onAction when action is dispatched via A2UIRenderer', () => {
       const onAction = vi.fn()
 
       function ActionDispatcher() {
@@ -190,9 +220,9 @@ describe('A2UIProvider', () => {
       }
 
       render(
-        <TestA2UIProvider onAction={onAction}>
+        <TestA2UIProviderWithAction onAction={onAction}>
           <ActionDispatcher />
-        </TestA2UIProvider>
+        </TestA2UIProviderWithAction>
       )
 
       act(() => {
@@ -206,6 +236,80 @@ describe('A2UIProvider', () => {
           sourceComponentId: 'btn-1',
         })
       )
+    })
+  })
+
+  describe('catalog prop', () => {
+    it('should use custom catalog components', () => {
+      function CustomText() {
+        return <span>Custom Text</span>
+      }
+
+      const customCatalog = {
+        components: {
+          Text: CustomText,
+        },
+        functions: {},
+      }
+
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <A2UIProvider messages={[]} catalog={customCatalog}>
+          {children}
+        </A2UIProvider>
+      )
+
+      const { result } = renderHook(() => useComponentsMapContext(), {
+        wrapper,
+      })
+
+      expect(result.current.getComponent('Text')).toBe(CustomText)
+      // Other standard components should not be available
+      expect(result.current.getComponent('Button')).toBeUndefined()
+    })
+
+    it('should allow extending standard catalog with custom components', () => {
+      function CustomChart() {
+        return <div>Chart</div>
+      }
+
+      const extendedCatalog = {
+        ...standardCatalog,
+        components: {
+          ...standardCatalog.components,
+          CustomChart,
+        },
+      }
+
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <A2UIProvider messages={[]} catalog={extendedCatalog}>
+          {children}
+        </A2UIProvider>
+      )
+
+      const { result } = renderHook(() => useComponentsMapContext(), {
+        wrapper,
+      })
+
+      // Custom component should be available
+      expect(result.current.getComponent('CustomChart')).toBe(CustomChart)
+      // Standard components should still be available
+      expect(result.current.getComponent('Text')).toBeDefined()
+      expect(result.current.getComponent('Button')).toBeDefined()
+    })
+
+    it('should use standard catalog when no catalog is provided', () => {
+      const wrapper = ({ children }: { children: ReactNode }) => (
+        <A2UIProvider messages={[]}>{children}</A2UIProvider>
+      )
+
+      const { result } = renderHook(() => useComponentsMapContext(), {
+        wrapper,
+      })
+
+      // Standard components should be available
+      expect(result.current.getComponent('Text')).toBeDefined()
+      expect(result.current.getComponent('Button')).toBeDefined()
+      expect(result.current.getComponent('Row')).toBeDefined()
     })
   })
 })

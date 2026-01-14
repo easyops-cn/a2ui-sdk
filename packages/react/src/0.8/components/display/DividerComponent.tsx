@@ -3,15 +3,16 @@
  */
 
 import { memo } from 'react'
-import type { DividerComponentProps } from '@a2ui-sdk/types/0.8'
+import type { DividerComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { Separator } from '@/components/ui/separator'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Divider component for visual separation.
  */
 export const DividerComponent = memo(function DividerComponent({
   axis = 'horizontal',
-}: DividerComponentProps) {
+}: A2UIComponentProps<DividerComponentProps>) {
   return (
     <Separator
       orientation={axis}

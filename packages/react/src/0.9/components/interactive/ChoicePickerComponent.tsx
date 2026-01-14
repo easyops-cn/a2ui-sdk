@@ -4,11 +4,9 @@
  */
 
 import { memo, useCallback } from 'react'
-import type {
-  ChoicePickerComponent as ChoicePickerComponentType,
-  DynamicString,
-} from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { DynamicString } from '@a2ui-sdk/types/0.9'
+import type { ChoicePickerComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
 import { useValidation } from '../../hooks/useValidation'
 import {
@@ -43,17 +41,21 @@ function OptionLabel({
  */
 export const ChoicePickerComponent = memo(function ChoicePickerComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const choicePicker = component as ChoicePickerComponentType
-  const labelText = useStringBinding(surfaceId, choicePicker.label, '')
-  const variant = choicePicker.variant ?? 'multipleSelection'
+  componentId,
+  label,
+  variant = 'multipleSelection',
+  options,
+  value: valueProp,
+  checks,
+  weight,
+}: A2UIComponentProps<ChoicePickerComponentProps>) {
+  const labelText = useStringBinding(surfaceId, label, '')
   const isSingleSelection = variant === 'mutuallyExclusive'
-  const { valid, errors } = useValidation(surfaceId, choicePicker.checks)
+  const { valid, errors } = useValidation(surfaceId, checks)
 
   const [selectedValue, setSelectedValue] = useFormBinding<string | string[]>(
     surfaceId,
-    choicePicker.value,
+    valueProp,
     isSingleSelection ? '' : []
   )
 
@@ -81,14 +83,12 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
     [selectedValue, setSelectedValue]
   )
 
-  const id = `choicepicker-${choicePicker.id}`
+  const id = `choicepicker-${componentId}`
 
   // Apply weight as flex-grow if set
-  const style = choicePicker.weight
-    ? { flexGrow: choicePicker.weight }
-    : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
-  if (!choicePicker.options || choicePicker.options.length === 0) {
+  if (!options || options.length === 0) {
     return null
   }
 
@@ -110,7 +110,7 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
             <SelectValue placeholder="Select an option" />
           </SelectTrigger>
           <SelectContent>
-            {choicePicker.options.map((option) => (
+            {options.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 <OptionLabel surfaceId={surfaceId} label={option.label} />
               </SelectItem>
@@ -138,7 +138,7 @@ export const ChoicePickerComponent = memo(function ChoicePickerComponent({
   return (
     <div className={cn('flex flex-col gap-2')} style={style}>
       {labelText && <Label>{labelText}</Label>}
-      {choicePicker.options.map((option) => {
+      {options.map((option) => {
         const isChecked = currentSelections.includes(option.value)
         const checkboxId = `${id}-${option.value}`
 

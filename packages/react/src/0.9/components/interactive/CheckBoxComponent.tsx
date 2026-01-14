@@ -3,8 +3,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { CheckBoxComponent as CheckBoxComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { CheckBoxComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
 import { useValidation } from '../../hooks/useValidation'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -16,16 +16,19 @@ import { cn } from '@/lib/utils'
  */
 export const CheckBoxComponent = memo(function CheckBoxComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const checkBox = component as CheckBoxComponentType
-  const labelText = useStringBinding(surfaceId, checkBox.label, '')
+  componentId,
+  label,
+  value: valueProp,
+  checks,
+  weight,
+}: A2UIComponentProps<CheckBoxComponentProps>) {
+  const labelText = useStringBinding(surfaceId, label, '')
   const [checked, setChecked] = useFormBinding<boolean>(
     surfaceId,
-    checkBox.value,
+    valueProp,
     false
   )
-  const { valid, errors } = useValidation(surfaceId, checkBox.checks)
+  const { valid, errors } = useValidation(surfaceId, checks)
 
   const handleChange = useCallback(
     (newChecked: boolean) => {
@@ -34,10 +37,10 @@ export const CheckBoxComponent = memo(function CheckBoxComponent({
     [setChecked]
   )
 
-  const id = `checkbox-${checkBox.id}`
+  const id = `checkbox-${componentId}`
 
   // Apply weight as flex-grow if set
-  const style = checkBox.weight ? { flexGrow: checkBox.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <div className={cn('flex flex-col gap-1')} style={style}>

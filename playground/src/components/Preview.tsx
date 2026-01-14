@@ -90,11 +90,10 @@ export function Preview({ version, messages, error, onAction }: PreviewProps) {
   if (version === '0.9') {
     return (
       <ErrorBoundary resetKey={version}>
-        <A2UIProviderV09
-          messages={messages as A2UIMessageV09[]}
-          onAction={onAction as (action: A2UIActionV09) => void}
-        >
-          <A2UIRendererV09 />
+        <A2UIProviderV09 messages={messages as A2UIMessageV09[]}>
+          <A2UIRendererV09
+            onAction={onAction as (action: A2UIActionV09) => void}
+          />
         </A2UIProviderV09>
       </ErrorBoundary>
     )

@@ -4,11 +4,9 @@
  */
 
 import { memo } from 'react'
-import type {
-  TabsComponent as TabsComponentType,
-  DynamicString,
-} from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { DynamicString } from '@a2ui-sdk/types/0.9'
+import type { TabsComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding } from '../../hooks/useDataBinding'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ComponentRenderer } from '../ComponentRenderer'
@@ -34,17 +32,15 @@ function TabTitle({
  */
 export const TabsComponent = memo(function TabsComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const tabsComp = component as TabsComponentType
-  const tabs = tabsComp.tabs
-
+  tabs,
+  weight,
+}: A2UIComponentProps<TabsComponentProps>) {
   if (!tabs || tabs.length === 0) {
     return null
   }
 
   // Apply weight as flex-grow if set
-  const style = tabsComp.weight ? { flexGrow: tabsComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   // Get the first tab as default
   const defaultTab = tabs[0].child

@@ -3,9 +3,10 @@
  */
 
 import { memo, type JSX } from 'react'
-import type { TextComponentProps } from '@a2ui-sdk/types/0.8'
+import type { TextComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Maps usageHint to Tailwind CSS classes.
@@ -41,7 +42,7 @@ export const TextComponent = memo(function TextComponent({
   surfaceId,
   text,
   usageHint = 'body',
-}: TextComponentProps) {
+}: A2UIComponentProps<TextComponentProps>) {
   const textValue = useDataBinding<string>(surfaceId, text, '')
 
   const className = cn(usageHintStyles[usageHint] || usageHintStyles.body)

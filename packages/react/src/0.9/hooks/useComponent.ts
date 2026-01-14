@@ -3,7 +3,7 @@
  */
 
 import { useMemo } from 'react'
-import type { Component } from '@a2ui-sdk/types/0.9'
+import type { ComponentDefinition } from '@a2ui-sdk/types/0.9'
 import { useSurfaceContext } from '../contexts/SurfaceContext'
 
 /**
@@ -30,7 +30,7 @@ import { useSurfaceContext } from '../contexts/SurfaceContext'
 export function useComponent(
   surfaceId: string,
   componentId: string
-): Component | undefined {
+): ComponentDefinition | undefined {
   const { getComponent } = useSurfaceContext()
 
   return useMemo(() => {

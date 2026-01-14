@@ -2,7 +2,7 @@
  * A2UI SDK for React - Components Exports
  */
 
-export { ComponentRenderer, registerComponent } from './ComponentRenderer'
+export { ComponentRenderer } from './ComponentRenderer'
 
 // Display components
 export * from './display'

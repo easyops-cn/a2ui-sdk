@@ -2,72 +2,9 @@
  * ComponentRenderer - Routes component rendering based on type.
  */
 
-import { memo, useContext, type ComponentType } from 'react'
-import type { BaseComponentProps } from '@a2ui-sdk/types/0.8'
+import { memo, useContext } from 'react'
 import { useComponent } from '../hooks/useComponent'
 import { ComponentsMapContext } from '../contexts/ComponentsMapContext'
-
-// Display components
-import {
-  TextComponent,
-  ImageComponent,
-  IconComponent,
-  VideoComponent,
-  AudioPlayerComponent,
-  DividerComponent,
-} from './display'
-
-// Layout components (will be imported after creation)
-import {
-  RowComponent,
-  ColumnComponent,
-  ListComponent,
-  CardComponent,
-  TabsComponent,
-  ModalComponent,
-} from './layout'
-
-// Interactive components (will be imported after creation)
-import {
-  ButtonComponent,
-  CheckBoxComponent,
-  TextFieldComponent,
-  DateTimeInputComponent,
-  MultipleChoiceComponent,
-  SliderComponent,
-} from './interactive'
-
-/**
- * Component registry mapping component type names to React components.
- */
-export const componentRegistry: Record<
-  string,
-  ComponentType<BaseComponentProps & Record<string, unknown>>
-> = {
-  // Display components
-  Text: TextComponent,
-  Image: ImageComponent,
-  Icon: IconComponent,
-  Video: VideoComponent,
-  AudioPlayer: AudioPlayerComponent,
-  Divider: DividerComponent,
-
-  // Layout components
-  Row: RowComponent,
-  Column: ColumnComponent,
-  List: ListComponent,
-  Card: CardComponent,
-  Tabs: TabsComponent,
-  Modal: ModalComponent,
-
-  // Interactive components
-  Button: ButtonComponent,
-  CheckBox: CheckBoxComponent,
-  TextField: TextFieldComponent,
-  DateTimeInput: DateTimeInputComponent,
-  MultipleChoice: MultipleChoiceComponent,
-  Slider: SliderComponent,
-}
 
 /**
  * Props for ComponentRenderer.
@@ -111,15 +48,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
 
   const [componentType, props] = entries[0]
 
-  // Try to get component from context first (custom components), then fall back to registry
-  let Component:
-    | ComponentType<BaseComponentProps & Record<string, unknown>>
-    | undefined
-  if (componentsMapContext) {
-    Component = componentsMapContext.getComponent(componentType)
-  } else {
-    Component = componentRegistry[componentType]
-  }
+  const Component = componentsMapContext?.getComponent(componentType)
 
   if (!Component) {
     // In development mode, render a placeholder for unknown components
@@ -140,24 +69,3 @@ export const ComponentRenderer = memo(function ComponentRenderer({
 })
 
 ComponentRenderer.displayName = 'A2UI.ComponentRenderer'
-
-/**
- * Registers a custom component type.
- *
- * @param type - The component type name
- * @param component - The React component to register
- *
- * @example
- * ```tsx
- * registerComponent('CustomChart', ({ surfaceId, data }) => {
- *   const chartData = useDataBinding(surfaceId, data, []);
- *   return <Chart data={chartData} />;
- * });
- * ```
- */
-export function registerComponent(
-  type: string,
-  component: ComponentType<BaseComponentProps & Record<string, unknown>>
-): void {
-  componentRegistry[type] = component
-}

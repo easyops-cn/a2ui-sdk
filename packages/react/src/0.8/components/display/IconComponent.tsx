@@ -3,8 +3,9 @@
  */
 
 import { memo } from 'react'
-import type { IconComponentProps } from '@a2ui-sdk/types/0.8'
+import type { IconComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding } from '@/0.8/hooks/useDataBinding'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 import {
   User,
   Plus,
@@ -117,7 +118,7 @@ const iconMap: Record<string, LucideIcon> = {
 export const IconComponent = memo(function IconComponent({
   surfaceId,
   name,
-}: IconComponentProps) {
+}: A2UIComponentProps<IconComponentProps>) {
   const iconName = useDataBinding<string>(surfaceId, name, '')
 
   if (!iconName) {

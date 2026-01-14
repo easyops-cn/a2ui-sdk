@@ -3,8 +3,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { ButtonComponent as ButtonComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { ButtonComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useDispatchAction } from '../../hooks/useDispatchAction'
 import { useValidation } from '../../hooks/useValidation'
 import { Button } from '@/components/ui/button'
@@ -16,34 +16,38 @@ import { ComponentRenderer } from '../ComponentRenderer'
  */
 export const ButtonComponent = memo(function ButtonComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const btnComp = component as ButtonComponentType
+  componentId,
+  child,
+  primary = false,
+  action,
+  checks,
+  weight,
+}: A2UIComponentProps<ButtonComponentProps>) {
   const dispatchAction = useDispatchAction()
-  const { valid } = useValidation(surfaceId, btnComp.checks)
+  const { valid } = useValidation(surfaceId, checks)
 
   const handleClick = useCallback(() => {
-    if (btnComp.action) {
-      dispatchAction(surfaceId, btnComp.id, btnComp.action)
+    if (action) {
+      dispatchAction(surfaceId, componentId, action)
     }
-  }, [dispatchAction, surfaceId, btnComp.id, btnComp.action])
+  }, [dispatchAction, surfaceId, componentId, action])
 
   // Apply weight as flex-grow if set
-  const style = btnComp.weight ? { flexGrow: btnComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   // Disable button if checks fail
   const isDisabled = !valid
 
   return (
     <Button
-      variant={btnComp.primary ? 'default' : 'outline'}
+      variant={primary ? 'default' : 'outline'}
       onClick={handleClick}
       disabled={isDisabled}
       className="inline-flex items-center justify-center"
       style={style}
     >
-      {btnComp.child ? (
-        <ComponentRenderer surfaceId={surfaceId} componentId={btnComp.child} />
+      {child ? (
+        <ComponentRenderer surfaceId={surfaceId} componentId={child} />
       ) : (
         'Button'
       )}

@@ -6,12 +6,12 @@
  * In production mode, this component should not be rendered (ComponentRenderer skips unknown types).
  */
 
-import type { BaseComponentProps } from '@a2ui-sdk/types/0.8'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Props for UnknownComponent.
  */
-export interface UnknownComponentProps extends BaseComponentProps {
+export interface UnknownComponentProps {
   /** The unknown component type name */
   componentType: string
 }
@@ -25,7 +25,7 @@ export interface UnknownComponentProps extends BaseComponentProps {
 export function UnknownComponent({
   componentId,
   componentType,
-}: UnknownComponentProps) {
+}: A2UIComponentProps<UnknownComponentProps>) {
   return (
     <div
       style={{

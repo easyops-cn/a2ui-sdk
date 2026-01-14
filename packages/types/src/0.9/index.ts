@@ -30,7 +30,7 @@ export interface CreateSurfacePayload {
  */
 export interface UpdateComponentsPayload {
   surfaceId: string
-  components: Component[]
+  components: ComponentDefinition[]
 }
 
 /**
@@ -154,276 +154,32 @@ export interface Checkable {
   checks?: CheckRule[]
 }
 
-// ============ Base Component ============
+// ============ Component Definitions ============
 
 /**
- * Base component properties that all components share.
+ * Common properties for all components.
  */
-export interface ComponentBase {
+export interface ComponentCommon {
   id: string
-  /** Discriminator: "Text", "Button", etc. */
-  component: string
   /** flex-grow for Row/Column children */
   weight?: number
 }
 
-// ============ Display Components ============
-
 /**
- * Text component.
+ * Base component properties that all components share.
  */
-export interface TextComponent extends ComponentBase {
-  component: 'Text'
-  text: DynamicString
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'caption' | 'body'
+export interface BaseComponentDefinition extends ComponentCommon {
+  id: string
+  /** Discriminator: "Text", "Button", etc. */
+  component: string
 }
 
 /**
- * Image component.
+ * Any components.
  */
-export interface ImageComponent extends ComponentBase {
-  component: 'Image'
-  url: DynamicString
-  fit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
-  variant?:
-    | 'icon'
-    | 'avatar'
-    | 'smallFeature'
-    | 'mediumFeature'
-    | 'largeFeature'
-    | 'header'
+export interface ComponentDefinition extends BaseComponentDefinition {
+  [key: string]: unknown
 }
-
-/**
- * Icon component.
- */
-export interface IconComponent extends ComponentBase {
-  component: 'Icon'
-  name: DynamicString
-}
-
-/**
- * Video component.
- */
-export interface VideoComponent extends ComponentBase {
-  component: 'Video'
-  url: DynamicString
-}
-
-/**
- * AudioPlayer component.
- */
-export interface AudioPlayerComponent extends ComponentBase {
-  component: 'AudioPlayer'
-  url: DynamicString
-  description?: DynamicString
-}
-
-/**
- * Divider component.
- */
-export interface DividerComponent extends ComponentBase {
-  component: 'Divider'
-  axis?: 'horizontal' | 'vertical'
-}
-
-// ============ Layout Components ============
-
-/**
- * Justify values for flex layouts (main axis distribution).
- */
-export type Justify =
-  | 'start'
-  | 'center'
-  | 'end'
-  | 'spaceBetween'
-  | 'spaceAround'
-  | 'spaceEvenly'
-  | 'stretch'
-
-/**
- * Align values for flex layouts (cross axis alignment).
- */
-export type Align = 'start' | 'center' | 'end' | 'stretch'
-
-/**
- * Row component.
- */
-export interface RowComponent extends ComponentBase {
-  component: 'Row'
-  children: ChildList
-  justify?: Justify
-  align?: Align
-}
-
-/**
- * Column component.
- */
-export interface ColumnComponent extends ComponentBase {
-  component: 'Column'
-  children: ChildList
-  justify?: Justify
-  align?: Align
-}
-
-/**
- * List component.
- */
-export interface ListComponent extends ComponentBase {
-  component: 'List'
-  children: ChildList
-  direction?: 'vertical' | 'horizontal'
-  align?: Align
-}
-
-/**
- * Card component.
- */
-export interface CardComponent extends ComponentBase {
-  component: 'Card'
-  /** Single child component ID */
-  child: string
-}
-
-/**
- * Tab item definition.
- */
-export interface TabItem {
-  title: DynamicString
-  /** Component ID */
-  child: string
-}
-
-/**
- * Tabs component.
- */
-export interface TabsComponent extends ComponentBase {
-  component: 'Tabs'
-  tabs: TabItem[]
-}
-
-/**
- * Modal component.
- */
-export interface ModalComponent extends ComponentBase {
-  component: 'Modal'
-  /** Component ID for trigger */
-  trigger: string
-  /** Component ID for content */
-  content: string
-}
-
-// ============ Interactive Components ============
-
-/**
- * Action definition (attached to Button components).
- */
-export interface Action {
-  name: string
-  context?: Record<string, DynamicValue>
-}
-
-/**
- * Button component.
- */
-export interface ButtonComponent extends ComponentBase, Checkable {
-  component: 'Button'
-  /** Component ID (typically Text or Icon) */
-  child: string
-  primary?: boolean
-  action: Action
-}
-
-/**
- * TextField component.
- */
-export interface TextFieldComponent extends ComponentBase, Checkable {
-  component: 'TextField'
-  label: DynamicString
-  /** Two-way binding path */
-  value?: DynamicString
-  variant?: 'longText' | 'number' | 'shortText' | 'obscured'
-}
-
-/**
- * CheckBox component.
- */
-export interface CheckBoxComponent extends ComponentBase, Checkable {
-  component: 'CheckBox'
-  label: DynamicString
-  /** Two-way binding path */
-  value: DynamicBoolean
-}
-
-/**
- * Choice option definition.
- */
-export interface ChoiceOption {
-  label: DynamicString
-  value: string
-}
-
-/**
- * ChoicePicker component (renamed from MultipleChoice).
- */
-export interface ChoicePickerComponent extends ComponentBase, Checkable {
-  component: 'ChoicePicker'
-  label?: DynamicString
-  variant?: 'multipleSelection' | 'mutuallyExclusive'
-  options: ChoiceOption[]
-  /** Two-way binding path */
-  value: DynamicStringList
-}
-
-/**
- * Slider component.
- */
-export interface SliderComponent extends ComponentBase, Checkable {
-  component: 'Slider'
-  label?: DynamicString
-  min: number
-  max: number
-  /** Two-way binding path */
-  value: DynamicNumber
-}
-
-/**
- * DateTimeInput component.
- */
-export interface DateTimeInputComponent extends ComponentBase, Checkable {
-  component: 'DateTimeInput'
-  /** Two-way binding path (ISO 8601) */
-  value: DynamicString
-  enableDate?: boolean
-  enableTime?: boolean
-  outputFormat?: string
-  label?: DynamicString
-}
-
-// ============ Component Union Type ============
-
-/**
- * Union type of all standard catalog components.
- */
-export type Component =
-  | TextComponent
-  | ImageComponent
-  | IconComponent
-  | VideoComponent
-  | AudioPlayerComponent
-  | DividerComponent
-  | RowComponent
-  | ColumnComponent
-  | ListComponent
-  | CardComponent
-  | TabsComponent
-  | ModalComponent
-  | ButtonComponent
-  | TextFieldComponent
-  | CheckBoxComponent
-  | ChoicePickerComponent
-  | SliderComponent
-  | DateTimeInputComponent
 
 // ============ Internal State Types ============
 
@@ -438,17 +194,9 @@ export type DataModel = Record<string, unknown>
 export interface SurfaceState {
   surfaceId: string
   catalogId: string
-  components: Map<string, Component>
+  components: Map<string, ComponentDefinition>
   dataModel: DataModel
   created: boolean
-}
-
-/**
- * Provider state managing multiple surfaces.
- */
-export interface ProviderState {
-  surfaces: Map<string, SurfaceState>
-  messageBuffer: Map<string, A2UIMessage[]>
 }
 
 /**
@@ -471,6 +219,14 @@ export interface ValidationResult {
 // ============ Action Types (Client to Server) ============
 
 /**
+ * Action definition (attached to Button components).
+ */
+export interface Action {
+  name: string
+  context?: Record<string, DynamicValue>
+}
+
+/**
  * Resolved action payload sent to the action handler.
  */
 export interface ActionPayload {
@@ -485,3 +241,5 @@ export interface ActionPayload {
  * Action handler callback type.
  */
 export type ActionHandler = (action: ActionPayload) => void
+
+export * as StandardCatalog from './standard-catalog.js'

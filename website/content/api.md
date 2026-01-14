@@ -12,10 +12,23 @@
  */
 function A2UIProvider(props: {
   messages: A2UIMessage[]
-  onAction?: (action: A2UIAction) => void
-  components?: Map<string, React.ComponentType<any>>
-  children?: React.ReactNode
+  catalog?: Catalog
+  children: React.ReactNode
 }): React.ReactElement
+
+/**
+ * Catalog containing components and functions.
+ */
+interface Catalog {
+  components: Record<string, React.ComponentType<any>>
+  functions?: Record<string, unknown>
+}
+
+/**
+ * Standard catalog with all built-in components.
+ * Use as base and extend with custom components.
+ */
+const standardCatalog: Catalog
 
 /**
  * Main renderer component that renders all surfaces.
@@ -193,10 +206,23 @@ interface Action {
  */
 function A2UIProvider(props: {
   messages: A2UIMessage[]
-  onAction?: (action: A2UIAction) => void
-  components?: Map<string, React.ComponentType<any>>
-  children?: React.ReactNode
+  catalog?: Catalog
+  children: React.ReactNode
 }): React.ReactElement
+
+/**
+ * Catalog containing components and functions.
+ */
+interface Catalog {
+  components: Record<string, React.ComponentType<any>>
+  functions: Record<string, unknown>
+}
+
+/**
+ * Standard catalog with all built-in components.
+ * Use as base and extend with custom components.
+ */
+const standardCatalog: Catalog
 
 /**
  * Main renderer component that renders all surfaces.

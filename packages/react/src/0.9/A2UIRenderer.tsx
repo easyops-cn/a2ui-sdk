@@ -14,8 +14,8 @@
  *     console.log('Action:', action)
  *   }
  *   return (
- *     <A2UIProvider messages={messages} onAction={handleAction}>
- *       <A2UIRenderer />
+ *     <A2UIProvider messages={messages}>
+ *       <A2UIRenderer onAction={handleAction} />
  *     </A2UIProvider>
  *   )
  * }
@@ -23,8 +23,9 @@
  */
 
 import { useSurfaceContext } from './contexts/SurfaceContext'
+import { ActionProvider } from './contexts/ActionContext'
 import { ComponentRenderer } from './components/ComponentRenderer'
-import type { Component } from '@a2ui-sdk/types/0.9'
+import type { ComponentDefinition, ActionHandler } from '@a2ui-sdk/types/0.9'
 
 /**
  * Props for A2UIRenderer.
@@ -32,6 +33,8 @@ import type { Component } from '@a2ui-sdk/types/0.9'
 export interface A2UIRendererProps {
   /** Optional surface ID to render a specific surface (renders all if not provided) */
   surfaceId?: string
+  /** Callback when an action is dispatched */
+  onAction?: ActionHandler
 }
 
 /**
@@ -39,7 +42,7 @@ export interface A2UIRendererProps {
  * The root component is typically identified as "root" or is the first component added.
  */
 function findRootComponentId(
-  components: Map<string, Component>
+  components: Map<string, ComponentDefinition>
 ): string | undefined {
   // Check for component with id "root"
   if (components.has('root')) {
@@ -97,18 +100,18 @@ function findRootComponentId(
  * @example
  * ```tsx
  * // Render all surfaces
- * <A2UIProvider messages={messages} onAction={handleAction}>
- *   <A2UIRenderer />
+ * <A2UIProvider messages={messages}>
+ *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
  * // Render specific surface
- * <A2UIProvider messages={messages} onAction={handleAction}>
- *   <A2UIRenderer surfaceId="sidebar" />
- *   <A2UIRenderer surfaceId="main" />
+ * <A2UIProvider messages={messages}>
+ *   <A2UIRenderer surfaceId="sidebar" onAction={handleAction} />
+ *   <A2UIRenderer surfaceId="main" onAction={handleAction} />
  * </A2UIProvider>
  * ```
  */
-export function A2UIRenderer({ surfaceId }: A2UIRendererProps) {
+export function A2UIRenderer({ surfaceId, onAction }: A2UIRendererProps) {
   const { surfaces } = useSurfaceContext()
 
   // Render specific surface if surfaceId is provided
@@ -123,7 +126,11 @@ export function A2UIRenderer({ surfaceId }: A2UIRendererProps) {
       return null
     }
 
-    return <ComponentRenderer surfaceId={surfaceId} componentId={rootId} />
+    return (
+      <ActionProvider onAction={onAction}>
+        <ComponentRenderer surfaceId={surfaceId} componentId={rootId} />
+      </ActionProvider>
+    )
   }
 
   // Render all surfaces
@@ -134,7 +141,7 @@ export function A2UIRenderer({ surfaceId }: A2UIRendererProps) {
   }
 
   return (
-    <>
+    <ActionProvider onAction={onAction}>
       {surfaceEntries.map(([id, surface]) => {
         if (!surface.created) {
           return null
@@ -149,7 +156,7 @@ export function A2UIRenderer({ surfaceId }: A2UIRendererProps) {
           <ComponentRenderer key={id} surfaceId={id} componentId={rootId} />
         )
       })}
-    </>
+    </ActionProvider>
   )
 }
 

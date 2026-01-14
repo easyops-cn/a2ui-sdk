@@ -5,8 +5,8 @@
 
 import { memo, useCallback } from 'react'
 import { CalendarIcon, ClockIcon } from 'lucide-react'
-import type { DateTimeInputComponent as DateTimeInputComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { DateTimeInputComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding, useFormBinding } from '../../hooks/useDataBinding'
 import { useValidation } from '../../hooks/useValidation'
 import { cn } from '@/lib/utils'
@@ -17,17 +17,20 @@ import { Label } from '@/components/ui/label'
  */
 export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const dateTimeInput = component as DateTimeInputComponentType
-  const labelText = useStringBinding(surfaceId, dateTimeInput.label, '')
-  const enableDate = dateTimeInput.enableDate ?? true
-  const enableTime = dateTimeInput.enableTime ?? false
-  const { valid, errors } = useValidation(surfaceId, dateTimeInput.checks)
+  componentId,
+  label,
+  value: valueProp,
+  enableDate = true,
+  enableTime = false,
+  checks,
+  weight,
+}: A2UIComponentProps<DateTimeInputComponentProps>) {
+  const labelText = useStringBinding(surfaceId, label, '')
+  const { valid, errors } = useValidation(surfaceId, checks)
 
   const [dateValue, setDateValue] = useFormBinding<string>(
     surfaceId,
-    dateTimeInput.value,
+    valueProp,
     ''
   )
 
@@ -38,7 +41,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
     [setDateValue]
   )
 
-  const id = `datetime-${dateTimeInput.id}`
+  const id = `datetime-${componentId}`
 
   // Determine input type based on enableDate and enableTime
   const inputType =
@@ -48,9 +51,7 @@ export const DateTimeInputComponent = memo(function DateTimeInputComponent({
   const Icon = enableDate ? CalendarIcon : ClockIcon
 
   // Apply weight as flex-grow if set
-  const style = dateTimeInput.weight
-    ? { flexGrow: dateTimeInput.weight }
-    : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <div className={cn('flex flex-col gap-2')} style={style}>

@@ -16,7 +16,11 @@ import {
   useCallback,
   type ReactNode,
 } from 'react'
-import type { Component, DataModel, SurfaceState } from '@a2ui-sdk/types/0.9'
+import type {
+  ComponentDefinition,
+  DataModel,
+  SurfaceState,
+} from '@a2ui-sdk/types/0.9'
 import { setValueByPath } from '@a2ui-sdk/utils/0.9'
 
 /**
@@ -33,7 +37,10 @@ export interface SurfaceContextValue {
   createSurface: (surfaceId: string, catalogId: string) => void
 
   /** Updates components in a surface (upsert semantics) */
-  updateComponents: (surfaceId: string, components: Component[]) => void
+  updateComponents: (
+    surfaceId: string,
+    components: ComponentDefinition[]
+  ) => void
 
   /** Updates the data model at a path */
   updateDataModel: (surfaceId: string, path?: string, value?: unknown) => void
@@ -48,7 +55,7 @@ export interface SurfaceContextValue {
   getComponent: (
     surfaceId: string,
     componentId: string
-  ) => Component | undefined
+  ) => ComponentDefinition | undefined
 
   /** Gets the data model for a surface */
   getDataModel: (surfaceId: string) => DataModel
@@ -100,7 +107,7 @@ export function SurfaceProvider({ children }: SurfaceProviderProps) {
   }, [])
 
   const updateComponents = useCallback(
-    (surfaceId: string, components: Component[]) => {
+    (surfaceId: string, components: ComponentDefinition[]) => {
       setSurfaces((prev) => {
         const surface = prev.get(surfaceId)
 

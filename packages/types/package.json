@@ -11,6 +11,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -20,9 +21,17 @@
       "types": "./dist/0.8/index.d.ts",
       "default": "./dist/0.8/index.js"
     },
+    "./0.8/standard-catalog": {
+      "types": "./dist/0.8/standard-catalog.d.ts",
+      "default": "./dist/0.8/standard-catalog.js"
+    },
     "./0.9": {
       "types": "./dist/0.9/index.d.ts",
       "default": "./dist/0.9/index.js"
+    },
+    "./0.9/standard-catalog": {
+      "types": "./dist/0.9/standard-catalog.d.ts",
+      "default": "./dist/0.9/standard-catalog.js"
     }
   },
   "files": [

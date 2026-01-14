@@ -4,10 +4,8 @@
  */
 
 import { memo, useCallback } from 'react'
-import type {
-  MultipleChoiceComponentProps,
-  ValueSource,
-} from '@a2ui-sdk/types/0.8'
+import type { ValueSource } from '@a2ui-sdk/types/0.8'
+import type { MultipleChoiceComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import {
   Select,
@@ -19,6 +17,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * MultipleChoice component - dropdown/select input.
@@ -32,7 +31,7 @@ export const MultipleChoiceComponent = memo(function MultipleChoiceComponent({
   selections,
   options,
   maxAllowedSelections,
-}: MultipleChoiceComponentProps) {
+}: A2UIComponentProps<MultipleChoiceComponentProps>) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [selectedValue, setSelectedValue] = useFormBinding<string | string[]>(
     surfaceId,

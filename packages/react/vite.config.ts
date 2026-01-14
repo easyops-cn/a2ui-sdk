@@ -7,10 +7,13 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
+    tsconfigPaths({
+      projects: ['./tsconfig.build.json'],
+    }),
     dts({
       include: ['src'],
       outDir: 'dist',
+      tsconfigPath: './tsconfig.build.json',
     }),
   ],
   build: {
@@ -18,7 +21,15 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         '0.8/index': resolve(__dirname, 'src/0.8/index.ts'),
+        '0.8/standard-catalog/index': resolve(
+          __dirname,
+          'src/0.8/standard-catalog/index.ts'
+        ),
         '0.9/index': resolve(__dirname, 'src/0.9/index.ts'),
+        '0.9/standard-catalog/index': resolve(
+          __dirname,
+          'src/0.9/standard-catalog/index.ts'
+        ),
       },
       formats: ['es'],
     },

@@ -9,12 +9,12 @@ import { SurfaceProvider, useSurfaceContext } from './contexts/SurfaceContext'
 import { ActionProvider } from './contexts/ActionContext'
 import {
   ComponentsMapProvider,
-  type A2UIComponentProps,
-  type ComponentsMap,
+  type A2UIComponent,
 } from './contexts/ComponentsMapContext'
 import { A2UIRenderer } from './A2UIRenderer'
 import { ComponentRenderer } from './components/ComponentRenderer'
-import type { Component } from '@a2ui-sdk/types/0.9'
+import type { ComponentDefinition } from '@a2ui-sdk/types/0.9'
+import type { A2UIComponentProps } from './components/types'
 
 /**
  * Simple test provider that uses custom test components.
@@ -23,16 +23,13 @@ function TestA2UIProvider({
   testComponents,
   children,
 }: {
-  testComponents: ComponentsMap
+  testComponents: Record<string, A2UIComponent>
   children: ReactNode
 }) {
   return (
     <SurfaceProvider>
       <ActionProvider>
-        <ComponentsMapProvider
-          components={testComponents}
-          defaultComponents={{}}
-        >
+        <ComponentsMapProvider components={testComponents}>
           {children}
         </ComponentsMapProvider>
       </ActionProvider>
@@ -49,7 +46,7 @@ function SurfaceSetup({
   children,
 }: {
   surfaceId: string
-  components: Component[]
+  components: ComponentDefinition[]
   children: ReactNode
 }) {
   const ctx = useSurfaceContext()
@@ -72,7 +69,7 @@ function MultiSurfaceSetup({
   surfaces,
   children,
 }: {
-  surfaces: Array<{ surfaceId: string; components: Component[] }>
+  surfaces: Array<{ surfaceId: string; components: ComponentDefinition[] }>
   children: ReactNode
 }) {
   const ctx = useSurfaceContext()
@@ -91,18 +88,23 @@ function MultiSurfaceSetup({
 }
 
 describe('A2UIRenderer', () => {
-  // Define test components
-  const TestText = ({ component }: A2UIComponentProps) => (
-    <span data-testid={`text-${component.id}`}>
-      {(component as { text: string }).text}
-    </span>
+  // Define test components using new spread props pattern
+  const TestText = ({
+    componentId,
+    text,
+  }: A2UIComponentProps & { text: string }) => (
+    <span data-testid={`text-${componentId}`}>{text}</span>
   )
 
-  const TestColumn = ({ component, surfaceId }: A2UIComponentProps) => {
-    const children = (component as { children?: string[] }).children ?? []
+  const TestColumn = ({
+    componentId,
+    surfaceId,
+    children,
+  }: A2UIComponentProps & { children?: string[] }) => {
+    const childIds = children ?? []
     return (
-      <div data-testid={`column-${component.id}`}>
-        {children.map((childId: string) => (
+      <div data-testid={`column-${componentId}`}>
+        {childIds.map((childId: string) => (
           <ComponentRenderer
             key={childId}
             surfaceId={surfaceId}
@@ -113,13 +115,10 @@ describe('A2UIRenderer', () => {
     )
   }
 
-  const testComponents = new Map<
-    string,
-    React.ComponentType<A2UIComponentProps>
-  >([
-    ['Text', TestText],
-    ['Column', TestColumn],
-  ])
+  const testComponents: Record<string, A2UIComponent> = {
+    Text: TestText,
+    Column: TestColumn,
+  }
 
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {})

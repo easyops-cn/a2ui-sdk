@@ -3,8 +3,8 @@
  */
 
 import { memo } from 'react'
-import type { ImageComponent as ImageComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { ImageComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding } from '../../hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
@@ -38,20 +38,19 @@ const variantStyles: Record<string, string> = {
  */
 export const ImageComponent = memo(function ImageComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const imageComp = component as ImageComponentType
-  const imageUrl = useStringBinding(surfaceId, imageComp.url, '')
+  url,
+  fit = 'cover',
+  variant,
+  weight,
+}: A2UIComponentProps<ImageComponentProps>) {
+  const imageUrl = useStringBinding(surfaceId, url, '')
 
   if (!imageUrl) {
     return null
   }
 
-  const fit = imageComp.fit ?? 'cover'
-  const variant = imageComp.variant
-
   // Apply weight as flex-grow if set
-  const style = imageComp.weight ? { flexGrow: imageComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   const className = cn(
     fitStyles[fit] || fitStyles.cover,

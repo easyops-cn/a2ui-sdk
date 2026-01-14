@@ -3,8 +3,8 @@
  */
 
 import { memo } from 'react'
-import type { VideoComponent as VideoComponentType } from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+import type { VideoComponentProps } from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useStringBinding } from '../../hooks/useDataBinding'
 import { cn } from '@/lib/utils'
 
@@ -13,17 +13,17 @@ import { cn } from '@/lib/utils'
  */
 export const VideoComponent = memo(function VideoComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const videoComp = component as VideoComponentType
-  const videoUrl = useStringBinding(surfaceId, videoComp.url, '')
+  url,
+  weight,
+}: A2UIComponentProps<VideoComponentProps>) {
+  const videoUrl = useStringBinding(surfaceId, url, '')
 
   if (!videoUrl) {
     return null
   }
 
   // Apply weight as flex-grow if set
-  const style = videoComp.weight ? { flexGrow: videoComp.weight } : undefined
+  const style = weight ? { flexGrow: weight } : undefined
 
   return (
     <video

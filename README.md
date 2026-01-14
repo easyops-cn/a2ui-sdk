@@ -1,6 +1,6 @@
 # A2UI SDK
 
-[![NPM Version](https://img.shields.io/npm/v/%40a2ui-sdk%2Freact)](https://www.npmjs.com/package/@easyops-cn/a2ui-sdk)
+[![NPM Version](https://img.shields.io/npm/v/%40a2ui-sdk%2Freact)](https://www.npmjs.com/package/@a2ui-sdk/react)
 
 The TypeScript/React SDK for [A2UI](https://a2ui.org) protocol.
 
@@ -8,7 +8,7 @@ NOTE: this is NOT the official SDK maintained by the A2UI team.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
-Currently both A2UI protocol v0.8 and v0.9 (draft 2026-01-12) are fully supported.
+Currently both A2UI protocol v0.8 and v0.9 (as of draft 2026-01-12) are supported.
 
 [Docs](https://a2ui-sdk.js.org/) | [Playground](https://a2ui-sdk.js.org/playground/)
 
@@ -76,34 +76,39 @@ function App() {
 
 #### Custom components
 
-You can override default components or add new custom components via the `components` prop on `A2UIProvider`, which takes a `Map<string, React.ComponentType>`.
+You can override default components or add new custom components via the `catalog` prop on `A2UIProvider`. Use `standardCatalog` as a base and extend it with your custom components.
 
 ```tsx
 import {
   A2UIProvider,
   A2UIRenderer,
+  standardCatalog,
   type A2UIMessage,
   type A2UIAction,
 } from '@a2ui-sdk/react/0.8'
 
-const ComponentsMap = new Map<string, React.ComponentType<any>>([
-  // Override default Button component with a custom one
-  ['Button', CustomButtonComponent],
-
-  // Add a new custom Switch component
-  ['Switch', CustomSwitchComponent],
-])
+// Extend standard catalog with custom components
+const customCatalog = {
+  ...standardCatalog,
+  components: {
+    ...standardCatalog.components,
+    // Override default Button component with a custom one
+    Button: CustomButtonComponent,
+    // Add a new custom Switch component
+    Switch: CustomSwitchComponent,
+  },
+}
 
 function App() {
   return (
-    <A2UIProvider components={ComponentsMap} messages={messages}>
+    <A2UIProvider catalog={customCatalog} messages={messages}>
       <A2UIRenderer onAction={handleAction} />
     </A2UIProvider>
   )
 }
 ```
 
-Custom button component with action dispatch:
+Implementing a custom button component with action dispatch:
 
 ```tsx
 import {
@@ -134,7 +139,7 @@ export function CustomButtonComponent({
 }
 ```
 
-Custom switch component with data binding:
+Implementing a custom switch component with data binding:
 
 ```tsx
 import { useDataBinding, useFormBinding } from '@a2ui-sdk/react/0.8'
@@ -194,3 +199,5 @@ function App() {
   )
 }
 ```
+
+Additionally, override or extend the standard catalog the same way as in v0.8.

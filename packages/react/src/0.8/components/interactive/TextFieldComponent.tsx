@@ -3,12 +3,13 @@
  */
 
 import { memo, useCallback } from 'react'
-import type { TextFieldComponentProps } from '@a2ui-sdk/types/0.8'
+import type { TextFieldComponentProps } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataBinding, useFormBinding } from '@/0.8/hooks/useDataBinding'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
+import type { A2UIComponentProps } from '@/0.8/components/types'
 
 /**
  * Maps textFieldType to HTML input type.
@@ -30,7 +31,7 @@ export const TextFieldComponent = memo(function TextFieldComponent({
   label,
   text,
   textFieldType = 'shortText',
-}: TextFieldComponentProps) {
+}: A2UIComponentProps<TextFieldComponentProps>) {
   const labelText = useDataBinding<string>(surfaceId, label, '')
   const [value, setValue] = useFormBinding<string>(surfaceId, text, '')
 

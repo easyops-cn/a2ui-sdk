@@ -4,11 +4,11 @@
 
 import { memo } from 'react'
 import type {
-  ColumnComponent as ColumnComponentType,
+  ColumnComponentProps,
   Justify,
   Align,
-} from '@a2ui-sdk/types/0.9'
-import type { A2UIComponentProps } from '../../contexts/ComponentsMapContext'
+} from '@a2ui-sdk/types/0.9/standard-catalog'
+import type { A2UIComponentProps } from '@/0.9/components/types'
 import { useDataModel } from '../../hooks/useDataBinding'
 import { useScope } from '../../contexts/ScopeContext'
 import { cn } from '@/lib/utils'
@@ -44,14 +44,13 @@ const alignStyles: Record<Align, string> = {
  */
 export const ColumnComponent = memo(function ColumnComponent({
   surfaceId,
-  component,
-}: A2UIComponentProps) {
-  const colComp = component as ColumnComponentType
+  children,
+  justify = 'start',
+  align = 'stretch',
+  weight,
+}: A2UIComponentProps<ColumnComponentProps>) {
   const dataModel = useDataModel(surfaceId)
   const { basePath } = useScope()
-
-  const justify = colComp.justify ?? 'start'
-  const align = colComp.align ?? 'stretch'
 
   const className = cn(
     'flex flex-col gap-4',
@@ -60,10 +59,7 @@ export const ColumnComponent = memo(function ColumnComponent({
   )
 
   // Apply weight as flex-grow if set
-  const style = colComp.weight ? { flexGrow: colComp.weight } : undefined
-
-  // Get children - either static list or template binding
-  const children = colComp.children
+  const style = weight ? { flexGrow: weight } : undefined
 
   // Handle static list of children
   if (Array.isArray(children)) {

@@ -7,6 +7,7 @@
  * @example
  * ```tsx
  * import { A2UIProvider, A2UIRenderer, A2UIMessage, A2UIAction } from '@a2ui-sdk/react/0.8'
+ * import { standardCatalog } from '@a2ui-sdk/react/0.8/standard-catalog'
  *
  * function App() {
  *   const messages: A2UIMessage[] = [...]
@@ -20,34 +21,44 @@
  *   )
  * }
  *
- * // With custom middleware component
- * function AppWithMiddleware() {
+ * // With extended catalog (add custom components on top of standard)
+ * function AppWithExtendedCatalog() {
+ *   const extendedCatalog = {
+ *     ...standardCatalog,
+ *     components: {
+ *       ...standardCatalog.components,
+ *       CustomChart: MyChartComponent,
+ *     },
+ *   }
  *   return (
- *     <A2UIProvider messages={messages}>
- *       <MyCustomMiddleware>
- *         <A2UIRenderer onAction={handleAction} />
- *       </MyCustomMiddleware>
+ *     <A2UIProvider messages={messages} catalog={extendedCatalog}>
+ *       <A2UIRenderer onAction={handleAction} />
+ *     </A2UIProvider>
+ *   )
+ * }
+ *
+ * // With completely custom catalog (override everything)
+ * function AppWithCustomCatalog() {
+ *   const customCatalog = {
+ *     components: { Text: MyTextComponent },
+ *     functions: {},
+ *   }
+ *   return (
+ *     <A2UIProvider messages={messages} catalog={customCatalog}>
+ *       <A2UIRenderer onAction={handleAction} />
  *     </A2UIProvider>
  *   )
  * }
  * ```
  */
 
-import { useEffect, type ReactNode, type ComponentType } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { SurfaceProvider } from './SurfaceContext'
 import { DataModelProvider } from './DataModelContext'
 import { ComponentsMapProvider } from './ComponentsMapContext'
-import { componentRegistry } from '../components/ComponentRenderer'
-import type { A2UIMessage, BaseComponentProps } from '@a2ui-sdk/types/0.8'
+import type { A2UIMessage } from '@a2ui-sdk/types/0.8'
 import { useA2UIMessageHandler } from '../hooks/useA2UIMessageHandler'
-
-/**
- * Type for custom component map.
- */
-export type ComponentsMap = Map<
-  string,
-  ComponentType<BaseComponentProps & Record<string, unknown>>
->
+import { standardCatalog, type Catalog } from '../standard-catalog'
 
 /**
  * Props for A2UIProvider.
@@ -55,8 +66,20 @@ export type ComponentsMap = Map<
 export interface A2UIProviderProps {
   /** Array of A2UI messages to render */
   messages: A2UIMessage[]
-  /** Custom component overrides */
-  components?: ComponentsMap
+  /**
+   * Catalog containing components and functions.
+   * Use `standardCatalog` from '@a2ui-sdk/react/0.8/standard-catalog' as base.
+   *
+   * @example
+   * ```tsx
+   * // Extend standard catalog
+   * const catalog = {
+   *   ...standardCatalog,
+   *   components: { ...standardCatalog.components, Custom: MyComponent },
+   * }
+   * ```
+   */
+  catalog?: Catalog
   children: ReactNode
 }
 
@@ -94,50 +117,57 @@ function A2UIMessageProcessor({
  *
  * @param props - Component props
  * @param props.messages - Array of A2UI messages to render
- * @param props.components - Optional custom component overrides
+ * @param props.catalog - Catalog containing components and functions
  * @param props.children - Child components (typically A2UIRenderer)
  *
  * @example
  * ```tsx
- * // Basic usage
+ * import { standardCatalog } from '@a2ui-sdk/react/0.8/standard-catalog'
+ *
+ * // Basic usage (uses standard catalog by default)
  * <A2UIProvider messages={messages}>
  *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
- * // With custom components
- * const customComponents = new Map([
- *   ['Button', CustomButton],
- *   ['Switch', CustomSwitch],
- * ])
- * <A2UIProvider
- *   messages={messages}
- *   components={customComponents}
- * >
+ * // With extended catalog
+ * const extendedCatalog = {
+ *   ...standardCatalog,
+ *   components: {
+ *     ...standardCatalog.components,
+ *     CustomChart: MyChartComponent,
+ *   },
+ * }
+ * <A2UIProvider messages={messages} catalog={extendedCatalog}>
  *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  *
- * // With custom middleware for hooks access
- * <A2UIProvider messages={messages}>
- *   <MyCustomComponent />
+ * // With completely custom catalog
+ * const customCatalog = {
+ *   components: { Text: MyTextComponent },
+ *   functions: {},
+ * }
+ * <A2UIProvider messages={messages} catalog={customCatalog}>
  *   <A2UIRenderer onAction={handleAction} />
  * </A2UIProvider>
  * ```
  */
 export function A2UIProvider({
   messages,
-  components,
+  catalog,
   children,
 }: A2UIProviderProps) {
   // Handle null/undefined messages gracefully
   const safeMessages = messages ?? []
 
+  // Determine the components to use:
+  // 1. If catalog is provided, use catalog.components directly
+  // 2. Otherwise, use standard catalog
+  const effectiveCatalog = catalog ?? standardCatalog
+
   return (
     <SurfaceProvider>
       <DataModelProvider>
-        <ComponentsMapProvider
-          components={components}
-          defaultComponents={componentRegistry}
-        >
+        <ComponentsMapProvider components={effectiveCatalog.components}>
           <A2UIMessageProcessor messages={safeMessages}>
             {children}
           </A2UIMessageProcessor>
