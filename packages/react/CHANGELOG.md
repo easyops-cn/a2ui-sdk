@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.2.0](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.1.1...react-v0.2.0) (2026-01-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* separate export for standard catalog
+
+### Features
+
+* separate export for standard catalog ([57104fc](https://github.com/easyops-cn/a2ui-sdk/commit/57104fcd3b717d1936726b6b6a35202a7d696412))
+
+
+### Bug Fixes
+
+* **ComponentsMapContext:** remove customComponents ([90aee3c](https://github.com/easyops-cn/a2ui-sdk/commit/90aee3c79890bddd58d94dd94bd230afa4df9a41))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @a2ui-sdk/types bumped from 0.1.1 to 0.2.0
+    * @a2ui-sdk/utils bumped from 0.1.1 to 0.2.0
+
 ## [0.1.1](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.1.0...react-v0.1.1) (2026-01-13)
 
 

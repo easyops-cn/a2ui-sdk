@@ -1,6 +1,6 @@
 {
   "name": "@a2ui-sdk/react",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A2UI SDK for React",
   "homepage": "https://a2ui-sdk.js.org/",
   "repository": {
@@ -50,8 +50,8 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@a2ui-sdk/types": "0.1.1",
-    "@a2ui-sdk/utils": "0.1.1",
+    "@a2ui-sdk/types": "0.2.0",
+    "@a2ui-sdk/utils": "0.2.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
