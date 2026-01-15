@@ -19,6 +19,7 @@ button {
   opacity: 0;
 }
 
-:host(:hover) button {
+:host(:hover) button,
+:host(:focus-within) button {
   opacity: 1;
 }
