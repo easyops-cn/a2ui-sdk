@@ -22,6 +22,9 @@ export default {
     Header: 'src/components/Header.jsx',
     Footer: 'src/components/Footer.jsx',
   },
+  elementTransforms: {
+    pre: 'cp-pre',
+  },
   styles: ['src/global.css'],
   scripts: ['src/client/index.js'],
 }

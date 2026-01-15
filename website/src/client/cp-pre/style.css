@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  position: relative;
+  white-space: pre;
+  font-family: var(--font-monospace);
+}
+
+button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--muted-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0;
+}
+
+:host(:hover) button,
+:host(:focus-within) button {
+  opacity: 1;
+}
