@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "preserve"
+  },
+  "include": ["src/**/*", "global.d.ts"]
+}

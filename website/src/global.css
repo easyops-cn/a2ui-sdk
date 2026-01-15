@@ -3,6 +3,10 @@ html {
   --text-color: hsl(10, 20%, 20%);
   --muted-color: hsl(10, 20%, 94%);
   --background-color: hsl(10, 10%, 98%);
+  --font-monospace:
+    ui-monospace, 'Menlo', 'Consolas', 'Roboto Mono', 'Ubuntu Monospace',
+    'Noto Mono', 'Oxygen Mono', 'Liberation Mono', monospace,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   color-scheme: light;
   background-color: var(--background-color);
@@ -225,6 +229,10 @@ body > main > nav {
   & > ul {
     border-left: 1px solid var(--muted-color);
   }
+
+  a:not(:hover) {
+    text-decoration: none;
+  }
 }
 
 article > p,
@@ -241,10 +249,15 @@ article > p > img {
   margin-right: auto;
 }
 
-:not(pre) > code {
-  font-family:
-    Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono', 'Courier New',
-    monospace;
+article cp-pre {
+  display: block;
+  position: relative;
+  white-space: pre;
+  font-family: var(--font-monospace);
+}
+
+:not(pre):not(cp-pre) > code {
+  font-family: var(--font-monospace);
   background-color: var(--muted-color);
   padding: 0.125em 0.25em 0.125em;
   border-radius: 0.25em;
@@ -300,11 +313,15 @@ article p.post-date {
 .shiki {
   margin-left: -16px;
   margin-right: -16px;
-  padding: 16px;
   font-size: 14px;
   line-height: 1.75;
-  overflow-x: auto;
   outline: 1px solid var(--muted-color);
+}
+
+.shiki > code {
+  padding: 16px;
+  overflow: auto;
+  display: block;
 }
 
 p.figure-caption {
