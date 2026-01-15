@@ -10,7 +10,7 @@ class CpPre extends HTMLElement {
   constructor() {
     super()
 
-    const shadowRoot = this.attachShadow({ mode: 'open' })
+    const shadowRoot = this.attachShadow({ mode: 'open', delegatesFocus: true })
     shadowRoot.innerHTML = `<style>${CpPreCss}</style><button aria-label="Copy code to clipboard">${CopyIcon}</button><slot></slot>`
 
     this._button = shadowRoot.querySelector('button')

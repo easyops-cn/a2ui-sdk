@@ -18,7 +18,7 @@ if (CSS.supports('color-scheme', 'dark')) {
           delegatesFocus: true,
         })
 
-        shadowRoot.innerHTML = `<style>${ColorModeCss}</style><a role="button" tabindex="0">${MoonSvg}${SunSvg}</a>`
+        shadowRoot.innerHTML = `<style>${ColorModeCss}</style><a role="button" tabindex="0" aria-label="Toggle theme">${MoonSvg}${SunSvg}</a>`
 
         // @ts-ignore
         this._switch = shadowRoot.querySelector('a')
