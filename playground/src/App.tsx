@@ -120,7 +120,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header title="A2UI SDK">
+      <Header title="A2UI SDK" theme={theme}>
         <ThemeToggle theme={theme} onToggle={toggleTheme} />
       </Header>
       <main className="main-content">

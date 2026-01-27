@@ -1,16 +1,19 @@
 import type { ReactNode } from 'react'
+import { AskAI } from './AskAI'
 
 interface HeaderProps {
   title: string
+  theme: 'light' | 'dark'
   children?: ReactNode
 }
 
-export function Header({ title, children }: HeaderProps) {
+export function Header({ title, theme, children }: HeaderProps) {
   return (
     <header className="app-header">
-      <h1 className="app-title">
+      <div className="header-left">
         <a href="/">{title}</a>
-      </h1>
+        <AskAI theme={theme} />
+      </div>
       <div className="header-right">
         <nav className="header-nav">
           <a href="/">Docs</a>
