@@ -43,12 +43,17 @@ import {
 import {
   // Data binding utilities
   resolveValue,
+  resolveActionContext,
   resolveStringValue,
   resolveNumberValue,
   resolveBooleanValue,
   isPathBinding,
 
   // Path utilities
+  normalizePath,
+  isAbsolutePath,
+  joinPaths,
+  resolvePath,
   parsePath,
   joinPath,
   getValueAtPath,
@@ -66,6 +71,36 @@ const { interpolate, hasInterpolation } = v0_9
 ```
 
 ## API
+
+### Scope and Path Resolution (v0.8+)
+
+Work with scoped data paths:
+
+```tsx
+import {
+  normalizePath,
+  isAbsolutePath,
+  joinPaths,
+  resolvePath,
+} from '@a2ui-sdk/utils/0.8'
+
+// Normalize path format
+normalizePath('user/name') // '/user/name'
+normalizePath('/items/') // '/items'
+
+// Check if path is absolute
+isAbsolutePath('/user/name') // true
+isAbsolutePath('name') // false
+
+// Join base path with relative path
+joinPaths('/items/0', 'name') // '/items/0/name'
+joinPaths('/items', '../users') // '/users'
+
+// Resolve path with scope
+resolvePath('/user/name', '/items/0') // '/user/name' (absolute, ignores basePath)
+resolvePath('name', '/items/0') // '/items/0/name' (relative, uses basePath)
+resolvePath('name', null) // '/name' (treats relative as absolute when no basePath)
+```
 
 ### String Interpolation (v0.9)
 
@@ -100,6 +135,18 @@ isPathBinding('static value') // false
 // Resolve value
 resolveValue({ path: '/user/name' }, dataModel) // 'Alice'
 resolveValue('static value', dataModel) // 'static value'
+```
+
+`resolveValue` also supports scoped path resolution:
+
+```tsx
+import { resolveValue } from '@a2ui-sdk/utils/0.9'
+
+const dataModel = { items: [{ name: 'Item 1' }, { name: 'Item 2' }] }
+
+// Resolve with basePath for scoped data access
+resolveValue({ path: 'name' }, dataModel, '/items/0') // 'Item 1'
+resolveValue({ path: '/items/1/name' }, dataModel, '/items/0') // 'Item 2' (absolute path ignores basePath)
 ```
 
 ### Path Utilities

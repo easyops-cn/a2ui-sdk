@@ -49,6 +49,24 @@ export interface DataEntry {
   valueMap?: DataEntry[]
 }
 
+// ============ Scope ============
+
+/**
+ * Scope value for collection scopes.
+ * Tracks the current data path when rendering template-bound children.
+ *
+ * @example
+ * // Root scope
+ * { basePath: null }
+ *
+ * // Item scope in a list
+ * { basePath: "/items/0" }
+ */
+export interface ScopeValue {
+  /** null = root scope, otherwise the base path for relative path resolution */
+  basePath: string | null
+}
+
 // ============ Surface ============
 
 /**

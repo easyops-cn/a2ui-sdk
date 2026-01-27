@@ -15,7 +15,129 @@ npm install @a2ui-sdk/react
 
 ## Usage
 
-### Basic Usage
+### v0.8
+
+#### Basic Usage
+
+```tsx
+import {
+  A2UIProvider,
+  A2UIRenderer,
+  type A2UIMessage,
+  type A2UIAction,
+} from '@a2ui-sdk/react/0.8'
+
+function App() {
+  const messages: A2UIMessage[] = [
+    // A2UI messages from your backend
+  ]
+
+  const handleAction = (action: A2UIAction) => {
+    console.log('Action received:', action)
+  }
+
+  return (
+    <A2UIProvider messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
+    </A2UIProvider>
+  )
+}
+```
+
+#### Custom Components
+
+You can override default components or add new custom components via the `catalog` prop on `A2UIProvider`. Use `standardCatalog` as a base and extend it with your custom components.
+
+```tsx
+import {
+  A2UIProvider,
+  A2UIRenderer,
+  standardCatalog,
+  type A2UIMessage,
+  type A2UIAction,
+} from '@a2ui-sdk/react/0.8'
+
+// Extend standard catalog with custom components
+const customCatalog = {
+  ...standardCatalog,
+  components: {
+    ...standardCatalog.components,
+    // Override default Button component with a custom one
+    Button: CustomButtonComponent,
+    // Add a new custom Switch component
+    Switch: CustomSwitchComponent,
+  },
+}
+
+function App() {
+  return (
+    <A2UIProvider catalog={customCatalog} messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
+    </A2UIProvider>
+  )
+}
+```
+
+Implementing a custom button component with action dispatch:
+
+```tsx
+import {
+  useDispatchAction,
+  ComponentRenderer,
+  type ButtonComponentProps,
+} from '@a2ui-sdk/react/0.8'
+
+export function CustomButtonComponent({
+  surfaceId,
+  componentId,
+  child,
+  action,
+}: ButtonComponentProps) {
+  const dispatchAction = useDispatchAction()
+
+  const handleClick = () => {
+    if (action) {
+      dispatchAction(surfaceId, componentId, action)
+    }
+  }
+
+  return (
+    <button onClick={handleClick}>
+      <ComponentRenderer surfaceId={surfaceId} componentId={child} />
+    </button>
+  )
+}
+```
+
+Implementing a custom switch component with data binding:
+
+```tsx
+import { useDataBinding, useFormBinding } from '@a2ui-sdk/react/0.8'
+
+export function CustomSwitchComponent({
+  surfaceId,
+  componentId,
+  label,
+  value,
+}: SwitchComponentProps) {
+  const labelText = useDataBinding<string>(surfaceId, label, '')
+  const [checked, setChecked] = useFormBinding<boolean>(surfaceId, value, false)
+
+  const handleChange = (newChecked: boolean) => {
+    setChecked(newChecked)
+  }
+
+  return (
+    <Switch checked={checked} onChange={handleChange}>
+      {labelText}
+    </Switch>
+  )
+}
+```
+
+### v0.9
+
+#### Basic Usage
 
 ```tsx
 import {
@@ -35,36 +157,40 @@ function App() {
   }
 
   return (
-    <A2UIProvider messages={messages} onAction={handleAction}>
-      <A2UIRenderer />
+    <A2UIProvider messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
     </A2UIProvider>
   )
 }
 ```
 
-### With Custom Components
+#### Custom Components
 
-You can override default components or add new ones via the `components` prop:
+Override or extend the standard catalog the same way as in v0.8:
 
 ```tsx
-import { A2UIProvider, A2UIRenderer, useDataBinding } from '@a2ui-sdk/react/0.9'
+import {
+  A2UIProvider,
+  A2UIRenderer,
+  standardCatalog,
+  type A2UIMessage,
+  type A2UIAction,
+} from '@a2ui-sdk/react/0.9'
 
-// Custom component implementation
-function MyCustomText({ text }: { text: DynamicString }) {
-  const resolvedText = useDataBinding(text)
-  return <span className="my-custom-style">{resolvedText}</span>
+// Extend standard catalog with custom components
+const customCatalog = {
+  ...standardCatalog,
+  components: {
+    ...standardCatalog.components,
+    // Override default components or add new ones
+    Button: CustomButtonComponent,
+  },
 }
 
 function App() {
-  const components = new Map([['Text', MyCustomText]])
-
   return (
-    <A2UIProvider
-      messages={messages}
-      onAction={handleAction}
-      components={components}
-    >
-      <A2UIRenderer />
+    <A2UIProvider catalog={customCatalog} messages={messages}>
+      <A2UIRenderer onAction={handleAction} />
     </A2UIProvider>
   )
 }
@@ -80,6 +206,9 @@ import {
   A2UIProvider,
   A2UIRenderer,
   ComponentRenderer,
+
+  // Catalog
+  standardCatalog,
 
   // Hooks
   useDispatchAction,
@@ -124,12 +253,17 @@ import {
   A2UIRenderer,
   ComponentRenderer,
 
+  // Catalog
+  standardCatalog,
+
   // Hooks
   useDispatchAction,
   useDataBinding,
   useFormBinding,
   useSurfaceContext,
   useDataModelContext,
+  useScope,
+  useScopeBasePath,
 
   // Types
   type A2UIMessage,
@@ -139,6 +273,7 @@ import {
   type ComponentsMap,
   type Action,
   type ValueSource,
+  type ScopeValue,
 } from '@a2ui-sdk/react/0.8'
 ```
 

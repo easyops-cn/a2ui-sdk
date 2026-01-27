@@ -5,7 +5,8 @@
 import { useMemo } from 'react'
 import type { ValueSource, DataModel } from '@a2ui-sdk/types/0.8'
 import { useDataModelContext } from '../contexts/DataModelContext'
-import { resolveValue } from '@a2ui-sdk/utils/0.8'
+import { useScope } from '../contexts/ScopeContext'
+import { resolveValue, resolvePath } from '@a2ui-sdk/utils/0.8'
 
 /**
  * Resolves a ValueSource to its actual value.
@@ -29,11 +30,12 @@ export function useDataBinding<T = unknown>(
   defaultValue?: T
 ): T {
   const { getDataModel } = useDataModelContext()
+  const { basePath } = useScope()
 
   return useMemo(() => {
     const dataModel = getDataModel(surfaceId)
-    return resolveValue<T>(source, dataModel, defaultValue)
-  }, [getDataModel, surfaceId, source, defaultValue])
+    return resolveValue<T>(source, dataModel, basePath, defaultValue)
+  }, [getDataModel, surfaceId, source, basePath, defaultValue])
 }
 
 /**
@@ -80,20 +82,23 @@ export function useFormBinding<T = unknown>(
   defaultValue?: T
 ): [T, (value: T) => void] {
   const { getDataModel, setDataValue } = useDataModelContext()
+  const { basePath } = useScope()
 
   const value = useMemo(() => {
     const dataModel = getDataModel(surfaceId)
-    return resolveValue<T>(source, dataModel, defaultValue)
-  }, [getDataModel, surfaceId, source, defaultValue])
+    return resolveValue<T>(source, dataModel, basePath, defaultValue)
+  }, [getDataModel, surfaceId, source, basePath, defaultValue])
 
   const setValue = useMemo(() => {
     return (newValue: T) => {
       // Only path references can be updated
       if (source && 'path' in source) {
-        setDataValue(surfaceId, source.path, newValue)
+        // Resolve the path against the current scope
+        const resolvedPath = resolvePath(source.path, basePath)
+        setDataValue(surfaceId, resolvedPath, newValue)
       }
     }
-  }, [setDataValue, surfaceId, source])
+  }, [setDataValue, surfaceId, source, basePath])
 
   return [value, setValue]
 }
