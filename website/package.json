@@ -5,7 +5,7 @@
   "scripts": {
     "build": "plain-blog",
     "watch": "node --watch ../node_modules/.bin/plain-blog",
-    "serve": "serve ./dist -c ../serve.json"
+    "serve": "serve ./dist"
   },
   "dependencies": {
     "react": "^19.2.3"
