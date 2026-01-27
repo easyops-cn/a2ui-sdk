@@ -122,7 +122,7 @@ body > header {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 16px;
   padding-top: 24px;
 }
 
@@ -171,18 +171,24 @@ body > header {
   padding-top: 32px;
 }
 
-body > header h1 {
+.header-left {
+  flex: 1;
+  min-width: 0;
   margin: 0;
   font-size: 20px;
   color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-body > header h1 > a {
+.header-left > a {
   box-shadow: none;
   text-decoration: none;
 }
 
-body > header h1 > a:not(:hover) {
+.header-left > a:not(:hover) {
   color: inherit;
 }
 
@@ -376,7 +382,7 @@ a[role='button'] {
 }
 
 @media screen and (max-width: 703px) {
-  body > header h1 {
+  .header-left {
     flex: 0 0 100%;
   }
 
@@ -412,7 +418,7 @@ a[role='button'] {
     font-size: 20px;
   }
 
-  body > header h1 {
+  .header-left {
     font-size: 24px;
     line-height: 36px;
   }
@@ -446,4 +452,10 @@ html[data-theme='dark'] {
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
+}
+
+div.ask-ai,
+div.ask-ai.dark {
+  --ask-ai-primary: var(--primary-color);
+  --ask-ai-primary-hover: var(--primary-color);
 }

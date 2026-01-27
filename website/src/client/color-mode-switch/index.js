@@ -10,6 +10,9 @@ if (CSS.supports('color-scheme', 'dark')) {
       /** @type {HTMLElement} */
       _switch
 
+      /** @type {string} */
+      _theme
+
       constructor() {
         super()
 
@@ -36,11 +39,19 @@ if (CSS.supports('color-scheme', 'dark')) {
        * @param {boolean=} force
        */
       _setTheme(theme, force) {
+        this._theme = theme
         document.documentElement.dataset.theme = theme
         this._switch.dataset.theme = theme
         if (force) {
           localStorage.setItem('theme', theme)
         }
+        this.dispatchEvent(
+          new CustomEvent('themechange', { detail: { theme } })
+        )
+      }
+
+      getTheme() {
+        return this._theme
       }
 
       connectedCallback() {

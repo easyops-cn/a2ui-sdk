@@ -5,10 +5,12 @@
   "scripts": {
     "build": "plain-blog",
     "watch": "node --watch ../node_modules/.bin/plain-blog",
-    "serve": "serve ./dist -c ../serve.json"
+    "serve": "serve ./dist"
   },
   "dependencies": {
-    "react": "^19.2.3"
+    "open-ask-ai": "^0.2.5",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "plain-blog": "^0.7.0",

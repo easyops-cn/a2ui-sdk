@@ -5,9 +5,10 @@ export default function Header(props) {
 
   return (
     <header>
-      <h1>
+      <div className="header-left">
         <a href={baseUrl}>{site.title}</a>
-      </h1>
+        <div id="nav-ask-ai"></div>
+      </div>
       <div className="header-right">
         <nav className="header-nav">
           <a href={baseUrl} className={url === baseUrl ? 'active' : ''}>
