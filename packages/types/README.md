@@ -122,6 +122,9 @@ import type {
   // Layout types
   Distribution,
   Alignment,
+
+  // State types
+  ScopeValue,
 } from '@a2ui-sdk/types/0.8'
 ```
 
@@ -189,6 +192,23 @@ interface ActionPayload {
   context: Record<string, unknown>
 }
 ```
+
+### ScopeValue (v0.8+)
+
+Scope context for collection item rendering:
+
+```tsx
+interface ScopeValue {
+  /**
+   * Base path for relative path resolution.
+   * null = root scope (no scoping)
+   * string = scoped to a specific data path (e.g., "/items/0")
+   */
+  basePath: string | null
+}
+```
+
+Used internally to support relative paths in template-rendered children (List, Row, Column with template binding).
 
 ## License
 

@@ -80,6 +80,16 @@ function useSurfaceContext(): SurfaceContextValue
  * Hook to access the DataModel context.
  */
 function useDataModelContext(): DataModelContextValue
+
+/**
+ * Hook to access the current scope value.
+ */
+function useScope(): ScopeValue
+
+/**
+ * Hook to get the current scope base path.
+ */
+function useScopeBasePath(): string | null
 ```
 
 ### Utils
@@ -90,18 +100,28 @@ function useDataModelContext(): DataModelContextValue
 /**
  * Resolves a ValueSource to its actual value.
  *
+ * @param source - The value source to resolve
+ * @param dataModel - The data model to resolve against
+ * @param basePath - Base path for relative path resolution (default: null)
+ * @param defaultValue - Default value if resolution fails
+ *
  * @example
  * // Literal values
- * resolveValue({ literalString: "Hello" }, {}); // "Hello"
- * resolveValue({ literalNumber: 42 }, {});      // 42
+ * resolveValue({ literalString: "Hello" }, {}, null); // "Hello"
+ * resolveValue({ literalNumber: 42 }, {}, null);      // 42
  *
- * // Path references
+ * // Absolute path references
  * const model = { user: { name: "John" } };
- * resolveValue({ path: "/user/name" }, model);  // "John"
+ * resolveValue({ path: "/user/name" }, model, null);  // "John"
+ *
+ * // Relative path with basePath
+ * const items = { items: [{ name: "Item 1" }] };
+ * resolveValue({ path: "name" }, items, "/items/0");  // "Item 1"
  */
 function resolveValue<T = unknown>(
   source: ValueSource | undefined,
   dataModel: DataModel,
+  basePath: string | null = null,
   defaultValue?: T
 ): T
 
@@ -114,10 +134,15 @@ function contentsToObject(contents: DataEntry[]): Record<string, DataModelValue>
 /**
  * Resolves action context items to a plain object.
  * Used when dispatching actions to resolve all context values.
+ *
+ * @param context - Action context items to resolve
+ * @param dataModel - The data model to resolve against
+ * @param basePath - Base path for relative path resolution (default: null)
  */
 function resolveActionContext(
   context: Array<{ key: string; value: ValueSource }> | undefined,
-  dataModel: DataModel
+  dataModel: DataModel,
+  basePath: string | null = null
 ): Record<string, unknown>
 
 /**
@@ -147,6 +172,46 @@ function mergeAtPath(
   path: string,
   data: Record<string, unknown>
 ): DataModel
+
+/**
+ * Normalizes a path to ensure it starts with '/' and has no trailing '/'.
+ *
+ * @example
+ * normalizePath("user/name") // "/user/name"
+ * normalizePath("/items/")   // "/items"
+ */
+function normalizePath(path: string): string
+
+/**
+ * Checks if a path is absolute (starts with '/').
+ *
+ * @example
+ * isAbsolutePath("/user/name") // true
+ * isAbsolutePath("name")       // false
+ */
+function isAbsolutePath(path: string): boolean
+
+/**
+ * Joins a base path with a relative path.
+ *
+ * @example
+ * joinPaths("/items/0", "name")  // "/items/0/name"
+ * joinPaths("/items", "../users") // "/users"
+ */
+function joinPaths(basePath: string, relativePath: string): string
+
+/**
+ * Resolves a path against a base path.
+ * Absolute paths are returned as-is.
+ * Relative paths are joined with the base path.
+ * If basePath is null, relative paths are treated as absolute.
+ *
+ * @example
+ * resolvePath("/user/name", "/items/0") // "/user/name" (absolute)
+ * resolvePath("name", "/items/0")       // "/items/0/name" (relative)
+ * resolvePath("name", null)             // "/name" (relative, no base)
+ */
+function resolvePath(path: string, basePath: string | null): string
 ```
 
 ### Types
@@ -191,6 +256,19 @@ type ValueSource =
 interface Action {
   name: string
   context?: ActionContextItem[]
+}
+
+/**
+ * Scope value for collection scopes.
+ * Tracks the current data path when rendering template-bound children.
+ */
+interface ScopeValue {
+  /**
+   * Base path for relative path resolution.
+   * null = root scope (no scoping)
+   * string = scoped to a specific data path (e.g., "/items/0")
+   */
+  basePath: string | null
 }
 ```
 
