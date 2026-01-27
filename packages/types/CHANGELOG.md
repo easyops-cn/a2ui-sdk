@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/easyops-cn/a2ui-sdk/compare/types-v0.2.1...types-v0.2.2) (2026-01-27)
+
+
+### Bug Fixes
+
+* fix data binding in list with template ([ee8d892](https://github.com/easyops-cn/a2ui-sdk/commit/ee8d892a73c852633c7034d06bba6e85ef322c44)), closes [#14](https://github.com/easyops-cn/a2ui-sdk/issues/14)
+
 ## [0.2.1](https://github.com/easyops-cn/a2ui-sdk/compare/types-v0.2.0...types-v0.2.1) (2026-01-14)
 
 
