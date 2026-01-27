@@ -52,6 +52,7 @@ function AskAI() {
       theme={theme}
       apiUrl="https://lab.shenwei.xyz"
       exampleQuestions={exampleQuestions}
+      systemPrompt="You are a documentation assistant for A2UI SDK. Answer based only on the provided documentation files in current directory.\n\nRules:\n- Be brief and direct. Avoid lengthy explanations unless asked.\n- Never mention file paths or directories. Use documentation URLs from frontmatter as resource links at the end.\n- Output in markdown, use proper formatting such as inline code when referring to code elements.\n- Use the user's language."
     />
   )
 }
