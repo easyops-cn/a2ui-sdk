@@ -9,29 +9,34 @@ import type {
   DataEntry,
   DataModelValue,
 } from '@a2ui-sdk/types/0.8'
-import { getValueByPath } from './pathUtils.js'
+import { getValueByPath, resolvePath } from './pathUtils.js'
 
 /**
  * Resolves a ValueSource to its actual value.
  *
  * @param source - The value source (literal or path reference)
  * @param dataModel - The data model for path lookups
+ * @param basePath - Optional base path for resolving relative paths (null for root scope)
  * @param defaultValue - Default value if source is undefined or path not found
  * @returns The resolved value
  *
  * @example
  * // Literal values
- * resolveValue({ literalString: "Hello" }, {}); // "Hello"
- * resolveValue({ literalNumber: 42 }, {});      // 42
+ * resolveValue({ literalString: "Hello" }, {}, null); // "Hello"
+ * resolveValue({ literalNumber: 42 }, {}, null);      // 42
  *
- * // Path references
+ * // Path references (absolute paths)
  * const model = { user: { name: "John" } };
- * resolveValue({ path: "/user/name" }, model);  // "John"
- * resolveValue({ path: "/user/age" }, model, 0); // 0 (default)
+ * resolveValue({ path: "/user/name" }, model, null);  // "John"
+ * resolveValue({ path: "/user/age" }, model, null, 0); // 0 (default)
+ *
+ * // Path references (relative paths with scope)
+ * resolveValue({ path: "name" }, model, "/user");  // "John" (resolves to "/user/name")
  */
 export function resolveValue<T = unknown>(
   source: ValueSource | undefined,
   dataModel: DataModel,
+  basePath: string | null = null,
   defaultValue?: T
 ): T {
   if (source === undefined || source === null) {
@@ -55,7 +60,9 @@ export function resolveValue<T = unknown>(
   }
 
   if ('path' in source) {
-    const value = getValueByPath(dataModel, source.path)
+    // Resolve path against base path (scope)
+    const resolvedPath = resolvePath(source.path, basePath)
+    const value = getValueByPath(dataModel, resolvedPath)
     if (value === undefined) {
       return defaultValue as T
     }
@@ -127,11 +134,13 @@ function normalizeKey(key: string): string {
  *
  * @param context - Array of action context items
  * @param dataModel - The data model for path lookups
+ * @param basePath - Optional base path for resolving relative paths (null for root scope)
  * @returns A plain object with resolved context values
  */
 export function resolveActionContext(
   context: Array<{ key: string; value: ValueSource }> | undefined,
-  dataModel: DataModel
+  dataModel: DataModel,
+  basePath: string | null = null
 ): Record<string, unknown> {
   if (!context) {
     return {}
@@ -140,7 +149,7 @@ export function resolveActionContext(
   const result: Record<string, unknown> = {}
 
   for (const item of context) {
-    result[item.key] = resolveValue(item.value, dataModel)
+    result[item.key] = resolveValue(item.value, dataModel, basePath)
   }
 
   return result

@@ -5,7 +5,15 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { getValueByPath, setValueByPath, mergeAtPath } from './pathUtils.js'
+import {
+  getValueByPath,
+  setValueByPath,
+  mergeAtPath,
+  normalizePath,
+  isAbsolutePath,
+  joinPaths,
+  resolvePath,
+} from './pathUtils.js'
 import type { DataModel } from '@a2ui-sdk/types/0.8'
 
 describe('pathUtils', () => {
@@ -257,6 +265,140 @@ describe('pathUtils', () => {
       const result = mergeAtPath(model, '/user', { age: 30 })
       expect(model).toEqual({ user: { name: 'John' } })
       expect(result).toEqual({ user: { name: 'John', age: 30 } })
+    })
+  })
+
+  describe('normalizePath', () => {
+    it('should add leading slash to relative paths', () => {
+      expect(normalizePath('user/name')).toBe('/user/name')
+      expect(normalizePath('items')).toBe('/items')
+    })
+
+    it('should keep leading slash for absolute paths', () => {
+      expect(normalizePath('/user/name')).toBe('/user/name')
+      expect(normalizePath('/items')).toBe('/items')
+    })
+
+    it('should remove trailing slash', () => {
+      expect(normalizePath('/items/')).toBe('/items')
+      expect(normalizePath('/user/profile/')).toBe('/user/profile')
+      expect(normalizePath('items/')).toBe('/items')
+    })
+
+    it('should handle root path', () => {
+      expect(normalizePath('/')).toBe('/')
+      expect(normalizePath('')).toBe('/')
+    })
+
+    it('should handle paths with multiple slashes', () => {
+      expect(normalizePath('/user//name')).toBe('/user//name')
+    })
+  })
+
+  describe('isAbsolutePath', () => {
+    it('should return true for absolute paths', () => {
+      expect(isAbsolutePath('/user/name')).toBe(true)
+      expect(isAbsolutePath('/items')).toBe(true)
+      expect(isAbsolutePath('/')).toBe(true)
+    })
+
+    it('should return false for relative paths', () => {
+      expect(isAbsolutePath('user/name')).toBe(false)
+      expect(isAbsolutePath('name')).toBe(false)
+      expect(isAbsolutePath('items')).toBe(false)
+    })
+
+    it('should return false for empty string', () => {
+      expect(isAbsolutePath('')).toBe(false)
+    })
+  })
+
+  describe('joinPaths', () => {
+    it('should join base path and relative path', () => {
+      expect(joinPaths('/items/0', 'name')).toBe('/items/0/name')
+      expect(joinPaths('/user', 'profile')).toBe('/user/profile')
+    })
+
+    it('should handle nested relative paths', () => {
+      expect(joinPaths('/user', 'profile/age')).toBe('/user/profile/age')
+      expect(joinPaths('/items/0', 'data/value')).toBe('/items/0/data/value')
+    })
+
+    it('should handle empty relative path', () => {
+      expect(joinPaths('/items', '')).toBe('/items')
+      expect(joinPaths('/user', '')).toBe('/user')
+    })
+
+    it('should normalize the result', () => {
+      expect(joinPaths('/items/', 'name')).toBe('/items/name')
+      expect(joinPaths('items', 'name')).toBe('/items/name')
+    })
+
+    it('should handle relative path with leading slash', () => {
+      expect(joinPaths('/items/0', '/name')).toBe('/items/0/name')
+    })
+  })
+
+  describe('resolvePath', () => {
+    describe('with absolute paths', () => {
+      it('should return absolute path unchanged', () => {
+        expect(resolvePath('/user/name', '/items/0')).toBe('/user/name')
+        expect(resolvePath('/data', '/items')).toBe('/data')
+      })
+
+      it('should ignore base path for absolute paths', () => {
+        expect(resolvePath('/user/name', null)).toBe('/user/name')
+        expect(resolvePath('/data', '/')).toBe('/data')
+      })
+
+      it('should normalize absolute paths', () => {
+        expect(resolvePath('/user/name/', '/items')).toBe('/user/name')
+      })
+    })
+
+    describe('with relative paths and null base path', () => {
+      it('should treat relative path as absolute when base path is null', () => {
+        expect(resolvePath('name', null)).toBe('/name')
+        expect(resolvePath('user/profile', null)).toBe('/user/profile')
+      })
+
+      it('should treat relative path as absolute when base path is "/"', () => {
+        expect(resolvePath('name', '/')).toBe('/name')
+        expect(resolvePath('items', '/')).toBe('/items')
+      })
+    })
+
+    describe('with relative paths and base path', () => {
+      it('should resolve relative path against base path', () => {
+        expect(resolvePath('name', '/items/0')).toBe('/items/0/name')
+        expect(resolvePath('age', '/user')).toBe('/user/age')
+      })
+
+      it('should handle nested relative paths', () => {
+        expect(resolvePath('profile/age', '/user')).toBe('/user/profile/age')
+        expect(resolvePath('data/value', '/items/0')).toBe(
+          '/items/0/data/value'
+        )
+      })
+
+      it('should normalize the result', () => {
+        expect(resolvePath('name/', '/items/0')).toBe('/items/0/name')
+        expect(resolvePath('name', '/items/0/')).toBe('/items/0/name')
+      })
+    })
+
+    describe('edge cases', () => {
+      it('should handle empty relative path', () => {
+        // Empty path with null basePath resolves to root
+        expect(resolvePath('', null)).toBe('/')
+        // Empty path with basePath resolves to the basePath (current scope)
+        expect(resolvePath('', '/items')).toBe('/items')
+      })
+
+      it('should handle root path', () => {
+        expect(resolvePath('/', '/items')).toBe('/')
+        expect(resolvePath('/', null)).toBe('/')
+      })
     })
   })
 })

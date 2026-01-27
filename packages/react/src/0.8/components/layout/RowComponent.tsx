@@ -10,9 +10,10 @@ import type {
 } from '@a2ui-sdk/types/0.8/standard-catalog'
 import { useDataModel } from '@/0.8/hooks/useDataBinding'
 import { cn } from '@/lib/utils'
-import { getValueByPath } from '@a2ui-sdk/utils/0.8'
 import { ComponentRenderer } from '../ComponentRenderer'
 import type { A2UIComponentProps } from '@/0.8/components/types'
+import { TemplateRenderer } from './TemplateRenderer'
+import { useScope } from '../../contexts/ScopeContext'
 
 /**
  * Maps distribution values to Tailwind justify-content classes.
@@ -46,6 +47,7 @@ export const RowComponent = memo(function RowComponent({
   alignment = 'stretch',
 }: A2UIComponentProps<RowComponentProps>) {
   const dataModel = useDataModel(surfaceId)
+  const { basePath } = useScope()
 
   const className = cn(
     'flex flex-row gap-3',
@@ -70,25 +72,14 @@ export const RowComponent = memo(function RowComponent({
 
   // Render template-based children
   if (children?.template) {
-    const { componentId, dataBinding } = children.template
-    const listData = getValueByPath(dataModel, dataBinding)
-
-    if (!listData || typeof listData !== 'object') {
-      return <div className={className} />
-    }
-
-    // listData is a Map-like object where each value represents an item
-    const items = Object.entries(listData as Record<string, unknown>)
-
     return (
       <div className={className}>
-        {items.map(([key]) => (
-          <ComponentRenderer
-            key={key}
-            surfaceId={surfaceId}
-            componentId={componentId}
-          />
-        ))}
+        <TemplateRenderer
+          surfaceId={surfaceId}
+          template={children.template}
+          dataModel={dataModel}
+          basePath={basePath}
+        />
       </div>
     )
   }

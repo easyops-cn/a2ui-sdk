@@ -24,7 +24,8 @@ export interface ActionContextValue {
   dispatchAction: (
     surfaceId: string,
     componentId: string,
-    action: Action
+    action: Action,
+    basePath: string | null
   ) => void
 
   /** The action handler callback (if set) */
@@ -52,7 +53,12 @@ export function ActionProvider({ onAction, children }: ActionProviderProps) {
   const { getDataModel } = useDataModelContext()
 
   const dispatchAction = useCallback(
-    (surfaceId: string, componentId: string, action: Action) => {
+    (
+      surfaceId: string,
+      componentId: string,
+      action: Action,
+      basePath: string | null
+    ) => {
       if (!onAction) {
         console.warn('A2UI: Action dispatched but no handler is registered')
         return
@@ -61,8 +67,12 @@ export function ActionProvider({ onAction, children }: ActionProviderProps) {
       // Get the data model for this surface
       const dataModel = getDataModel(surfaceId)
 
-      // Resolve the action context values
-      const resolvedContext = resolveActionContext(action.context, dataModel)
+      // Resolve the action context values with the current scope
+      const resolvedContext = resolveActionContext(
+        action.context,
+        dataModel,
+        basePath
+      )
 
       // Create the action payload
       const payload: ActionPayload = {

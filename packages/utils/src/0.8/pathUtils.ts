@@ -145,3 +145,110 @@ export function mergeAtPath(
   const merged = { ...currentObj, ...data }
   return setValueByPath(dataModel, path, merged)
 }
+
+/**
+ * Normalizes a path to ensure it starts with "/" and has no trailing "/".
+ *
+ * @param path - The path to normalize
+ * @returns The normalized path
+ *
+ * @example
+ * normalizePath("user/name");   // "/user/name"
+ * normalizePath("/items/");     // "/items"
+ * normalizePath("/data");       // "/data"
+ * normalizePath("");            // "/"
+ */
+export function normalizePath(path: string): string {
+  if (!path) {
+    return '/'
+  }
+
+  // Ensure leading slash
+  let normalized = path.startsWith('/') ? path : `/${path}`
+
+  // Remove trailing slash (unless it's the root path)
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1)
+  }
+
+  return normalized
+}
+
+/**
+ * Checks if a path is absolute (starts with "/").
+ *
+ * @param path - The path to check
+ * @returns True if the path is absolute, false otherwise
+ *
+ * @example
+ * isAbsolutePath("/user/name");  // true
+ * isAbsolutePath("name");        // false
+ * isAbsolutePath("");            // false
+ */
+export function isAbsolutePath(path: string): boolean {
+  return path.startsWith('/')
+}
+
+/**
+ * Joins two paths together.
+ *
+ * @param basePath - The base path (should be absolute)
+ * @param relativePath - The relative path to append
+ * @returns The combined path
+ *
+ * @example
+ * joinPaths("/items/0", "name");      // "/items/0/name"
+ * joinPaths("/user", "profile/age");  // "/user/profile/age"
+ * joinPaths("/data", "");             // "/data"
+ */
+export function joinPaths(basePath: string, relativePath: string): string {
+  if (!relativePath) {
+    return normalizePath(basePath)
+  }
+
+  // Remove leading slash from relative path if present
+  const cleanRelative = relativePath.startsWith('/')
+    ? relativePath.slice(1)
+    : relativePath
+
+  // Combine paths
+  const combined = `${normalizePath(basePath)}/${cleanRelative}`
+
+  return normalizePath(combined)
+}
+
+/**
+ * Resolves a path against a base path (scope).
+ * - Absolute paths (starting with "/") are returned normalized, ignoring the base path
+ * - Relative paths are resolved against the base path if provided
+ * - If base path is null, relative paths are treated as absolute
+ *
+ * @param path - The path to resolve (absolute or relative)
+ * @param basePath - The base path for resolving relative paths (null for root scope)
+ * @returns The resolved absolute path
+ *
+ * @example
+ * // Absolute paths ignore base path
+ * resolvePath("/user/name", "/items/0");  // "/user/name"
+ *
+ * // Relative paths resolve against base path
+ * resolvePath("name", "/items/0");        // "/items/0/name"
+ * resolvePath("profile/age", "/user");    // "/user/profile/age"
+ *
+ * // Relative paths with null base path (root scope)
+ * resolvePath("name", null);              // "/name"
+ */
+export function resolvePath(path: string, basePath: string | null): string {
+  // Absolute paths are used as-is (ignore base path)
+  if (isAbsolutePath(path)) {
+    return normalizePath(path)
+  }
+
+  // Root scope (null or "/" base path) - treat relative path as absolute
+  if (basePath === null || basePath === '/') {
+    return normalizePath(path)
+  }
+
+  // Relative path with scope - join with base path
+  return joinPaths(basePath, path)
+}

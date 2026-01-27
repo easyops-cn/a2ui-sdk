@@ -11,6 +11,7 @@ import {
   DataModelProvider,
   useDataModelContext,
 } from '../contexts/DataModelContext'
+import { ScopeProvider } from '../contexts/ScopeContext'
 import type { ReactNode } from 'react'
 import type { ValueSource } from '@a2ui-sdk/types/0.8'
 
@@ -140,6 +141,108 @@ describe('useDataBinding', () => {
       }).toThrow('useDataModelContext must be used within a DataModelProvider')
 
       consoleError.mockRestore()
+    })
+
+    describe('scoped data binding', () => {
+      // Helper wrapper with scope
+      const scopedWrapper =
+        (basePath: string) =>
+        ({ children }: { children: ReactNode }) => (
+          <DataModelProvider>
+            <ScopeProvider basePath={basePath}>{children}</ScopeProvider>
+          </DataModelProvider>
+        )
+
+      it('should resolve relative paths against scope', () => {
+        const { result } = renderHook(
+          () => {
+            const value = useDataBinding<string>(
+              'surface-1',
+              { path: 'name' }, // Relative path
+              ''
+            )
+            const { setDataValue } = useDataModelContext()
+            return { value, setDataValue }
+          },
+          { wrapper: scopedWrapper('/users/0') }
+        )
+
+        expect(result.current.value).toBe('')
+
+        // Set data at the resolved path
+        act(() => {
+          result.current.setDataValue('surface-1', '/users/0/name', 'Alice')
+        })
+
+        expect(result.current.value).toBe('Alice')
+      })
+
+      it('should resolve absolute paths ignoring scope', () => {
+        const { result } = renderHook(
+          () => {
+            const value = useDataBinding<string>(
+              'surface-1',
+              { path: '/global/value' }, // Absolute path
+              ''
+            )
+            const { setDataValue } = useDataModelContext()
+            return { value, setDataValue }
+          },
+          { wrapper: scopedWrapper('/users/0') }
+        )
+
+        act(() => {
+          result.current.setDataValue('surface-1', '/global/value', 'Global')
+        })
+
+        expect(result.current.value).toBe('Global')
+      })
+
+      it('should work with nested scopes', () => {
+        const wrapper = ({ children }: { children: ReactNode }) => (
+          <DataModelProvider>
+            <ScopeProvider basePath="/users/0">
+              <ScopeProvider basePath="/users/0/posts/1">
+                {children}
+              </ScopeProvider>
+            </ScopeProvider>
+          </DataModelProvider>
+        )
+
+        const { result } = renderHook(
+          () => {
+            const value = useDataBinding<string>(
+              'surface-1',
+              { path: 'title' },
+              ''
+            )
+            const { setDataValue } = useDataModelContext()
+            return { value, setDataValue }
+          },
+          { wrapper }
+        )
+
+        act(() => {
+          result.current.setDataValue(
+            'surface-1',
+            '/users/0/posts/1/title',
+            'Post Title'
+          )
+        })
+
+        expect(result.current.value).toBe('Post Title')
+      })
+
+      it('should handle literal values in scoped context', () => {
+        const source: ValueSource = { literalString: 'Literal' }
+        const { result } = renderHook(
+          () => useDataBinding<string>('surface-1', source),
+          { wrapper: scopedWrapper('/items/0') }
+        )
+
+        // Literal values should not be affected by scope
+        expect(result.current).toBe('Literal')
+      })
     })
   })
 
@@ -329,6 +432,126 @@ describe('useDataBinding', () => {
       })
 
       expect(result.current.value).toBe('External')
+    })
+
+    describe('scoped form binding', () => {
+      // Helper wrapper with scope
+      const scopedWrapper =
+        (basePath: string) =>
+        ({ children }: { children: ReactNode }) => (
+          <DataModelProvider>
+            <ScopeProvider basePath={basePath}>{children}</ScopeProvider>
+          </DataModelProvider>
+        )
+
+      it('should resolve relative paths when reading values', () => {
+        const { result } = renderHook(
+          () => {
+            const [value, setValue] = useFormBinding<string>(
+              'surface-1',
+              { path: 'name' }, // Relative path
+              ''
+            )
+            const { setDataValue } = useDataModelContext()
+            return { value, setValue, setDataValue }
+          },
+          { wrapper: scopedWrapper('/users/0') }
+        )
+
+        expect(result.current.value).toBe('')
+
+        // Set data at the resolved absolute path
+        act(() => {
+          result.current.setDataValue('surface-1', '/users/0/name', 'Alice')
+        })
+
+        expect(result.current.value).toBe('Alice')
+      })
+
+      it('should resolve relative paths when setting values', () => {
+        const { result } = renderHook(
+          () => {
+            const [value, setValue] = useFormBinding<string>(
+              'surface-1',
+              { path: 'name' }, // Relative path
+              ''
+            )
+            const { getDataValue } = useDataModelContext()
+            return { value, setValue, getDataValue }
+          },
+          { wrapper: scopedWrapper('/users/0') }
+        )
+
+        // Set via form binding with relative path
+        act(() => {
+          result.current.setValue('Bob')
+        })
+
+        expect(result.current.value).toBe('Bob')
+        // Should be stored at the resolved absolute path
+        expect(result.current.getDataValue('surface-1', '/users/0/name')).toBe(
+          'Bob'
+        )
+      })
+
+      it('should work with absolute paths ignoring scope', () => {
+        const { result } = renderHook(
+          () => {
+            const [value, setValue] = useFormBinding<string>(
+              'surface-1',
+              { path: '/global/name' }, // Absolute path
+              ''
+            )
+            const { getDataValue } = useDataModelContext()
+            return { value, setValue, getDataValue }
+          },
+          { wrapper: scopedWrapper('/users/0') }
+        )
+
+        act(() => {
+          result.current.setValue('Global Value')
+        })
+
+        expect(result.current.value).toBe('Global Value')
+        // Should be stored at the absolute path, not scoped
+        expect(result.current.getDataValue('surface-1', '/global/name')).toBe(
+          'Global Value'
+        )
+      })
+
+      it('should work with nested scopes', () => {
+        const wrapper = ({ children }: { children: ReactNode }) => (
+          <DataModelProvider>
+            <ScopeProvider basePath="/users/0">
+              <ScopeProvider basePath="/users/0/profile">
+                {children}
+              </ScopeProvider>
+            </ScopeProvider>
+          </DataModelProvider>
+        )
+
+        const { result } = renderHook(
+          () => {
+            const [value, setValue] = useFormBinding<string>(
+              'surface-1',
+              { path: 'bio' },
+              ''
+            )
+            const { getDataValue } = useDataModelContext()
+            return { value, setValue, getDataValue }
+          },
+          { wrapper }
+        )
+
+        act(() => {
+          result.current.setValue('My bio')
+        })
+
+        expect(result.current.value).toBe('My bio')
+        expect(
+          result.current.getDataValue('surface-1', '/users/0/profile/bio')
+        ).toBe('My bio')
+      })
     })
   })
 })

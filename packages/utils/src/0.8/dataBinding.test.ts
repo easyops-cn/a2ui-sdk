@@ -26,59 +26,68 @@ describe('dataBinding', () => {
 
     describe('with undefined/null source', () => {
       it('should return default value when source is undefined', () => {
-        expect(resolveValue(undefined, testModel, 'default')).toBe('default')
+        expect(resolveValue(undefined, testModel, null, 'default')).toBe(
+          'default'
+        )
       })
 
       it('should return default value when source is null', () => {
         expect(
-          resolveValue(null as unknown as ValueSource, testModel, 'default')
+          resolveValue(
+            null as unknown as ValueSource,
+            testModel,
+            null,
+            'default'
+          )
         ).toBe('default')
       })
 
       it('should return undefined when no default provided and source is undefined', () => {
-        expect(resolveValue(undefined, testModel)).toBeUndefined()
+        expect(resolveValue(undefined, testModel, null)).toBeUndefined()
       })
     })
 
     describe('with literal values', () => {
       it('should resolve literalString', () => {
         const source: ValueSource = { literalString: 'Hello' }
-        expect(resolveValue<string>(source, testModel)).toBe('Hello')
+        expect(resolveValue<string>(source, testModel, null)).toBe('Hello')
       })
 
       it('should resolve empty literalString', () => {
         const source: ValueSource = { literalString: '' }
-        expect(resolveValue<string>(source, testModel, 'default')).toBe('')
+        expect(resolveValue<string>(source, testModel, null, 'default')).toBe(
+          ''
+        )
       })
 
       it('should resolve literalNumber', () => {
         const source: ValueSource = { literalNumber: 42 }
-        expect(resolveValue<number>(source, testModel)).toBe(42)
+        expect(resolveValue<number>(source, testModel, null)).toBe(42)
       })
 
       it('should resolve zero literalNumber', () => {
         const source: ValueSource = { literalNumber: 0 }
-        expect(resolveValue<number>(source, testModel, 99)).toBe(0)
+        expect(resolveValue<number>(source, testModel, null, 99)).toBe(0)
       })
 
       it('should resolve negative literalNumber', () => {
         const source: ValueSource = { literalNumber: -10 }
-        expect(resolveValue<number>(source, testModel)).toBe(-10)
+        expect(resolveValue<number>(source, testModel, null)).toBe(-10)
       })
 
       it('should resolve literalBoolean true', () => {
         const source: ValueSource = { literalBoolean: true }
-        expect(resolveValue<boolean>(source, testModel)).toBe(true)
+        expect(resolveValue<boolean>(source, testModel, null)).toBe(true)
       })
 
       it('should resolve literalBoolean false', () => {
         const source: ValueSource = { literalBoolean: false }
-        expect(resolveValue<boolean>(source, testModel, true)).toBe(false)
+        expect(resolveValue<boolean>(source, testModel, null, true)).toBe(false)
       })
 
       it('should resolve literalArray', () => {
         const source: ValueSource = { literalArray: ['x', 'y', 'z'] }
-        expect(resolveValue<string[]>(source, testModel)).toEqual([
+        expect(resolveValue<string[]>(source, testModel, null)).toEqual([
           'x',
           'y',
           'z',
@@ -87,31 +96,31 @@ describe('dataBinding', () => {
 
       it('should resolve empty literalArray', () => {
         const source: ValueSource = { literalArray: [] }
-        expect(resolveValue<string[]>(source, testModel, ['default'])).toEqual(
-          []
-        )
+        expect(
+          resolveValue<string[]>(source, testModel, null, ['default'])
+        ).toEqual([])
       })
     })
 
     describe('with path references', () => {
       it('should resolve path to string value', () => {
         const source: ValueSource = { path: '/user/name' }
-        expect(resolveValue<string>(source, testModel)).toBe('John')
+        expect(resolveValue<string>(source, testModel, null)).toBe('John')
       })
 
       it('should resolve path to number value', () => {
         const source: ValueSource = { path: '/count' }
-        expect(resolveValue<number>(source, testModel)).toBe(42)
+        expect(resolveValue<number>(source, testModel, null)).toBe(42)
       })
 
       it('should resolve path to boolean value', () => {
         const source: ValueSource = { path: '/user/active' }
-        expect(resolveValue<boolean>(source, testModel)).toBe(true)
+        expect(resolveValue<boolean>(source, testModel, null)).toBe(true)
       })
 
       it('should resolve path to nested object', () => {
         const source: ValueSource = { path: '/user' }
-        expect(resolveValue(source, testModel)).toEqual({
+        expect(resolveValue(source, testModel, null)).toEqual({
           name: 'John',
           age: 30,
           active: true,
@@ -120,7 +129,7 @@ describe('dataBinding', () => {
 
       it('should resolve path to array', () => {
         const source: ValueSource = { path: '/items' }
-        expect(resolveValue<string[]>(source, testModel)).toEqual([
+        expect(resolveValue<string[]>(source, testModel, null)).toEqual([
           'a',
           'b',
           'c',
@@ -129,26 +138,89 @@ describe('dataBinding', () => {
 
       it('should return default when path not found', () => {
         const source: ValueSource = { path: '/nonexistent' }
-        expect(resolveValue<string>(source, testModel, 'default')).toBe(
+        expect(resolveValue<string>(source, testModel, null, 'default')).toBe(
           'default'
         )
       })
 
       it('should return undefined when path not found and no default', () => {
         const source: ValueSource = { path: '/nonexistent' }
-        expect(resolveValue(source, testModel)).toBeUndefined()
+        expect(resolveValue(source, testModel, null)).toBeUndefined()
       })
 
       it('should handle empty data model', () => {
         const source: ValueSource = { path: '/user/name' }
-        expect(resolveValue<string>(source, {}, 'default')).toBe('default')
+        expect(resolveValue<string>(source, {}, null, 'default')).toBe(
+          'default'
+        )
+      })
+    })
+
+    describe('with scoped paths (basePath parameter)', () => {
+      it('should resolve absolute paths ignoring basePath', () => {
+        const source: ValueSource = { path: '/user/name' }
+        expect(resolveValue<string>(source, testModel, '/items')).toBe('John')
+      })
+
+      it('should resolve relative path with basePath', () => {
+        const source: ValueSource = { path: 'name' }
+        expect(resolveValue<string>(source, testModel, '/user')).toBe('John')
+      })
+
+      it('should resolve nested relative path with basePath', () => {
+        const model: DataModel = {
+          items: {
+            '0': { name: 'Alice', age: 30 },
+            '1': { name: 'Bob', age: 25 },
+          },
+        }
+        const source: ValueSource = { path: 'name' }
+        expect(resolveValue<string>(source, model, '/items/0')).toBe('Alice')
+        expect(resolveValue<string>(source, model, '/items/1')).toBe('Bob')
+      })
+
+      it('should resolve deeply nested relative path', () => {
+        const model: DataModel = {
+          users: [
+            { profile: { email: 'alice@example.com' } },
+            { profile: { email: 'bob@example.com' } },
+          ],
+        }
+        const source: ValueSource = { path: 'profile/email' }
+        expect(resolveValue<string>(source, model, '/users/0')).toBe(
+          'alice@example.com'
+        )
+      })
+
+      it('should treat relative path as absolute when basePath is null', () => {
+        const source: ValueSource = { path: 'name' }
+        // Without basePath, "name" is treated as "/name"
+        const model: DataModel = { name: 'Test' }
+        expect(resolveValue<string>(source, model, null)).toBe('Test')
+      })
+
+      it('should treat relative path as absolute when basePath is "/"', () => {
+        const source: ValueSource = { path: 'count' }
+        expect(resolveValue<number>(source, testModel, '/')).toBe(42)
+      })
+
+      it('should return default when scoped path not found', () => {
+        const source: ValueSource = { path: 'nonexistent' }
+        expect(
+          resolveValue<string>(source, testModel, '/user', 'default')
+        ).toBe('default')
+      })
+
+      it('should resolve literal values regardless of basePath', () => {
+        const source: ValueSource = { literalString: 'Hello' }
+        expect(resolveValue<string>(source, testModel, '/user')).toBe('Hello')
       })
     })
 
     describe('with unknown source structure', () => {
       it('should return default value for unknown source structure', () => {
         const source = { unknown: 'value' } as unknown as ValueSource
-        expect(resolveValue(source, testModel, 'default')).toBe('default')
+        expect(resolveValue(source, testModel, null, 'default')).toBe('default')
       })
     })
   })
@@ -260,35 +332,37 @@ describe('dataBinding', () => {
     }
 
     it('should return empty object for undefined context', () => {
-      expect(resolveActionContext(undefined, testModel)).toEqual({})
+      expect(resolveActionContext(undefined, testModel, null)).toEqual({})
     })
 
     it('should return empty object for empty context array', () => {
-      expect(resolveActionContext([], testModel)).toEqual({})
+      expect(resolveActionContext([], testModel, null)).toEqual({})
     })
 
     it('should resolve literalString values', () => {
       const context = [{ key: 'action', value: { literalString: 'submit' } }]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         action: 'submit',
       })
     })
 
     it('should resolve literalNumber values', () => {
       const context = [{ key: 'count', value: { literalNumber: 5 } }]
-      expect(resolveActionContext(context, testModel)).toEqual({ count: 5 })
+      expect(resolveActionContext(context, testModel, null)).toEqual({
+        count: 5,
+      })
     })
 
     it('should resolve literalBoolean values', () => {
       const context = [{ key: 'confirmed', value: { literalBoolean: true } }]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         confirmed: true,
       })
     })
 
     it('should resolve path references', () => {
       const context = [{ key: 'userName', value: { path: '/user/name' } }]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         userName: 'John',
       })
     })
@@ -299,7 +373,7 @@ describe('dataBinding', () => {
         { key: 'userId', value: { path: '/selectedId' } },
         { key: 'confirmed', value: { literalBoolean: true } },
       ]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         action: 'update',
         userId: 'item-123',
         confirmed: true,
@@ -308,7 +382,7 @@ describe('dataBinding', () => {
 
     it('should return undefined for non-existent path', () => {
       const context = [{ key: 'missing', value: { path: '/nonexistent' } }]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         missing: undefined,
       })
     })
@@ -318,9 +392,64 @@ describe('dataBinding', () => {
         { key: 'name', value: { path: '/user/name' } },
         { key: 'age', value: { path: '/user/age' } },
       ]
-      expect(resolveActionContext(context, testModel)).toEqual({
+      expect(resolveActionContext(context, testModel, null)).toEqual({
         name: 'John',
         age: 30,
+      })
+    })
+
+    describe('with scoped action contexts (basePath parameter)', () => {
+      it('should resolve absolute paths ignoring basePath', () => {
+        const context = [{ key: 'userName', value: { path: '/user/name' } }]
+        expect(resolveActionContext(context, testModel, '/items')).toEqual({
+          userName: 'John',
+        })
+      })
+
+      it('should resolve relative paths with basePath', () => {
+        const context = [{ key: 'userName', value: { path: 'name' } }]
+        expect(resolveActionContext(context, testModel, '/user')).toEqual({
+          userName: 'John',
+        })
+      })
+
+      it('should resolve multiple scoped paths', () => {
+        const context = [
+          { key: 'name', value: { path: 'name' } },
+          { key: 'age', value: { path: 'age' } },
+        ]
+        expect(resolveActionContext(context, testModel, '/user')).toEqual({
+          name: 'John',
+          age: 30,
+        })
+      })
+
+      it('should mix absolute and relative paths', () => {
+        const context = [
+          { key: 'userName', value: { path: 'name' } }, // relative
+          { key: 'selectedId', value: { path: '/selectedId' } }, // absolute
+        ]
+        expect(resolveActionContext(context, testModel, '/user')).toEqual({
+          userName: 'John',
+          selectedId: 'item-123',
+        })
+      })
+
+      it('should resolve scoped paths in list items', () => {
+        const model: DataModel = {
+          items: {
+            '0': { name: 'Alice', id: 'a1' },
+            '1': { name: 'Bob', id: 'b1' },
+          },
+        }
+        const context = [
+          { key: 'itemName', value: { path: 'name' } },
+          { key: 'itemId', value: { path: 'id' } },
+        ]
+        expect(resolveActionContext(context, model, '/items/0')).toEqual({
+          itemName: 'Alice',
+          itemId: 'a1',
+        })
       })
     })
   })
