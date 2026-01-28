@@ -9,6 +9,10 @@ const exampleQuestions = [
   'How can I customize components when using the A2UI SDK?',
 ]
 
+const texts = {
+  welcomeMessage: 'Ask me about A2UI SDK',
+}
+
 function initializeAskAI() {
   const navAskAi = document.querySelector('#nav-ask-ai')
   if (!navAskAi) {
@@ -51,6 +55,7 @@ function AskAI() {
     <AskAIWidget
       theme={theme}
       apiUrl="https://lab.shenwei.xyz"
+      texts={texts}
       exampleQuestions={exampleQuestions}
       systemPrompt="You are a documentation assistant for A2UI SDK. Be concise and accurate. Output in markdown format, use proper formatting such as inline code when referring to code elements. Use the user's language for responses."
     />
