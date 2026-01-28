@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.2.2...react-v0.3.0) (2026-01-28)
+
+
+### Features
+
+* expose ActionProvider and useActionContext ([fdba01f](https://github.com/easyops-cn/a2ui-sdk/commit/fdba01fcf82c0d37e3f1b831b2f0d95de54960e8))
+* expose ActionProvider and useActionContext ([62fef4e](https://github.com/easyops-cn/a2ui-sdk/commit/62fef4eaf731096e059250f79a488d1ff198506b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @a2ui-sdk/types bumped from 0.2.2 to 0.3.0
+    * @a2ui-sdk/utils bumped from 0.2.2 to 0.3.0
+
 ## [0.2.2](https://github.com/easyops-cn/a2ui-sdk/compare/react-v0.2.1...react-v0.2.2) (2026-01-27)
 
 
