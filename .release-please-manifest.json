@@ -1,5 +1,5 @@
 {
-  "packages/react": "0.2.2",
-  "packages/types": "0.2.2",
-  "packages/utils": "0.2.2"
+  "packages/react": "0.3.0",
+  "packages/types": "0.3.0",
+  "packages/utils": "0.3.0"
 }
