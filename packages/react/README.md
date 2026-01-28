@@ -221,6 +221,10 @@ import {
   useScope,
   useScopeBasePath,
 
+  // Context Providers & Hooks
+  ActionProvider,
+  useActionContext,
+
   // Types
   type A2UIMessage,
   type A2UIAction,
@@ -264,6 +268,10 @@ import {
   useDataModelContext,
   useScope,
   useScopeBasePath,
+
+  // Context Providers & Hooks
+  ActionProvider,
+  useActionContext,
 
   // Types
   type A2UIMessage,
@@ -331,6 +339,46 @@ const { valid, errors } = useValidation(checks)
 // valid: boolean
 // errors: string[] - list of failed validation messages
 ```
+
+### ActionProvider & useActionContext
+
+For advanced use cases, you can create custom action handling middleware by using `ActionProvider` and `useActionContext` directly. This is useful when you need to intercept, transform, or augment actions before they reach your action handler.
+
+```tsx
+import {
+  A2UIProvider,
+  A2UIRenderer,
+  ActionProvider,
+  useActionContext,
+} from '@a2ui-sdk/react/0.9'
+
+function ActionLogger({ children }: { children: React.ReactNode }) {
+  const { onAction } = useActionContext()
+
+  // You can access the action handler here
+  // and potentially wrap it with logging or other middleware logic
+
+  return <>{children}</>
+}
+
+function App() {
+  const handleAction = (action: A2UIAction) => {
+    console.log('Action:', action)
+  }
+
+  return (
+    <A2UIProvider messages={messages}>
+      <ActionProvider onAction={handleAction}>
+        <ActionLogger>
+          <A2UIRenderer />
+        </ActionLogger>
+      </ActionProvider>
+    </A2UIProvider>
+  )
+}
+```
+
+**Note:** In most cases, you don't need to use `ActionProvider` directly as `A2UIProvider` already includes it. Use this only for advanced customization scenarios.
 
 ## License
 

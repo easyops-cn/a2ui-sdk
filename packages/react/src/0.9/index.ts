@@ -81,3 +81,4 @@ export {
 export { useValidation } from './hooks/useValidation'
 export { useSurfaceContext } from './contexts/SurfaceContext'
 export { useScope, useScopeBasePath } from './contexts/ScopeContext'
+export { ActionProvider, useActionContext } from './contexts/ActionContext'

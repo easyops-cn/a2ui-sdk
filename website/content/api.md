@@ -94,6 +94,36 @@ function useScope(): ScopeValue
  * Hook to get the current scope base path.
  */
 function useScopeBasePath(): string | null
+
+/**
+ * Provider component for action dispatching.
+ * Creates a context for managing action handlers.
+ *
+ * Note: Usually not needed as A2UIProvider already includes this.
+ * Use only for advanced customization scenarios.
+ */
+function ActionProvider(props: {
+  onAction?: ActionHandler
+  children: React.ReactNode
+}): React.ReactElement
+
+/**
+ * Hook to access the Action context.
+ * Provides access to the action dispatcher and handler.
+ *
+ * @throws Error if used outside of ActionProvider
+ */
+function useActionContext(): ActionContextValue
+
+interface ActionContextValue {
+  dispatchAction: (
+    surfaceId: string,
+    componentId: string,
+    action: Action,
+    basePath: string | null
+  ) => void
+  onAction: ActionHandler | null
+}
 ```
 
 ### Utils
@@ -245,6 +275,11 @@ interface A2UIAction {
 }
 
 /**
+ * Action handler callback function.
+ */
+type ActionHandler = (action: A2UIAction) => void
+
+/**
  * Represents a value source - either a literal value or a reference to a data model path.
  */
 type ValueSource =
@@ -377,6 +412,37 @@ function useScope(): ScopeValue
  * Hook to get the current scope base path.
  */
 function useScopeBasePath(): string | null
+
+/**
+ * Provider component for action dispatching.
+ * Creates a context for managing action handlers.
+ *
+ * Note: Usually not needed as A2UIProvider already includes this.
+ * Use only for advanced customization scenarios.
+ */
+function ActionProvider(props: {
+  onAction?: ActionHandler
+  children: React.ReactNode
+}): React.ReactElement
+
+/**
+ * Hook to access the Action context.
+ * Provides access to the action dispatcher and handler.
+ *
+ * @throws Error if used outside of ActionProvider
+ */
+function useActionContext(): ActionContextValue
+
+interface ActionContextValue {
+  dispatchAction: (
+    surfaceId: string,
+    componentId: string,
+    action: Action,
+    dataModel: DataModel,
+    basePath?: string | null
+  ) => void
+  onAction: ActionHandler | null
+}
 ```
 
 ### Utils
@@ -456,6 +522,11 @@ interface A2UIAction {
   timestamp: string // ISO 8601
   context: Record<string, unknown>
 }
+
+/**
+ * Action handler callback function.
+ */
+type ActionHandler = (action: A2UIAction) => void
 
 /**
  * Dynamic value types for data binding.

@@ -80,6 +80,8 @@ Custom components can override defaults or add new ones via `components` prop on
 
 Custom components use hooks: `useDispatchAction`, `useDataBinding`, `useFormBinding`, and `ComponentRenderer` for rendering children.
 
+For advanced use cases, `ActionProvider` and `useActionContext` are available to create custom action handling middleware between `A2UIProvider` and `A2UIRenderer`.
+
 ## Package Exports
 
 ```javascript
