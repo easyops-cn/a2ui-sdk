@@ -54,10 +54,10 @@ function AskAI() {
   return (
     <AskAIWidget
       theme={theme}
+      projectId="a2ui-sdk"
       apiUrl="https://lab.shenwei.xyz"
       texts={texts}
       exampleQuestions={exampleQuestions}
-      systemPrompt="You are a documentation assistant for A2UI SDK. Be concise and accurate. Output in markdown format, use proper formatting such as inline code when referring to code elements. Use the user's language for responses."
     />
   )
 }
