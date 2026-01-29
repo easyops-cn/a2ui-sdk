@@ -1,4 +1,5 @@
 import { AskAIWidget, type WidgetTexts } from 'open-ask-ai'
+import 'open-ask-ai/styles.css'
 
 const exampleQuestions = [
   'What is A2UI SDK?',

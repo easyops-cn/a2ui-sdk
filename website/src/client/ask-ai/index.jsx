@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AskAIWidget } from 'open-ask-ai'
+import AskAICss from 'open-ask-ai/styles.css'
 
 const exampleQuestions = [
   'What is A2UI SDK?',
@@ -16,8 +17,12 @@ const texts = {
 function initializeAskAI() {
   const navAskAi = document.querySelector('#nav-ask-ai')
   if (!navAskAi) {
+    setTimeout(initializeAskAI, 100)
     return
   }
+  const style = document.createElement('style')
+  style.textContent = AskAICss
+  document.head.appendChild(style)
   const root = createRoot(navAskAi)
   root.render(<AskAI />)
 }

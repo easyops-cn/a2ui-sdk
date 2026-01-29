@@ -8,12 +8,12 @@
     "serve": "serve ./dist"
   },
   "dependencies": {
-    "open-ask-ai": "^0.3.5",
+    "open-ask-ai": "^0.4.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "plain-blog": "^0.7.0",
+    "plain-blog": "^0.7.1",
     "serve": "^14.2.5"
   }
 }
