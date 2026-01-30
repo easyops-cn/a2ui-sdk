@@ -8,7 +8,9 @@ NOTE: this is NOT the official SDK maintained by the A2UI team.
 
 Supports all components in A2UI standard catalog out of the box. Built with [shadcn/ui](https://ui.shadcn.com/) and [Tailwind CSS](https://tailwindcss.com/).
 
-Currently both A2UI protocol v0.8 and v0.9 (as of draft 2026-01-12) are supported.
+Currently both A2UI protocol v0.8 and v0.9 are supported.
+
+**⚠️ Important:** V0.9 is a draft version based on the A2UI specification as of 2026-01-12. The v0.9 protocol has changed significantly recently and may continue to evolve. **We recommend using the stable v0.8 until v0.9 reaches alpha or beta status.**
 
 [Docs](https://a2ui-sdk.js.org/) | [Playground](https://a2ui-sdk.js.org/playground/)
 
@@ -166,6 +168,8 @@ export function CustomSwitchComponent({
 ```
 
 ## V0.9
+
+> **⚠️ Draft Version Warning:** V0.9 is currently a draft implementation based on the A2UI specification as of 2026-01-12. The protocol has changed significantly recently and may continue to evolve. **We recommend using the stable v0.8 for production use until v0.9 reaches alpha or beta status.**
 
 ### Usage
 
