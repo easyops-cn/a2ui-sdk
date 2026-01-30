@@ -313,6 +313,8 @@ interface ScopeValue {
 
 ## V0.9
 
+> **⚠️ Draft Version Warning:** V0.9 is currently a draft implementation based on the A2UI specification as of 2026-01-12. The protocol has changed significantly recently and may continue to evolve. **We recommend using the stable v0.8 for production use until v0.9 reaches alpha or beta status.**
+
 ### React
 
 ```typescript
