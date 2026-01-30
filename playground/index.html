@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/playground/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A2UI SDK Playground</title>
+    <script>
+      // Initialize theme before page renders to prevent flash
+      (function() {
+        const stored = localStorage.getItem('theme');
+        if (stored === 'dark' || stored === 'light') {
+          document.documentElement.dataset.theme = stored;
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/playground/assets/index-BjUsu4Uy.js"></script>
+    <link rel="stylesheet" crossorigin href="/playground/assets/index-CUeHStv0.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
