@@ -38,9 +38,9 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/coverage-v8": "^4.1.0",
     "typescript": "~5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.1.0"
   },
   "dependencies": {
     "@a2ui-sdk/types": "0.4.0"
